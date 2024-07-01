@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useLayoutEffect } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Modal, Pressable } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useNavigation } from '@react-navigation/native';
 import { useEventContext } from "../EventsScreen/EventContext";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// Configure the calendar locale
 LocaleConfig.locales["en"] = {
   monthNames: [
     "January", "February", "March", "April", "May", "June",
@@ -23,89 +23,113 @@ LocaleConfig.defaultLocale = "en";
 const CalendarComponent = () => {
   const { events } = useEventContext();
   const [selectedDate, setSelectedDate] = useState("");
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const navigation = useNavigation();
 
-  const onDayPress = (day) => {
-    setSelectedDate(day.dateString);
-    navigation.navigate('EventScreen', { selectedDate: day.dateString });
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('DrawerScreen')} style={styles.headerButton}>
+            <Ionicons name="funnel-outline" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowSettingsModal(true)} style={styles.headerButton}>
+            <Ionicons name="ellipsis-vertical-outline" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
+
+  const handleDatePress = (date) => {
+    setSelectedDate(date.dateString);
+    navigation.navigate("EventScreen", { selectedDate: date.dateString });
   };
 
-  const markedDates = Object.keys(events).reduce((acc, date) => {
-    acc[date] = { marked: true, dotColor: 'blue' };
-    return acc;
-  }, {});
-
-  if (selectedDate) {
-    markedDates[selectedDate] = { selected: true, selectedColor: "blue" };
-  }
+  const renderEventsForDate = (date) => {
+    const eventsForDate = events[date] || [];
+    return eventsForDate.map((event, index) => (
+      <View key={index} style={styles.eventContainer}>
+        <Text style={styles.eventTitle}>{event.title}</Text>
+        <Text style={styles.eventDetail}>{event.detail}</Text>
+      </View>
+    ));
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <Calendar
-          onDayPress={onDayPress}
-          markedDates={markedDates}
-          theme={{
-            selectedDayBackgroundColor: "blue",
-            todayTextColor: "red",
-            arrowColor: "blue",
-            monthTextColor: "blue",
-            textMonthFontWeight: "bold",
-            textDayHeaderFontWeight: "bold",
-            textDayFontWeight: "500",
-            textDayFontSize: 16,
-            textMonthFontSize: 18,
-            textDayHeaderFontSize: 14,
-          }}
-        />
-      </View>
-      <View style={styles.selectedDateContainer}>
-        <Text style={styles.selectedDateText}>
-          Selected Date: {selectedDate || "None"}
-        </Text>
-        {selectedDate && events[selectedDate] && (
-          <View style={styles.eventsContainer}>
-            {events[selectedDate].map((event, index) => (
-              <Text key={index} style={styles.eventText}>
-                - {event}
-              </Text>
-            ))}
+      <Calendar
+        onDayPress={handleDatePress}
+        markedDates={{
+          [selectedDate]: { selected: true, marked: true },
+        }}
+      />
+      {selectedDate && (
+        <View style={styles.eventList}>
+          {renderEventsForDate(selectedDate)}
+        </View>
+      )}
+      <Modal
+        visible={showSettingsModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowSettingsModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Pressable style={styles.closeButton} onPress={() => setShowSettingsModal(false)}>
+              <Ionicons name="close-outline" size={24} color="black" />
+            </Pressable>
+            <Text style={styles.modalText}>Settings Options</Text>
+            {/* Add your settings options here */}
           </View>
-        )}
-      </View>
+        </View>
+      </Modal>
     </View>
   );
 };
 
-export default CalendarComponent;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
+  },
+  eventList: {
     padding: 16,
   },
-  card: {
-    borderRadius: 8,
-    padding: 16,
-    backgroundColor: '#f0f0f0',
+  eventContainer: {
     marginBottom: 16,
   },
-  selectedDateContainer: {
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: '#f0f0f0',
-  },
-  selectedDateText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  eventsContainer: {
-    marginTop: 8,
-  },
-  eventText: {
+  eventTitle: {
     fontSize: 16,
-    color: '#333',
+    fontWeight: "bold",
+  },
+  eventDetail: {
+    fontSize: 14,
+  },
+  headerButton: {
+    marginRight: 15,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+  },
+  modalText: {
+    fontSize: 18,
+    marginVertical: 20,
   },
 });
+
+export default CalendarComponent;

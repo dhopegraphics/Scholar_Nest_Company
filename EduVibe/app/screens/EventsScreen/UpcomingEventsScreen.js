@@ -13,8 +13,8 @@ const UpcomingEventsScreen = () => {
       date,
       events: eventsForDate.map((event, index) => ({
         id: `${date}_${index}`,
-        title: event.title || 'No Title', // Default to 'No Title' if not provided
-        detail: event.detail || 'No Detail', // Default to 'No Detail' if not provided
+        title: event.title || 'No Title',
+        detail: event.detail || 'No Detail',
       })),
     }));
     setEventList(transformedEvents);
@@ -45,8 +45,8 @@ const UpcomingEventsScreen = () => {
         <Ionicons name="calendar-outline" size={24} color="black" />
       </View>
       <View style={styles.eventDetails}>
-        <Text style={styles.eventTitle}>{item.events[0].title}</Text>
-        <Text style={styles.eventDetail}>{item.events[0].detail}</Text>
+        <Text style={styles.eventTitle}>{item.title}</Text>
+        <Text style={styles.eventDetail}>{item.detail}</Text>
         <Text style={styles.eventDate}>{item.date}</Text>
       </View>
     </View>
@@ -65,6 +65,8 @@ const UpcomingEventsScreen = () => {
     </View>
   );
 };
+
+export default UpcomingEventsScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -112,5 +114,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-export default UpcomingEventsScreen;

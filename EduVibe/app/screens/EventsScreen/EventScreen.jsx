@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { useEventContext } from './EventContext';
@@ -6,10 +5,16 @@ import { useEventContext } from './EventContext';
 const EventScreen = ({ route, navigation }) => {
   const { selectedDate } = route.params;
   const { addEvent } = useEventContext();
-  const [event, setEvent] = useState('');
+  const [eventTitle, setEventTitle] = useState('');
+  const [eventDetail, setEventDetail] = useState('');
 
   const handleAddEvent = () => {
-    addEvent(selectedDate, event);
+    if (eventTitle.trim() === '') {
+      alert('Event title cannot be empty!');
+      return;
+    }
+
+    addEvent(selectedDate, eventTitle, eventDetail);
     navigation.goBack();
   };
 
@@ -18,9 +23,16 @@ const EventScreen = ({ route, navigation }) => {
       <Text style={styles.title}>Add Event for {selectedDate}</Text>
       <TextInput
         style={styles.input}
+        placeholder="Enter event title"
+        value={eventTitle}
+        onChangeText={setEventTitle}
+      />
+      <TextInput
+        style={[styles.input, { height: 100 }]}
         placeholder="Enter event details"
-        value={event}
-        onChangeText={setEvent}
+        multiline
+        value={eventDetail}
+        onChangeText={setEventDetail}
       />
       <Button title="Add Event" onPress={handleAddEvent} />
     </View>

@@ -36,7 +36,7 @@ export const EventProvider = ({ children }) => {
       ...events,
       [date]: [...(events[date] || []), newEvent]
     };
-    await saveEvents(newEvents); // Ensure async storage is updated before continuing
+    await saveEvents(newEvents);
   };
 
   const clearAllEvents = async () => {

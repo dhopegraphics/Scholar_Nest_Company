@@ -64,7 +64,6 @@ const MainStackScreen = () => {
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
       <Stack.Screen name="Survey" component={Survey} options={{ headerShown: false }} />
       <Stack.Screen name="Back" component={Tab_Layout} />
-      <Stack.Screen name="Back" component={Tab_Layout} />
       <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
       <Stack.Screen name="ContactsMainScreen" component={ContactsMainScreen} />
       <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />
