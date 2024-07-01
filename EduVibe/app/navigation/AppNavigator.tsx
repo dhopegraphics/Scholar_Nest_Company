@@ -12,7 +12,7 @@ import ContactsMainScreen from '../screens/MessagesScreen/ContactArea/ContactsSc
 import QrCodeScanner from '../screens/MoreScreen/QRCodeScannerScreen';
 import AvailableCourses from '../screens/Available/AvailableCourses';
 import GlobalSearch from '../screens/MoreScreen/GlobalSearch';
-import Calender from '../screens/MoreScreen/Calender';
+import CalendarComponent from '../screens/MoreScreen/Calender';
 import Tags from '../screens/MoreScreen/Tags';
 import AppSettings from '../screens/MoreScreen/AppSettings';
 import CoursesBrowse from '../tabs/CoursesBrowse';
@@ -23,6 +23,8 @@ import SwitchAccount from '../screens/drawer/SwitchAccount';
 import GradesScreen from '../screens/drawer/GradesScreen';
 import Reports from '../screens/drawer/Reports';
 import { drawerStyles } from '../../themes/drawerStyles';
+import EventScreen from '../screens/EventsScreen/EventScreen';
+import { EventProvider } from '../screens/EventsScreen/EventContext';
 
 const Drawer = createDrawerNavigator();
 
@@ -46,6 +48,8 @@ export type StackParamList = {
   GradesScreen: undefined;
   SwitchAccount: undefined;
   Reports: undefined;
+  EventScreen: undefined;
+  CalendarComponent: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -55,22 +59,23 @@ const MainStackScreen = () => {
     <Stack.Navigator initialRouteName="SignInScreen" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SignInScreen" component={SignInScreen} />
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-      <Stack.Screen name="Survey" component={Survey} />
+      <Stack.Screen name="Survey" component={Survey} options={{ headerShown: false }} />
       <Stack.Screen name="Tab_Layout" component={Tab_Layout} />
       <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
       <Stack.Screen name="ContactsMainScreen" component={ContactsMainScreen} />
       <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />
       <Stack.Screen name="AvailableCourses" component={AvailableCourses} />
-      <Stack.Screen name="GlobalSearch" component={GlobalSearch} />
-      <Stack.Screen name="Calender" component={Calender} />
+      <Stack.Screen name="GlobalSearch" component={GlobalSearch} options={{ headerShown: true }} />
+      <Stack.Screen name="Calender" component={CalendarComponent} options={{ headerShown: true }} />
       <Stack.Screen name="Tags" component={Tags} />
       <Stack.Screen name="AppSettings" component={AppSettings} />
-      <Stack.Screen name="CoursesBrowse" component={CoursesBrowse} />
+      <Stack.Screen name="CoursesBrowse" component={CoursesBrowse} options={{ headerShown: false }} />
       <Stack.Screen name="Badges" component={Badges} />
       <Stack.Screen name="Files" component={Files} />
       <Stack.Screen name="GradesScreen" component={GradesScreen} />
       <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
       <Stack.Screen name="Reports" component={Reports} />
+      <Stack.Screen name="EventScreen" component={EventScreen} options={{ headerShown: true }} />
     </Stack.Navigator>
   );
 };
@@ -114,10 +119,12 @@ const CustomDrawerContent = (props: any) => {
 const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
-    <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />} >
-      <Drawer.Screen name="Home" component={MainStackScreen} options={{ headerShown: false }} />
-      <Drawer.Screen name="PROFILE" component={UserAccountScreen} options={{ headerShown: false }} />
-    </Drawer.Navigator>
+    <EventProvider>
+      <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />} >
+        <Drawer.Screen name="Home" component={MainStackScreen} options={{ headerShown: false }} />
+        <Drawer.Screen name="PROFILE" component={UserAccountScreen} options={{ headerShown: false }} />
+      </Drawer.Navigator>
+    </EventProvider>
   </>
 );
 
