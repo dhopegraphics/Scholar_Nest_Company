@@ -24,22 +24,32 @@ export const EventProvider = ({ children }) => {
   const saveEvents = async (newEvents) => {
     try {
       await AsyncStorage.setItem('events', JSON.stringify(newEvents));
+      setEvents(newEvents);
     } catch (error) {
       console.error("Failed to save events:", error);
     }
   };
 
-  const addEvent = (date, event) => {
+  const addEvent = async (date, title, detail) => {
+    const newEvent = { title: title.toString(), detail: detail.toString() }; // Ensure title and detail are strings
     const newEvents = {
       ...events,
-      [date]: [...(events[date] || []), event]
+      [date]: [...(events[date] || []), newEvent]
     };
-    setEvents(newEvents);
-    saveEvents(newEvents);
+    await saveEvents(newEvents); // Ensure async storage is updated before continuing
+  };
+
+  const clearAllEvents = async () => {
+    try {
+      await AsyncStorage.removeItem('events');
+      setEvents({});
+    } catch (error) {
+      console.error("Failed to clear AsyncStorage:", error);
+    }
   };
 
   return (
-    <EventContext.Provider value={{ events, addEvent }}>
+    <EventContext.Provider value={{ events, addEvent, clearAllEvents }}>
       {children}
     </EventContext.Provider>
   );

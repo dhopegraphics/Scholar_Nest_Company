@@ -25,13 +25,14 @@ import Reports from '../screens/drawer/Reports';
 import { drawerStyles } from '../../themes/drawerStyles';
 import EventScreen from '../screens/EventsScreen/EventScreen';
 import { EventProvider } from '../screens/EventsScreen/EventContext';
-
+import UpcomingEventsScreen from '../screens/EventsScreen/UpcomingEventsScreen';
+import EventSettingsScreen from '../screens/EventsScreen/EventSettingsScreen';
 const Drawer = createDrawerNavigator();
 
 export type StackParamList = {
   SignInScreen: undefined;
   SignUpScreen: undefined;
-  Tab_Layout: undefined;
+  Back: undefined;
   Survey: undefined;
   MessagesScreen: undefined;
   ContactsMainScreen: undefined;
@@ -50,6 +51,8 @@ export type StackParamList = {
   Reports: undefined;
   EventScreen: undefined;
   CalendarComponent: undefined;
+  UpcomingEvents : undefined;
+  EventSettings : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -60,7 +63,8 @@ const MainStackScreen = () => {
       <Stack.Screen name="SignInScreen" component={SignInScreen} />
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
       <Stack.Screen name="Survey" component={Survey} options={{ headerShown: false }} />
-      <Stack.Screen name="Tab_Layout" component={Tab_Layout} />
+      <Stack.Screen name="Back" component={Tab_Layout} />
+      <Stack.Screen name="Back" component={Tab_Layout} />
       <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
       <Stack.Screen name="ContactsMainScreen" component={ContactsMainScreen} />
       <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />
@@ -76,7 +80,10 @@ const MainStackScreen = () => {
       <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
       <Stack.Screen name="Reports" component={Reports} />
       <Stack.Screen name="EventScreen" component={EventScreen} options={{ headerShown: true }} />
-    </Stack.Navigator>
+      <Stack.Screen name="UpcomingEvents" component={UpcomingEventsScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="EventSettings" component={EventSettingsScreen} options={{ headerShown: true }} />
+
+   </Stack.Navigator>
   );
 };
 

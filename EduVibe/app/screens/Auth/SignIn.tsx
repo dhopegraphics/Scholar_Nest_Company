@@ -17,7 +17,7 @@ import { CommonStyle } from "../../../themes/styles_index";
 // Define the navigation prop types
 type StackParamList = {
   SignUpScreen: undefined;
-  Tab_Layout: undefined;
+  Back: undefined;
 };
 
 type LoginScreenNavigationProp = StackNavigationProp<
@@ -27,7 +27,7 @@ type LoginScreenNavigationProp = StackNavigationProp<
 
 type MainTabScreenNavigationProp = StackNavigationProp<
   StackParamList,
-  "Tab_Layout"
+  "Back"
 >;
 
 interface TabLayoutProps {
@@ -99,7 +99,7 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
             />
             <TouchableOpacity
               style={CommonStyle.loginButton}
-              onPress={() => navigation.navigate("Tab_Layout")}
+              onPress={() => navigation.navigate("Back")}
             >
               <Text style={CommonStyle.loginButtonText}>Login</Text>
             </TouchableOpacity>
