@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Avatar } from 'react-native-paper';
 
 const UpcomingEventsScreen = () => {
   const [events, setEvents] = useState([]);
@@ -26,16 +26,28 @@ const UpcomingEventsScreen = () => {
     loadEvents();
   }, []);
 
-  const renderEventItem = ({ item }) => (
-    <View style={styles.eventItem}>
-      <Ionicons name="calendar-outline" size={35} color="white" style={styles.eventIcon} />
-      <View style={styles.eventTextContainer}>
-        <Text style={styles.eventDate}>{item.date}</Text>
-        <Text style={styles.eventTitle}>{item.title}</Text>
-        <Text style={styles.eventDetail}>{item.detail}</Text>
+  const renderEventItem = ({ item }) => {
+    const initials = item.title
+      .split(' ')
+      .map(word => word[0])
+      .join('');
+
+    return (
+      <View style={styles.eventItem}>
+        <Avatar.Text
+          size={40}
+          label={initials}
+          style={styles.eventAvatar}
+          color="white"
+        />
+        <View style={styles.eventTextContainer}>
+          <Text style={styles.eventDate}>{item.date}</Text>
+          <Text style={styles.eventTitle}>{item.title}</Text>
+          <Text style={styles.eventDetail}>{item.detail}</Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -67,10 +79,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: '#2196F3', // Light blue background
   },
-  eventIcon: {
+  eventAvatar: {
     marginRight: 16,
-    padding: 5,
-    borderRadius: 50,
+    backgroundColor: '#000',
   },
   eventTextContainer: {
     flex: 1,
