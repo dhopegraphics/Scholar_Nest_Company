@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useEventContext } from "../EventsScreen/EventContext";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+// Configure the calendar locale
 LocaleConfig.locales["en"] = {
   monthNames: [
     "January", "February", "March", "April", "May", "June",
@@ -41,47 +42,93 @@ const CalendarComponent = () => {
     });
   }, [navigation]);
 
-  const handleDatePress = (date) => {
-    setSelectedDate(date.dateString);
-    navigation.navigate("EventScreen", { selectedDate: date.dateString });
+  const onDayPress = (day) => {
+    const dateString = day.dateString;
+    setSelectedDate(dateString);
+  
+    if (events[dateString] && events[dateString].length > 0) {
+      navigation.navigate('EventScreen', { selectedDate: dateString, existingEvents: events[dateString] });
+    } else {
+      navigation.navigate('EventScreen', { selectedDate: dateString });
+    }
   };
 
-  const renderEventsForDate = (date) => {
-    const eventsForDate = events[date] || [];
-    return eventsForDate.map((event, index) => (
-      <View key={index} style={styles.eventContainer}>
-        <Text style={styles.eventTitle}>{event.title}</Text>
-        <Text style={styles.eventDetail}>{event.detail}</Text>
-      </View>
-    ));
-  };
+  const markedDates = Object.keys(events).reduce((acc, date) => {
+    acc[date] = { marked: true, dotColor: 'blue' };
+    return acc;
+  }, {});
+
+  if (selectedDate) {
+    markedDates[selectedDate] = { selected: true, selectedColor: "blue" };
+  }
 
   return (
     <View style={styles.container}>
-      <Calendar
-        onDayPress={handleDatePress}
-        markedDates={{
-          [selectedDate]: { selected: true, marked: true },
-        }}
-      />
-      {selectedDate && (
-        <View style={styles.eventList}>
-          {renderEventsForDate(selectedDate)}
-        </View>
-      )}
+      <View style={styles.card}>
+        <Calendar
+          onDayPress={onDayPress}
+          markedDates={markedDates}
+          theme={{
+            selectedDayBackgroundColor: "blue",
+            todayTextColor: "red",
+            arrowColor: "blue",
+            monthTextColor: "blue",
+            textMonthFontWeight: "bold",
+            textDayHeaderFontWeight: "bold",
+            textDayFontWeight: "500",
+            textDayFontSize: 16,
+            textMonthFontSize: 18,
+            textDayHeaderFontSize: 14,
+          }}
+        />
+      </View>
+      <View style={styles.selectedDateContainer}>
+        <Text style={styles.selectedDateText}>
+          Selected Date: {selectedDate || "None"}
+        </Text>
+        {selectedDate && events[selectedDate] && (
+          <View style={styles.eventsContainer}>
+            {events[selectedDate].map((event, index) => (
+              <Text key={index} style={styles.eventText}>
+                - {event.title}: {event.detail}
+              </Text>
+            ))}
+          </View>
+        )}
+      </View>
+
+      {/* Settings Popup Modal */}
       <Modal
-        visible={showSettingsModal}
+        animationType="slide"
         transparent={true}
-        animationType="fade"
-        onRequestClose={() => setShowSettingsModal(false)}
+        visible={showSettingsModal}
+        onRequestClose={() => {
+          setShowSettingsModal(false);
+        }}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                navigation.navigate('UpcomingEvents');
+                setShowSettingsModal(false);
+              }}
+            >
+              <Text style={styles.modalText}>Upcoming Events</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                navigation.navigate('EventSettings');
+                setShowSettingsModal(false);
+              }}
+            >
+              <Text style={styles.modalText}>Event Settings</Text>
+            </TouchableOpacity>
             <Pressable style={styles.closeButton} onPress={() => setShowSettingsModal(false)}>
               <Ionicons name="close-outline" size={24} color="black" />
             </Pressable>
-            <Text style={styles.modalText}>Settings Options</Text>
-            {/* Add your settings options here */}
           </View>
         </View>
       </Modal>
@@ -89,47 +136,88 @@ const CalendarComponent = () => {
   );
 };
 
+export default CalendarComponent;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-  },
-  eventList: {
+    backgroundColor: '#fff',
     padding: 16,
   },
-  eventContainer: {
+  card: {
+    borderRadius: 8,
+    padding: 16,
+    backgroundColor: '#f0f0f0',
     marginBottom: 16,
   },
-  eventTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
+  selectedDateContainer: {
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: '#f0f0f0',
   },
-  eventDetail: {
-    fontSize: 14,
+  selectedDateText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  eventsContainer: {
+    marginTop: 8,
+  },
+  eventText: {
+    fontSize: 16,
+    color: '#333',
   },
   headerButton: {
     marginRight: 15,
   },
-  modalOverlay: {
+  centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
   },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    width: '80%',
-    alignItems: 'center',
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 10,
   },
   closeButton: {
-    alignSelf: 'flex-end',
+    marginTop: 20,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#f0f0f0",
+  },
+  textStyle: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center"
   },
   modalText: {
-    fontSize: 18,
-    marginVertical: 20,
+    marginBottom: 15,
+    textAlign: "center"
   },
+  modalButton: {
+    marginBottom: 10,
+    padding: 15,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+    width: '100%',
+    alignItems: "center",
+  }
 });
-
-export default CalendarComponent;

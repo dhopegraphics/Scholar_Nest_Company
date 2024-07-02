@@ -1,53 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
-import { useEventContext } from '../EventsScreen/EventContext';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const UpcomingEventsScreen = () => {
-  const { events, clearAllEvents } = useEventContext();
-  const [eventList, setEventList] = useState([]);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    // Transform events into a format suitable for FlatList
-    const transformedEvents = Object.entries(events).map(([date, eventsForDate]) => ({
-      date,
-      events: eventsForDate.map((event, index) => ({
-        id: `${date}_${index}`,
-        title: event.title || 'No Title',
-        detail: event.detail || 'No Detail',
-      })),
-    }));
-    setEventList(transformedEvents);
-  }, [events]);
+    const loadEvents = async () => {
+      try {
+        const eventsJson = await AsyncStorage.getItem('events');
+        if (eventsJson) {
+          const parsedEvents = JSON.parse(eventsJson);
+          // Flatten the events into an array with date included
+          const allEvents = Object.keys(parsedEvents).flatMap(date =>
+            parsedEvents[date].map(event => ({ ...event, date }))
+          );
+          setEvents(allEvents);
+        }
+      } catch (error) {
+        console.error('Failed to load events:', error);
+      }
+    };
 
-  const handleClearAll = () => {
-    Alert.alert(
-      'Confirm Clear All',
-      'Are you sure you want to clear all events? This action cannot be undone.',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Clear All',
-          style: 'destructive',
-          onPress: clearAllEvents,
-        },
-      ],
-      { cancelable: true }
-    );
-  };
+    loadEvents();
+  }, []);
 
-  const renderEvent = ({ item }) => (
-    <View style={styles.eventContainer}>
-      <View style={styles.eventIcon}>
-        <Ionicons name="calendar-outline" size={24} color="black" />
-      </View>
-      <View style={styles.eventDetails}>
+  const renderEventItem = ({ item }) => (
+    <View style={styles.eventItem}>
+      <Ionicons name="calendar-outline" size={35} color="white" style={styles.eventIcon} />
+      <View style={styles.eventTextContainer}>
+        <Text style={styles.eventDate}>{item.date}</Text>
         <Text style={styles.eventTitle}>{item.title}</Text>
         <Text style={styles.eventDetail}>{item.detail}</Text>
-        <Text style={styles.eventDate}>{item.date}</Text>
       </View>
     </View>
   );
@@ -55,13 +40,11 @@ const UpcomingEventsScreen = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={eventList}
-        keyExtractor={(item) => item.date}
-        renderItem={renderEvent}
+        data={events}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderEventItem}
+        ListEmptyComponent={<Text style={styles.noEventsText}>No upcoming events</Text>}
       />
-      <TouchableOpacity style={styles.clearButton} onPress={handleClearAll}>
-        <Text style={styles.clearButtonText}>Clear All Events</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -74,43 +57,43 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 16,
   },
-  eventContainer: {
+  eventItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 8,
+    padding: 16,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 12,
-    marginBottom: 8,
+    marginBottom: 10,
+    backgroundColor: '#2196F3', // Light blue background
   },
   eventIcon: {
-    marginRight: 12,
+    marginRight: 16,
+    padding: 5,
+    borderRadius: 50,
   },
-  eventDetails: {
+  eventTextContainer: {
     flex: 1,
-  },
-  eventTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  eventDetail: {
-    fontSize: 14,
-    color: '#666',
   },
   eventDate: {
     fontSize: 14,
-    color: '#888',
-  },
-  clearButton: {
-    backgroundColor: 'red',
-    padding: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  clearButtonText: {
     color: 'white',
-    fontSize: 16,
+  },
+  eventTitle: {
+    fontSize: 18,
     fontWeight: 'bold',
+    marginTop: 4,
+    color: 'white',
+  },
+  eventDetail: {
+    fontSize: 16,
+    marginTop: 2,
+    color: 'white',
+  },
+  noEventsText: {
+    fontSize: 18,
+    color: '#888',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
