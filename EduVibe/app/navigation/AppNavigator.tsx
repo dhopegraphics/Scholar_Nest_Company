@@ -71,7 +71,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="GlobalSearch" component={GlobalSearch} options={{ headerShown: true }} />
       <Stack.Screen name="Calender" component={CalendarComponent} options={{ headerShown: true }} />
       <Stack.Screen name="Tags" component={Tags} />
-      <Stack.Screen name="AppSettings" component={AppSettings} />
+      <Stack.Screen name="AppSettings" component={AppSettings} options={{ headerShown: true }}/>
       <Stack.Screen name="CoursesBrowse" component={CoursesBrowse} options={{ headerShown: false }} />
       <Stack.Screen name="Badges" component={Badges} />
       <Stack.Screen name="Files" component={Files} />
