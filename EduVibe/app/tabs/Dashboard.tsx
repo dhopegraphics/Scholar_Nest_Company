@@ -26,6 +26,7 @@ const Dashboard = () => {
   }, []);
 
   return (
+    <>
     <SafeAreaView style={DashboardStyles.safeArea}>
       <View style={DashboardStyles.container}>
         <ScrollView
@@ -42,36 +43,33 @@ const Dashboard = () => {
               <CourseCard
                 title="Course Title 1"
                 creator="Creator 1"
-                onPress={() => handlePress("Course Title 1")}
-              />
+                onPress={() => handlePress("Course Title 1")} />
               <CourseCard
                 title="Course Title 2"
                 creator="Creator 2"
-                onPress={() => handlePress("Course Title 2")}
-              />
+                onPress={() => handlePress("Course Title 2")} />
               <CourseCard
                 title="Course Title 3"
                 creator="Creator 3"
-                onPress={() => handlePress("Course Title 3")}
-              />
+                onPress={() => handlePress("Course Title 3")} />
               <CourseCard
                 title="Course Title 4"
                 creator="Creator 4"
-                onPress={() => handlePress("Course Title 4")}
-              />
+                onPress={() => handlePress("Course Title 4")} />
               <CourseCard
                 title="Course Title 5"
                 creator="Creator 5"
-                onPress={() => handlePress("Course Title 5")}
-              />
+                onPress={() => handlePress("Course Title 5")} />
             </ScrollView>
           </View>
         </ScrollView>
         <TouchableOpacity style={DashboardStyles.roundedButton} onPress={handleButtonPress}>
-          <Ionicons name="add" size={24} color="white" />
-        </TouchableOpacity>
+        <Ionicons name="chevron-back-circle" size={24} color="white" />
+      </TouchableOpacity>
       </View>
+
     </SafeAreaView>
+      </>
   );
 };
 

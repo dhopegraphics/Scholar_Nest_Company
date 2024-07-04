@@ -28,6 +28,9 @@ import { EventProvider } from '../screens/EventsScreen/EventContext';
 import UpcomingEventsScreen from '../screens/EventsScreen/UpcomingEventsScreen';
 import EventSettingsScreen from '../screens/EventsScreen/EventSettingsScreen';
 import { SettingsProvider } from '../screens/EventsScreen/SettingsContext'; // Import the SettingsProvider
+import 'react-native-gesture-handler';
+import AnouncementsDetails from '../screens/Annoucement/AnnouncementsDetails';
+
 
 const Drawer = createDrawerNavigator();
 
@@ -41,7 +44,7 @@ export type StackParamList = {
   QrCodeScanner: undefined;
   AvailableCourses: undefined;
   GlobalSearch: undefined;
-  Calender: undefined;
+  calendar: undefined;
   Tags: undefined;
   AppSettings: undefined;
   UserAccountScreen: undefined;
@@ -52,9 +55,9 @@ export type StackParamList = {
   SwitchAccount: undefined;
   Reports: undefined;
   EventScreen: undefined;
-  CalendarComponent: undefined;
   UpcomingEvents: undefined;
   EventSettings: undefined;
+  AnnouncementDetails :undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -71,7 +74,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />
       <Stack.Screen name="AvailableCourses" component={AvailableCourses} />
       <Stack.Screen name="GlobalSearch" component={GlobalSearch} options={{ headerShown: true }} />
-      <Stack.Screen name="Calender" component={CalendarComponent} options={{ headerShown: true }} />
+      <Stack.Screen name="calendar" component={CalendarComponent} options={{ headerShown: true }} />
       <Stack.Screen name="Tags" component={Tags} />
       <Stack.Screen name="AppSettings" component={AppSettings} options={{ headerShown: true }}/>
       <Stack.Screen name="CoursesBrowse" component={CoursesBrowse} options={{ headerShown: false }} />
@@ -83,6 +86,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="EventScreen" component={EventScreen} options={{ headerShown: true }} />
       <Stack.Screen name="UpcomingEvents" component={UpcomingEventsScreen} options={{ headerShown: true }} />
       <Stack.Screen name="EventSettings" component={EventSettingsScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="AnnouncementDetails" component={AnouncementsDetails} options={{ headerShown: false }} />
    </Stack.Navigator>
   );
 };
@@ -129,7 +133,7 @@ const AppNavigator = () => (
     <SettingsProvider>
       <EventProvider>
         <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />} >
-          <Drawer.Screen name="Home" component={MainStackScreen} options={{ headerShown: false }} />
+          <Drawer.Screen name="Home" component={MainStackScreen} options={{ headerShown: false , drawerPosition: 'right',}} />
           <Drawer.Screen name="PROFILE" component={UserAccountScreen} options={{ headerShown: false }} />
         </Drawer.Navigator>
       </EventProvider>
