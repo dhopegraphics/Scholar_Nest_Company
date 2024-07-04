@@ -3,114 +3,115 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   ScrollView,
   SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"; // Import Material Icon
+import { ButtonsTextStyle } from "../../themes/ButtonsWithTextContainerStyle";
+
 
 const MoreScreen = ({ navigation }) => {
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View style={[styles.container, { marginBottom: 30 }]}>
-          <View style={styles.more}>
-            <Text style={styles.moreText}>More</Text>
+    <SafeAreaView style={ButtonsTextStyle.safeArea}>
+      <ScrollView contentContainerStyle={ButtonsTextStyle.scrollViewContent}>
+        <View style={[ButtonsTextStyle.container, { marginBottom: 30 }]}>
+          <View style={ButtonsTextStyle.more}>
+            <Text style={ButtonsTextStyle.moreText}>More</Text>
           </View>
-          <View style={styles.buttonContainer}>
+          <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
-              style={styles.button}
+              style={ButtonsTextStyle.button}
               onPress={() => navigation.navigate("GlobalSearch")} // Navigate to GlobalSearch
             >
               <Icon
-                style={styles.icon}
+                style={ButtonsTextStyle.icon}
                 name="search"
                 size={30}
                 color="#ffffff"
               />
-              <Text style={styles.text}>Global Search</Text>
+              <Text style={ButtonsTextStyle.text}>Global Search</Text>
               <Icon
-                style={styles.rightIcon}
+                style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
                 size={30}
                 color="gray"
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.buttonContainer}>
+          <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
-              style={styles.button}
+              style={ButtonsTextStyle.button}
               onPress={() => navigation.navigate("calendar")} // Navigate to Calendar
             >
               <Icon
-                style={styles.icon}
+                style={ButtonsTextStyle.icon}
                 name="event"
                 size={30}
                 color="#ffffff"
               />
-              <Text style={styles.text}>Calendar</Text>
+              <Text style={ButtonsTextStyle.text}>Calendar</Text>
               <Icon
-                style={styles.rightIcon}
+                style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
                 size={30}
                 color="gray"
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.buttonContainer}>
+          <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
-              style={styles.button}
+              style={ButtonsTextStyle.button}
               onPress={() => navigation.navigate("Tags")} // Navigate to Tags
             >
               <Icon
-                style={styles.icon}
+                style={ButtonsTextStyle.icon}
                 name="label"
                 size={30}
                 color="#ffffff"
               />
-              <Text style={styles.text}>Tags</Text>
+              <Text style={ButtonsTextStyle.text}>Tags</Text>
               <Icon
-                style={styles.rightIcon}
+                style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
                 size={30}
                 color="gray"
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.buttonContainer}>
+          <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
-              style={styles.button}
+              style={ButtonsTextStyle.button}
               onPress={() => navigation.navigate("QrCodeScanner")}
             >
               <Icon
-                style={styles.icon}
+                style={ButtonsTextStyle.icon}
                 name="qr-code"
                 size={30}
                 color="#ffffff"
               />
-              <Text style={styles.text}>Scan QR Code</Text>
+              <Text style={ButtonsTextStyle.text}>Scan QR Code</Text>
               <Icon
-                style={styles.rightIcon}
+                style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
                 size={30}
                 color="gray"
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.buttonContainer}>
+          <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
-              style={styles.AppSettingsButton}
+              style={ButtonsTextStyle.MoreSettingsButton}
               onPress={() => navigation.navigate("AppSettings")}
             >
               <Icon
-                style={styles.icon}
+                style={ButtonsTextStyle.icon}
                 name="settings"
                 size={30}
                 color="#ffffff"
               />
-              <Text style={styles.text}>App Settings</Text>
+              <Text style={ButtonsTextStyle.text}>App Settings</Text>
               <Icon
-                style={styles.rightIcon}
+                style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
                 size={30}
                 color="gray"
@@ -123,66 +124,5 @@ const MoreScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  scrollViewContent: {
-    flexGrow: 5,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    padding: 20,
-  },
-  container: {
-    width: "110%",
-  },
-  more: {
-    flexDirection: "row",
-    alignSelf: "flex-start",
-    marginTop: 15,
-    justifyContent: "space-between",
-    paddingBottom: 15,
-  },
-  moreText: {
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  buttonContainer: {
-    width: "100%",
-    marginBottom: 10,
-  },
-  button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  AppSettingsButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginTop : 310,
-  },
-  text: {
-    flex: 1,
-    fontSize: 17,
-    marginLeft: 10,
-    color: "black",
-  },
-  icon: {
-    marginRight: 5,
-    color: "black",
-  },
-  rightIcon: {
-    marginLeft: "auto",
-  },
-
-});
 
 export default MoreScreen;

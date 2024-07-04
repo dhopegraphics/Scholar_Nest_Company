@@ -1,82 +1,123 @@
-import { TouchableOpacity, StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native'
-import React, { useLayoutEffect } from 'react'
-import { AntDesign } from '@expo/vector-icons';
+import { TouchableOpacity,  Text, View, SafeAreaView, ScrollView } from 'react-native'
+import React from 'react'
+import { ButtonsTextStyle } from '../../../themes/ButtonsWithTextContainerStyle';
+import Icon from "react-native-vector-icons/MaterialIcons"; 
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
-import { useNavigation } from 'expo-router';
 
-
-const AppSettings = () => {
-
-  const navigation = useNavigation();
-
-  useLayoutEffect(() => {}, [] )
-
-
-
-
+const AppSettings = ({ navigation }) => {
   return (
-    <ScrollView>
-    <SafeAreaView >
-      
-    <View>
-
-      <View style={{padding:5}}>
-        <TouchableOpacity onPress={()=>navigation.navigate('GeneralScreen')} style ={{flexDirection:'row'}}>
-        <FontAwesome5 name="wrench" size={24} color="black" />
-        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>General</Text>   
-        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
-        </TouchableOpacity>
-      
-      </View>
-
-      <View style={{padding:5}}>
-        <TouchableOpacity onPress={()=>navigation.navigate('SpaceUsage')} style ={{flexDirection:'row'}}>
-        <Foundation name="indent-more" size={24} color="black" />
-        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>Space usage</Text>
-        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
-        </TouchableOpacity>
-      
-      </View>
-
-      <View style={{padding:5}}>
-        <TouchableOpacity onPress={()=>navigation.navigate('Synchronization')} style ={{flexDirection:'row'}}>
-        <FontAwesome5 name="sync-alt" size={24} color="black" />
-        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>Synchronization</Text>
-        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={{padding:5}}>
-        <TouchableOpacity onPress={()=>navigation.navigate('SharedFiles')} style ={{flexDirection:'row'}}>
-        <Entypo name="folder" size={24} color="black" />
-        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>Shared files</Text>
-        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={{padding:5}}>
-        <TouchableOpacity onPress={()=>navigation.navigate('AboutScreen')} style ={{flexDirection:'row'}}>
-        <MaterialIcons name="contacts" size={24} color="black" />
-        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>About</Text>
-        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-       
-  
-                
-    </View>
-    
+    <SafeAreaView style={ButtonsTextStyle.safeArea}>
+      <ScrollView contentContainerStyle={ButtonsTextStyle.scrollViewContent}>
+        <View style={[ButtonsTextStyle.container, { marginBottom: 30 }]}>
+          <View style={ButtonsTextStyle.buttonContainer}>
+            <TouchableOpacity
+              style={ButtonsTextStyle.button}
+              onPress={() => navigation.navigate("GeneralScreen")} // Navigate to GlobalSearch
+            >
+              <FontAwesome5
+                style={ButtonsTextStyle.icon}
+                name="wrench"
+                size={27}
+                color="#ffffff"
+              />
+              <Text style={ButtonsTextStyle.text}>General</Text>
+              <Icon
+                style={ButtonsTextStyle.rightIcon}
+                name="chevron-right"
+                size={30}
+                color="gray"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={ButtonsTextStyle.buttonContainer}>
+            <TouchableOpacity
+              style={ButtonsTextStyle.button}
+              onPress={() => navigation.navigate("SpaceUsage")} // Navigate to Calendar
+            >
+              <Foundation
+                style={ButtonsTextStyle.icon}
+                name="indent-more"
+                size={27}
+                color="#ffffff"
+              />
+              <Text style={ButtonsTextStyle.text}>Space Usage</Text>
+              <Icon
+                style={ButtonsTextStyle.rightIcon}
+                name="chevron-right"
+                size={30}
+                color="gray"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={ButtonsTextStyle.buttonContainer}>
+            <TouchableOpacity
+              style={ButtonsTextStyle.button}
+              onPress={() => navigation.navigate("Synchronization")} // Navigate to Tags
+            >
+              <FontAwesome5
+                style={ButtonsTextStyle.icon}
+                name="sync-alt"
+                size={26}
+                color="#ffffff"
+              />
+              <Text style={ButtonsTextStyle.text}>Synchronization</Text>
+              <Icon
+                style={ButtonsTextStyle.rightIcon}
+                name="chevron-right"
+                size={30}
+                color="gray"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={ButtonsTextStyle.buttonContainer}>
+            <TouchableOpacity
+              style={ButtonsTextStyle.button}
+              onPress={() => navigation.navigate("SharedFiles")}
+            >
+              <Entypo
+                style={ButtonsTextStyle.icon}
+                name="folder"
+                size={27}
+                color="#ffffff"
+              />
+              <Text style={ButtonsTextStyle.text}>SharedFiles</Text>
+              <Icon
+                style={ButtonsTextStyle.rightIcon}
+                name="chevron-right"
+                size={30}
+                color="gray"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={ButtonsTextStyle.buttonContainer}>
+            <TouchableOpacity
+              style={ButtonsTextStyle.MoreButton}
+              onPress={() => navigation.navigate("AboutScreen")}
+            >
+              <MaterialIcons
+                style={ButtonsTextStyle.icon}
+                name="contacts"
+                size={27}
+                color="#ffffff"
+              />
+              <Text style={ButtonsTextStyle.text}>AboutScreen</Text>
+              <Icon
+                style={ButtonsTextStyle.rightIcon}
+                name="chevron-right"
+                size={30}
+                color="gray"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
-    </ScrollView>
-  )
-}
-
+  );
+};
 
 export default AppSettings;
-
-const styles = StyleSheet.create({})
 
 

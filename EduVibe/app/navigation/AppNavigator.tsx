@@ -101,7 +101,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="GeneralScreen" component={GeneralScreen} options={{ headerShown: true }} />
       <Stack.Screen name="SharedFiles" component={SharedFiles} options={{ headerShown: true }} />
       <Stack.Screen name="SpaceUsage" component={SpaceUsage} options={{ headerShown: true }} />
-      <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: false }} />
+      <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: true }} />
    </Stack.Navigator>
   );
 };
