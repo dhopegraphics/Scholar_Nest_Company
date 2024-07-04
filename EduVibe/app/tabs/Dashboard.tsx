@@ -1,76 +1,79 @@
-import React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import React, { useCallback, useState } from "react";
+import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from "react-native";
 import CourseCard from "../../components/CourseCard";
+import { Ionicons } from '@expo/vector-icons';
+import DashboardStyles from "../../themes/DashboardStyles";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 
 const Dashboard = () => {
+  const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
+
   const handlePress = (title: string) => {
     console.log(`Pressed ${title}`);
     // Navigate to the course details or perform other actions
   };
 
+  const handleButtonPress = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // Simulate a network request
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Dashboard</Text>
-      <View style={styles.scrollContainerWrapper}>
+    <SafeAreaView style={DashboardStyles.safeArea}>
+      <View style={DashboardStyles.container}>
         <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContainer}
+          contentContainerStyle={DashboardStyles.scrollViewContent}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
-          <CourseCard
-            title="Course Title 1"
-            creator="Creator 1"
-            onPress={() => handlePress("Course Title 1")}
-          />
-          <CourseCard
-            title="Course Title 2"
-            creator="Creator 2"
-            onPress={() => handlePress("Course Title 2")}
-          />
-          <CourseCard
-            title="Course Title 3"
-            creator="Creator 3"
-            onPress={() => handlePress("Course Title 3")}
-          />
-          <CourseCard
-            title="Course Title 4"
-            creator="Creator 4"
-            onPress={() => handlePress("Course Title 4")}
-          />
-          <CourseCard
-            title="Course Title 5"
-            creator="Creator 5"
-            onPress={() => handlePress("Course Title 5")}
-          />
+          <Text style={DashboardStyles.title}>Dashboard</Text>
+          <View style={DashboardStyles.scrollContainerWrapper}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={DashboardStyles.scrollContainer}
+            >
+              <CourseCard
+                title="Course Title 1"
+                creator="Creator 1"
+                onPress={() => handlePress("Course Title 1")}
+              />
+              <CourseCard
+                title="Course Title 2"
+                creator="Creator 2"
+                onPress={() => handlePress("Course Title 2")}
+              />
+              <CourseCard
+                title="Course Title 3"
+                creator="Creator 3"
+                onPress={() => handlePress("Course Title 3")}
+              />
+              <CourseCard
+                title="Course Title 4"
+                creator="Creator 4"
+                onPress={() => handlePress("Course Title 4")}
+              />
+              <CourseCard
+                title="Course Title 5"
+                creator="Creator 5"
+                onPress={() => handlePress("Course Title 5")}
+              />
+            </ScrollView>
+          </View>
         </ScrollView>
+        <TouchableOpacity style={DashboardStyles.roundedButton} onPress={handleButtonPress}>
+          <Ionicons name="add" size={24} color="white" />
+        </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default Dashboard;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  scrollContainerWrapper: {
-    borderWidth: 1,
-    borderColor: "#d1d5db", // Adjust the border color as needed
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: "#f9fafb", // Background color inside the container
-    height: 250, // Set the height of the container
-  },
-  scrollContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-});

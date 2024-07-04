@@ -7,6 +7,7 @@ import * as React from "react";
 import { View, StatusBar } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
+import DifferentDrawerNavigator from "../navigation/DifferentDrawerNavigator";
 
 const Tab = createBottomTabNavigator(); // Temporary workaround with type assertion
 
@@ -20,7 +21,7 @@ const Tab_Layout = () => {
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
-              if (route.name === "Dashboard") {
+              if (route.name === "DifferentDrawerNavigator") {
                 iconName = focused ? "dashboard" : "dashboard";
               } else if (route.name === "Courses") {
                 iconName = focused ? "book" : "book";
@@ -40,8 +41,8 @@ const Tab_Layout = () => {
           })}
         >
           <Tab.Screen
-            name="Dashboard"
-            component={Dashboard}
+            name="DifferentDrawerNavigator"
+            component={DifferentDrawerNavigator}
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Dashboard
