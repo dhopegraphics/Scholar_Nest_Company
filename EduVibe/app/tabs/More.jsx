@@ -40,7 +40,7 @@ const MoreScreen = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("Calender")} // Navigate to Calendar
+              onPress={() => navigation.navigate("calendar")} // Navigate to Calendar
             >
               <Icon
                 style={styles.icon}
