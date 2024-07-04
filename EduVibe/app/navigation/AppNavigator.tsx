@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, Text, View, StatusBar } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,7 +12,6 @@ import ContactsMainScreen from '../screens/MessagesScreen/ContactArea/ContactsSc
 import QrCodeScanner from '../screens/MoreScreen/QRCodeScannerScreen';
 import AvailableCourses from '../screens/Available/AvailableCourses';
 import GlobalSearch from '../screens/MoreScreen/GlobalSearch';
-import CalendarComponent from '../screens/MoreScreen/Calender';
 import Tags from '../screens/MoreScreen/Tags';
 import AppSettings from '../screens/MoreScreen/AppSettings';
 import CoursesBrowse from '../tabs/CoursesBrowse';
@@ -28,7 +27,6 @@ import { EventProvider } from '../screens/EventsScreen/EventContext';
 import UpcomingEventsScreen from '../screens/EventsScreen/UpcomingEventsScreen';
 import EventSettingsScreen from '../screens/EventsScreen/EventSettingsScreen';
 import { SettingsProvider } from '../screens/EventsScreen/SettingsContext'; // Import the SettingsProvider
-import 'react-native-gesture-handler';
 import AnouncementsDetails from '../screens/Annoucement/AnnouncementsDetails';
 import AboutScreen from '../screens/AppSettingsScreen/AboutScreen';
 import GeneralScreen from '../screens/AppSettingsScreen/GeneralScreen';
@@ -36,14 +34,15 @@ import SharedFiles from '../screens/AppSettingsScreen/SharedFiles';
 import SpaceUsage from '../screens/AppSettingsScreen/SpaceUsage';
 import Synchronization from '../screens/AppSettingsScreen/Synchronization';
 import CalendarDrawer from './CalendarDrawer';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 
 export type StackParamList = {
   SignInScreen: undefined;
   SignUpScreen: undefined;
-  Back: undefined;
   Survey: undefined;
+  Back: undefined;
   MessagesScreen: undefined;
   ContactsMainScreen: undefined;
   QrCodeScanner: undefined;
@@ -73,6 +72,8 @@ export type StackParamList = {
 const Stack = createNativeStackNavigator<StackParamList>();
 
 const MainStackScreen = () => {
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+
   return (
     <Stack.Navigator initialRouteName="SignInScreen" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SignInScreen" component={SignInScreen} />
@@ -84,7 +85,9 @@ const MainStackScreen = () => {
       <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />
       <Stack.Screen name="AvailableCourses" component={AvailableCourses} />
       <Stack.Screen name="GlobalSearch" component={GlobalSearch} options={{ headerShown: true }} />
-      <Stack.Screen name="calendar" component={CalendarDrawer} options={{ headerShown: true }} />
+      <Stack.Screen name="calendar" component={CalendarDrawer} options={{ 
+        headerShown: false,
+      }} />
       <Stack.Screen name="Tags" component={Tags} />
       <Stack.Screen name="AppSettings" component={AppSettings} options={{ headerShown: true }}/>
       <Stack.Screen name="CoursesBrowse" component={CoursesBrowse} options={{ headerShown: false }} />
@@ -157,3 +160,9 @@ const AppNavigator = () => (
 );
 
 export default AppNavigator;
+
+const styles = {
+  headerButton: {
+    padding: 10,
+  },
+};
