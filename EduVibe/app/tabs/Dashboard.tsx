@@ -11,7 +11,6 @@ const Dashboard = () => {
 
   const handlePress = (title: string) => {
     console.log(`Pressed ${title}`);
-    // Navigate to the course details or perform other actions
   };
 
   const handleButtonPress = () => {

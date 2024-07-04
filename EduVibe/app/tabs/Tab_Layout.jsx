@@ -1,5 +1,4 @@
 import CoursesBrowse from "./CoursesBrowse";
-import Dashboard from "./Dashboard";
 import Messages from "./Messages";
 import More from "./More";
 import Notifications from "./Notifications";
