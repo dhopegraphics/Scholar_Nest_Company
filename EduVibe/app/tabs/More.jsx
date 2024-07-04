@@ -99,7 +99,7 @@ const MoreScreen = ({ navigation }) => {
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              style={styles.button}
+              style={styles.AppSettingsButton}
               onPress={() => navigation.navigate("AppSettings")}
             >
               <Icon
@@ -160,6 +160,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
   },
+  AppSettingsButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop : 310,
+  },
   text: {
     flex: 1,
     fontSize: 17,
@@ -173,6 +182,7 @@ const styles = StyleSheet.create({
   rightIcon: {
     marginLeft: "auto",
   },
+
 });
 
 export default MoreScreen;

@@ -30,7 +30,11 @@ import EventSettingsScreen from '../screens/EventsScreen/EventSettingsScreen';
 import { SettingsProvider } from '../screens/EventsScreen/SettingsContext'; // Import the SettingsProvider
 import 'react-native-gesture-handler';
 import AnouncementsDetails from '../screens/Annoucement/AnnouncementsDetails';
-
+import AboutScreen from '../screens/AppSettingsScreen/AboutScreen';
+import GeneralScreen from '../screens/AppSettingsScreen/GeneralScreen';
+import SharedFiles from '../screens/AppSettingsScreen/SharedFiles';
+import SpaceUsage from '../screens/AppSettingsScreen/SpaceUsage';
+import Synchronization from '../screens/AppSettingsScreen/Synchronization';
 
 const Drawer = createDrawerNavigator();
 
@@ -58,6 +62,12 @@ export type StackParamList = {
   UpcomingEvents: undefined;
   EventSettings: undefined;
   AnnouncementDetails :undefined;
+  AboutScreen: undefined;
+  GeneralScreen :undefined;
+  SharedFiles: undefined;
+  SpaceUsage:undefined;
+  Synchronization: undefined;
+
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -87,6 +97,11 @@ const MainStackScreen = () => {
       <Stack.Screen name="UpcomingEvents" component={UpcomingEventsScreen} options={{ headerShown: true }} />
       <Stack.Screen name="EventSettings" component={EventSettingsScreen} options={{ headerShown: true }} />
       <Stack.Screen name="AnnouncementDetails" component={AnouncementsDetails} options={{ headerShown: false }} />
+      <Stack.Screen name="AboutScreen" component={AboutScreen} />
+      <Stack.Screen name="GeneralScreen" component={GeneralScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="SharedFiles" component={SharedFiles} options={{ headerShown: true }} />
+      <Stack.Screen name="SpaceUsage" component={SpaceUsage} options={{ headerShown: true }} />
+      <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: false }} />
    </Stack.Navigator>
   );
 };

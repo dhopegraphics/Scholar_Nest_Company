@@ -1,57 +1,82 @@
-import React from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native'
+import React, { useLayoutEffect } from 'react'
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Foundation } from '@expo/vector-icons';
+import { useNavigation } from 'expo-router';
+
 
 const AppSettings = () => {
-  const [notificationsEnabled, setNotificationsEnabled] = React.useState(false);
-  const [darkModeEnabled, setDarkModeEnabled] = React.useState(false);
 
-  const toggleNotifications = () => {
-    setNotificationsEnabled((prev) => !prev);
-    // You can implement logic to handle notification settings here
-  };
+  const navigation = useNavigation();
 
-  const toggleDarkMode = () => {
-    setDarkModeEnabled((prev) => !prev);
-    // You can implement logic to handle dark mode settings here
-  };
+  useLayoutEffect(() => {}, [] )
+
+
+
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>App Settings</Text>
+    <ScrollView>
+    <SafeAreaView >
+      
+    <View>
 
-      <View style={styles.settingRow}>
-        <Text>Enable Notifications</Text>
-        <Switch value={notificationsEnabled} onValueChange={toggleNotifications} />
+      <View style={{padding:5}}>
+        <TouchableOpacity onPress={()=>navigation.navigate('GeneralScreen')} style ={{flexDirection:'row'}}>
+        <FontAwesome5 name="wrench" size={24} color="black" />
+        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>General</Text>   
+        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
+        </TouchableOpacity>
+      
       </View>
 
-      <View style={styles.settingRow}>
-        <Text>Dark Mode</Text>
-        <Switch value={darkModeEnabled} onValueChange={toggleDarkMode} />
+      <View style={{padding:5}}>
+        <TouchableOpacity onPress={()=>navigation.navigate('SpaceUsage')} style ={{flexDirection:'row'}}>
+        <Foundation name="indent-more" size={24} color="black" />
+        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>Space usage</Text>
+        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
+        </TouchableOpacity>
+      
       </View>
 
-      {/* Add more settings here as needed */}
+      <View style={{padding:5}}>
+        <TouchableOpacity onPress={()=>navigation.navigate('Synchronization')} style ={{flexDirection:'row'}}>
+        <FontAwesome5 name="sync-alt" size={24} color="black" />
+        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>Synchronization</Text>
+        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
 
+      <View style={{padding:5}}>
+        <TouchableOpacity onPress={()=>navigation.navigate('SharedFiles')} style ={{flexDirection:'row'}}>
+        <Entypo name="folder" size={24} color="black" />
+        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>Shared files</Text>
+        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={{padding:5}}>
+        <TouchableOpacity onPress={()=>navigation.navigate('AboutScreen')} style ={{flexDirection:'row'}}>
+        <MaterialIcons name="contacts" size={24} color="black" />
+        <Text style={{fontWeight:"1000",fontSize:20, textAlign:"left",color:"black", padding:10,flex:1}}>About</Text>
+        <AntDesign style={{flexDirection : "row", padding: 10, alignItems:"caretright"}} name="right" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+       
+  
+                
     </View>
-  );
-};
+    
+    </SafeAreaView>
+    </ScrollView>
+  )
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 20,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  settingRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-});
 
 export default AppSettings;
+
+const styles = StyleSheet.create({})
+
+
