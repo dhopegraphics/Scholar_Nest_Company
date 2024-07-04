@@ -4,7 +4,7 @@ import React from 'react'
 const SharedFiles = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}> SharedFiles gffgfhhjhj</Text>
+      <Text style={styles.text}> SharedFiles</Text>
     </View>
   )
 }
