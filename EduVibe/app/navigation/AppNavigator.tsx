@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, View, StatusBar } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons'; // Assuming you are using Expo icons
+import { Ionicons } from '@expo/vector-icons';
 import SignInScreen from '../screens/Auth/SignIn';
 import SignUpScreen from '../screens/Auth/SignUp';
 import Survey from '../screens/IntroScreen/Survey';
@@ -27,6 +27,8 @@ import EventScreen from '../screens/EventsScreen/EventScreen';
 import { EventProvider } from '../screens/EventsScreen/EventContext';
 import UpcomingEventsScreen from '../screens/EventsScreen/UpcomingEventsScreen';
 import EventSettingsScreen from '../screens/EventsScreen/EventSettingsScreen';
+import { SettingsProvider } from '../screens/EventsScreen/SettingsContext'; // Import the SettingsProvider
+
 const Drawer = createDrawerNavigator();
 
 export type StackParamList = {
@@ -51,8 +53,8 @@ export type StackParamList = {
   Reports: undefined;
   EventScreen: undefined;
   CalendarComponent: undefined;
-  UpcomingEvents : undefined;
-  EventSettings : undefined;
+  UpcomingEvents: undefined;
+  EventSettings: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -81,7 +83,6 @@ const MainStackScreen = () => {
       <Stack.Screen name="EventScreen" component={EventScreen} options={{ headerShown: true }} />
       <Stack.Screen name="UpcomingEvents" component={UpcomingEventsScreen} options={{ headerShown: true }} />
       <Stack.Screen name="EventSettings" component={EventSettingsScreen} options={{ headerShown: true }} />
-
    </Stack.Navigator>
   );
 };
@@ -125,12 +126,14 @@ const CustomDrawerContent = (props: any) => {
 const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
-    <EventProvider>
-      <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />} >
-        <Drawer.Screen name="Home" component={MainStackScreen} options={{ headerShown: false }} />
-        <Drawer.Screen name="PROFILE" component={UserAccountScreen} options={{ headerShown: false }} />
-      </Drawer.Navigator>
-    </EventProvider>
+    <SettingsProvider>
+      <EventProvider>
+        <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />} >
+          <Drawer.Screen name="Home" component={MainStackScreen} options={{ headerShown: false }} />
+          <Drawer.Screen name="PROFILE" component={UserAccountScreen} options={{ headerShown: false }} />
+        </Drawer.Navigator>
+      </EventProvider>
+    </SettingsProvider>
   </>
 );
 

@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Modal, Pressable } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Modal, ScrollView, RefreshControl , SafeAreaView , Pressable } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useNavigation } from '@react-navigation/native';
 import { useEventContext } from "../EventsScreen/EventContext";
@@ -25,13 +25,14 @@ const CalendarComponent = () => {
   const { events } = useEventContext();
   const [selectedDate, setSelectedDate] = useState("");
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => navigation.navigate('DrawerScreen')} style={styles.headerButton}>
+          <TouchableOpacity style={styles.headerButton}>
             <Ionicons name="funnel-outline" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShowSettingsModal(true)} style={styles.headerButton}>
@@ -62,40 +63,56 @@ const CalendarComponent = () => {
     markedDates[selectedDate] = { selected: true, selectedColor: "blue" };
   }
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    // Simulate fetching data (e.g., reload events)
+    setTimeout(() => {
+      // Your data loading logic here (e.g., reload events)
+      setRefreshing(false);
+    }, 1000); // Example delay to simulate data fetching
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
-        <Calendar
-          onDayPress={onDayPress}
-          markedDates={markedDates}
-          theme={{
-            selectedDayBackgroundColor: "blue",
-            todayTextColor: "red",
-            arrowColor: "blue",
-            monthTextColor: "blue",
-            textMonthFontWeight: "bold",
-            textDayHeaderFontWeight: "bold",
-            textDayFontWeight: "500",
-            textDayFontSize: 16,
-            textMonthFontSize: 18,
-            textDayHeaderFontSize: 14,
-          }}
-        />
-      </View>
-      <View style={styles.selectedDateContainer}>
-        <Text style={styles.selectedDateText}>
-          Selected Date: {selectedDate || "None"}
-        </Text>
-        {selectedDate && events[selectedDate] && (
-          <View style={styles.eventsContainer}>
-            {events[selectedDate].map((event, index) => (
-              <Text key={index} style={styles.eventText}>
-                - {event.title}: {event.detail}
-              </Text>
-            ))}
-          </View>
-        )}
-      </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={styles.card}>
+          <Calendar
+            onDayPress={onDayPress}
+            markedDates={markedDates}
+            theme={{
+              selectedDayBackgroundColor: "blue",
+              todayTextColor: "red",
+              arrowColor: "blue",
+              monthTextColor: "blue",
+              textMonthFontWeight: "bold",
+              textDayHeaderFontWeight: "bold",
+              textDayFontWeight: "500",
+              textDayFontSize: 16,
+              textMonthFontSize: 18,
+              textDayHeaderFontSize: 14,
+            }}
+          />
+        </View>
+        <View style={styles.selectedDateContainer}>
+          <Text style={styles.selectedDateText}>
+            Selected Date: {selectedDate || "None"}
+          </Text>
+          {selectedDate && events[selectedDate] && (
+            <View style={styles.eventsContainer}>
+              {events[selectedDate].map((event, index) => (
+                <Text key={index} style={styles.eventText}>
+                  - {event.title}: {event.detail}
+                </Text>
+              ))}
+            </View>
+          )}
+        </View>
+      </ScrollView>
 
       {/* Settings Popup Modal */}
       <Modal
@@ -132,7 +149,7 @@ const CalendarComponent = () => {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
