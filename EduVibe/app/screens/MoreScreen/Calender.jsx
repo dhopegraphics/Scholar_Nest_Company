@@ -4,6 +4,7 @@ import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useNavigation } from '@react-navigation/native';
 import { useEventContext } from "../EventsScreen/EventContext";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {  DrawerActions } from "@react-navigation/native";
 
 // Configure the calendar locale
 LocaleConfig.locales["en"] = {
@@ -22,6 +23,11 @@ LocaleConfig.locales["en"] = {
 LocaleConfig.defaultLocale = "en";
 
 const CalendarComponent = () => {
+
+  const handleButtonPress = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  }; 
+
   const { events } = useEventContext();
   const [selectedDate, setSelectedDate] = useState("");
   const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -32,7 +38,7 @@ const CalendarComponent = () => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity style={styles.headerButton}>
+          <TouchableOpacity onPress={handleButtonPress}  style={styles.headerButton} >
             <Ionicons name="funnel-outline" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShowSettingsModal(true)} style={styles.headerButton}>
@@ -114,7 +120,6 @@ const CalendarComponent = () => {
         </View>
       </ScrollView>
 
-      {/* Settings Popup Modal */}
       <Modal
         animationType="slide"
         transparent={true}

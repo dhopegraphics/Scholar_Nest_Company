@@ -30,10 +30,12 @@ const Dashboard = () => {
     <SafeAreaView style={DashboardStyles.safeArea}>
       <View style={DashboardStyles.container}>
         <ScrollView
+        showsVerticalScrollIndicator = {false}
           contentContainerStyle={DashboardStyles.scrollViewContent}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
           <Text style={DashboardStyles.title}>Dashboard</Text>
+
           <View style={DashboardStyles.scrollContainerWrapper}>
             <ScrollView
               horizontal

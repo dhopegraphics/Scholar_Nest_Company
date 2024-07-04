@@ -35,6 +35,7 @@ import GeneralScreen from '../screens/AppSettingsScreen/GeneralScreen';
 import SharedFiles from '../screens/AppSettingsScreen/SharedFiles';
 import SpaceUsage from '../screens/AppSettingsScreen/SpaceUsage';
 import Synchronization from '../screens/AppSettingsScreen/Synchronization';
+import CalendarDrawer from './CalendarDrawer';
 
 const Drawer = createDrawerNavigator();
 
@@ -67,7 +68,6 @@ export type StackParamList = {
   SharedFiles: undefined;
   SpaceUsage:undefined;
   Synchronization: undefined;
-
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -84,7 +84,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />
       <Stack.Screen name="AvailableCourses" component={AvailableCourses} />
       <Stack.Screen name="GlobalSearch" component={GlobalSearch} options={{ headerShown: true }} />
-      <Stack.Screen name="calendar" component={CalendarComponent} options={{ headerShown: true }} />
+      <Stack.Screen name="calendar" component={CalendarDrawer} options={{ headerShown: true }} />
       <Stack.Screen name="Tags" component={Tags} />
       <Stack.Screen name="AppSettings" component={AppSettings} options={{ headerShown: true }}/>
       <Stack.Screen name="CoursesBrowse" component={CoursesBrowse} options={{ headerShown: false }} />

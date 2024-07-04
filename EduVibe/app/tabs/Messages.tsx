@@ -8,7 +8,7 @@ import imageExport from '../../assets/images/imageExport';
 import messagesScreenstyles from '../../themes/messagesScreenStyles';
 
 interface MessagesScreenProps {
-  navigation: NativeStackNavigationProp<StackParamList, 'Tab_Layout'>;
+  navigation: NativeStackNavigationProp<StackParamList, 'Back'>;
 }
 
 const MessagesScreen: React.FC<MessagesScreenProps> = ({ navigation }) => {
