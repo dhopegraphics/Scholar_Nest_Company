@@ -35,11 +35,12 @@ import SpaceUsage from '../screens/AppSettingsScreen/SpaceUsage';
 import Synchronization from '../screens/AppSettingsScreen/Synchronization';
 import CalendarDrawer from './CalendarDrawer';
 import NewEvent from '../screens/EventsScreen/NewEventScreen';
-import CourseDetails from '../screens/CourseBrowseScreen/CourseDetails';
 import { CourseProvider } from '../../contexts/CourseContext';
 import { TagProvider } from '../../contexts/TagContext';
 import TagDetails from '../screens/TagsDetails/TagDetails';
 import { ParticipantProvider } from '../../contexts/ParticipantContext';
+import CourseDetailsDrawerNav from './CourseDetailsDrawerNav';
+import ActivityDetails from '../screens/Annoucement/ActivityDetails';
 
 const Drawer = createDrawerNavigator();
 
@@ -73,8 +74,9 @@ export type StackParamList = {
   SpaceUsage:undefined;
   Synchronization: undefined;
   NewEvent : undefined;
-  CourseDetails : undefined;
   TagDetails :undefined;
+  Course_Information : undefined;
+  ActivityDetails : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -114,8 +116,11 @@ const MainStackScreen = () => {
       <Stack.Screen name="SpaceUsage" component={SpaceUsage} options={{ headerShown: true }} />
       <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: true }} />
       <Stack.Screen name="NewEvent" component={NewEvent} options={{ headerShown: true }} />
-      <Stack.Screen name="CourseDetails" component={CourseDetails} options={{ headerShown: true }} />
+      <Stack.Screen name="Course_Information" component={CourseDetailsDrawerNav} options={{ headerShown: false ,
+
+      }} />
       <Stack.Screen name="TagDetails" component={TagDetails} options={{ headerShown: true }} />
+      <Stack.Screen name="ActivityDetails" component={ActivityDetails} options={{ headerShown: true }} />
    </Stack.Navigator>
   );
 };

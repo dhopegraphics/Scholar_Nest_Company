@@ -30,7 +30,7 @@ const Dashboard = () => {
       participantContext.setParticipants(course.participants);
     }
     //@ts-ignore
-    navigation.navigate('CourseDetails');
+    navigation.navigate('Course_Information');
   };
 
   const handleButtonPress = () => {
