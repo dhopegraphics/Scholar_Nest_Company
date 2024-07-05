@@ -12,7 +12,7 @@ const TagDetails = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{tag.title}</Text>
+      <Text style={styles.title}>Tag: {tag.title}</Text>
       {/* Add more tag details here */}
     </View>
   );
@@ -21,9 +21,8 @@ const TagDetails = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: 5,
   },
   title: {
     fontSize: 24,
