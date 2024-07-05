@@ -5,10 +5,12 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  ImageBackground,
 } from "react-native";
+import Tab_Layout from "../../tabs/Tab_Layout";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
-
+import imageExport from "../../../assets/images/imageExport";
 interface Question {
   id: number;
   text: string;
@@ -51,7 +53,7 @@ const Survey: React.FC = () => {
       setSelectedAnswer(null); // Reset selected answer for next question
     } else {
       // Navigate to Tab_Layout after finishing the survey
-      navigation.navigate("Tab_Layout");
+      navigation.navigate("Back");
     }
   };
 
@@ -66,9 +68,7 @@ const Survey: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "blue" }}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.question}>
-          {questions[currentQuestion].text}
-        </Text>
+        <Text style={styles.question}>{questions[currentQuestion].text}</Text>
         {questions[currentQuestion].answers.map((answer) => (
           <TouchableOpacity
             key={answer.id}
