@@ -96,7 +96,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="AppSettings" component={AppSettings} options={{ headerShown: true }}/>
       <Stack.Screen name="CoursesBrowse" component={CoursesBrowse} options={{ headerShown: false }} />
       <Stack.Screen name="Badges" component={Badges} />
-      <Stack.Screen name="Files" component={Files} options={{ headerShown: true }} />
+      <Stack.Screen name="Files" component={Files} options={{ headerShown: false }} />
       <Stack.Screen name="GradesScreen" component={GradesScreen} />
       <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
       <Stack.Screen name="Reports" component={Reports} />
