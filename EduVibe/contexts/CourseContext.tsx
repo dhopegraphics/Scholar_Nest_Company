@@ -1,10 +1,16 @@
 // CourseContext.tsx
 import React, { createContext, useState, ReactNode } from 'react';
 
+interface Participant {
+  username: string;
+  lastAccessed: string;
+  avatar: string;
+}
+
 interface Course {
   title: string;
   creator: string;
-  // Add other course details here
+  participants: Participant[];
 }
 
 interface CourseContextType {

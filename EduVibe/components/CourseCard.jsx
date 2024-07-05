@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import icons from "../assets/icons/icons";
 
-const CourseCard = ({ title, creator, onPress }) => {
+const CourseCard = ({ title, creator, participantsCount, onPress }) => {
   return (
     <TouchableOpacity
       style={styles.cardContainer}
@@ -26,6 +26,7 @@ const CourseCard = ({ title, creator, onPress }) => {
             <Text style={styles.creator} numberOfLines={1}>
               {creator}
             </Text>
+            <Text style={styles.participants}>Participants: {participantsCount}</Text>
           </View>
         </View>
 
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     marginLeft: 10,
+    marginBottom : -130,
   },
   title: {
     fontSize: 14,
@@ -86,6 +88,10 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   creator: {
+    fontSize: 12,
+    color: "#9ca3af", // Grey color
+  },
+  participants: {
     fontSize: 12,
     color: "#9ca3af", // Grey color
   },

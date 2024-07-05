@@ -4,4 +4,12 @@ import SecondLogo from "../images/EduVibeColored.png";
 import microsoftIcon from "../images/microsoft.png";
 import empty from "../images/empty.png";
 
-export default { logo, googleIcon, SecondLogo, microsoftIcon, empty };
+const imageExport = {
+  logo,
+  googleIcon,
+  SecondLogo,
+  microsoftIcon,
+  empty,
+};
+
+export default imageExport;

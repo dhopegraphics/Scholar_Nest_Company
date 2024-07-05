@@ -39,6 +39,7 @@ import CourseDetails from '../screens/CourseBrowseScreen/CourseDetails';
 import { CourseProvider } from '../../contexts/CourseContext';
 import { TagProvider } from '../../contexts/TagContext';
 import TagDetails from '../screens/TagsDetails/TagDetails';
+import { ParticipantProvider } from '../../contexts/ParticipantContext';
 
 const Drawer = createDrawerNavigator();
 
@@ -161,6 +162,7 @@ const AppNavigator = () => (
 
     <SettingsProvider>
     <TagProvider>
+    <ParticipantProvider>
     <CourseProvider>
       <EventProvider>
         <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />} >
@@ -169,6 +171,7 @@ const AppNavigator = () => (
         </Drawer.Navigator>
       </EventProvider>
       </CourseProvider>
+      </ParticipantProvider>
       </TagProvider>
     </SettingsProvider>
   </>

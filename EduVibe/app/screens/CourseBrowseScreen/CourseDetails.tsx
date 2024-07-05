@@ -1,7 +1,13 @@
 // CourseDetails.tsx
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useCourseContext } from '../../../contexts/useCourseContext';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Course from './Course';
+import ParticipantsTab from './ParticipantsTab';
+
+const Tab = createMaterialTopTabNavigator();
+
 
 const CourseDetails = () => {
   const { course } = useCourseContext();
@@ -10,11 +16,10 @@ const CourseDetails = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{course.title}</Text>
-      <Text style={styles.creator}>Created by: {course.creator}</Text>
-      {/* Add more course details here */}
-    </View>
+    <Tab.Navigator>
+    <Tab.Screen name="Course" component={Course} />
+    <Tab.Screen name="Participants" component={ParticipantsTab} />
+  </Tab.Navigator>
   );
 };
 

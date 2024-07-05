@@ -1,19 +1,35 @@
-// Dashboard.tsx
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useContext } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
 import CourseCard from '../../components/CourseCard';
 import { Ionicons } from '@expo/vector-icons';
 import DashboardStyles from '../../themes/DashboardStyles';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { useCourseContext } from '../../contexts/useCourseContext';
+import { ParticipantContext } from '../../contexts/ParticipantContext';
+
+// Define Course interface
+interface Course {
+  title: string;
+  creator: string;
+  participants: {
+    username: string;
+    lastAccessed: string;
+    avatar: string;
+  }[];
+}
 
 const Dashboard = () => {
   const navigation = useNavigation();
   const { setCourse } = useCourseContext();
+  const participantContext = useContext(ParticipantContext);
   const [refreshing, setRefreshing] = useState(false);
 
-  const handlePress = (course: { title: string; creator: string }) => {
+  const handlePress = (course: Course) => {
     setCourse(course);
+    if (participantContext) {
+      participantContext.setParticipants(course.participants);
+    }
+    //@ts-ignore
     navigation.navigate('CourseDetails');
   };
 
@@ -45,17 +61,12 @@ const Dashboard = () => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={DashboardStyles.scrollContainer}
             >
-              {[
-                { title: 'Course Title 1', creator: 'Creator 1' },
-                { title: 'Course Title 2', creator: 'Creator 2' },
-                { title: 'Course Title 3', creator: 'Creator 3' },
-                { title: 'Course Title 4', creator: 'Creator 4' },
-                { title: 'Course Title 5', creator: 'Creator 5' },
-              ].map((course, index) => (
+              {participantContext?.courses.map((course: Course, index: number) => (
                 <CourseCard
                   key={index}
                   title={course.title}
                   creator={course.creator}
+                  participantsCount={course.participants.length}
                   onPress={() => handlePress(course)}
                 />
               ))}
