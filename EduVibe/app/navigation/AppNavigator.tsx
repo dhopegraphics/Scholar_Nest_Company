@@ -37,6 +37,8 @@ import CalendarDrawer from './CalendarDrawer';
 import NewEvent from '../screens/EventsScreen/NewEventScreen';
 import CourseDetails from '../screens/CourseBrowseScreen/CourseDetails';
 import { CourseProvider } from '../../contexts/CourseContext';
+import { TagProvider } from '../../contexts/TagContext';
+import TagDetails from '../screens/TagsDetails/TagDetails';
 
 const Drawer = createDrawerNavigator();
 
@@ -71,6 +73,7 @@ export type StackParamList = {
   Synchronization: undefined;
   NewEvent : undefined;
   CourseDetails : undefined;
+  TagDetails :undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -111,6 +114,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: true }} />
       <Stack.Screen name="NewEvent" component={NewEvent} options={{ headerShown: true }} />
       <Stack.Screen name="CourseDetails" component={CourseDetails} options={{ headerShown: true }} />
+      <Stack.Screen name="TagDetails" component={TagDetails} options={{ headerShown: true }} />
    </Stack.Navigator>
   );
 };
@@ -156,6 +160,7 @@ const AppNavigator = () => (
     <StatusBar barStyle="default" backgroundColor="black" />
 
     <SettingsProvider>
+    <TagProvider>
     <CourseProvider>
       <EventProvider>
         <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />} >
@@ -164,6 +169,7 @@ const AppNavigator = () => (
         </Drawer.Navigator>
       </EventProvider>
       </CourseProvider>
+      </TagProvider>
     </SettingsProvider>
   </>
 );

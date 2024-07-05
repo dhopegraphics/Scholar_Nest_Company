@@ -1,3 +1,4 @@
+// Tags.tsx
 import React, { useState, useRef, useEffect } from "react";
 import {
   View,
@@ -10,12 +11,12 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { ParamListBase } from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Appbar, Chip } from "react-native-paper";
+import { useTagContext } from "../../../contexts/useTagContext";
 
 const Tags = ({ navigation }) => {
+  const { setTag } = useTagContext();
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -79,6 +80,11 @@ const Tags = ({ navigation }) => {
     }).start();
   }, [searchResults]);
 
+  const handleChipPress = (tagTitle) => {
+    setTag({ title: tagTitle });
+    navigation.navigate('TagDetails');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -124,30 +130,26 @@ const Tags = ({ navigation }) => {
       </View>
       <View style={styles.chipContainer}>
         <Chip
-          //icon="information"
           style={styles.chip}
-          onPress={() => console.log("Pressed")}
+          onPress={() => handleChipPress("Documentation")}
         >
           Documentation
         </Chip>
         <Chip
-          //icon="information"
           style={styles.chip}
-          onPress={() => console.log("Pressed")}
+          onPress={() => handleChipPress("Art")}
         >
           Art
         </Chip>
         <Chip
-          //icon="information"
           style={styles.chip}
-          onPress={() => console.log("Pressed")}
+          onPress={() => handleChipPress("Books")}
         >
           Books
         </Chip>
         <Chip
-          //icon="information"
           style={styles.chip}
-          onPress={() => console.log("Pressed")}
+          onPress={() => handleChipPress("Digital Marketing")}
         >
           Digital Marketing
         </Chip>
