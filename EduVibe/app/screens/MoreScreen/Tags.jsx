@@ -8,10 +8,14 @@ import {
   Animated,
   ActivityIndicator,
   RefreshControl,
+  Dimensions,
+  SafeAreaView,
+  StyleSheet,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { Appbar, Chip } from "react-native-paper";
+import { Appbar } from "react-native-paper";
+import DropDownPicker from 'react-native-dropdown-picker';
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { useTagContext } from "../../../contexts/useTagContext";
 import { TagStyles } from "../../../themes/TagStyling";
 
@@ -21,27 +25,16 @@ const Tags = ({ navigation }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const slideAnim = useRef(new Animated.Value(-100)).current; // Initial value for slide: -100 (off-screen)
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('item1'); // Default to 'Everywhere'
+  const [items, setItems] = useState([
+    { label: 'Everywhere', value: 'item1' },
+    { label: 'Default Collection', value: 'item2' },
+    { label: 'Forum Tags', value: 'item3' },
+  ]);
+  const slideAnim = useRef(new Animated.Value(-100)).current;
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownHeight = useRef(new Animated.Value(0)).current;
-
-  const toggleDropdown = () => {
-    if (isDropdownOpen) {
-      Animated.timing(dropdownHeight, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-      }).start(() => setIsDropdownOpen(false));
-    } else {
-      setIsDropdownOpen(true);
-      Animated.timing(dropdownHeight, {
-        toValue: 150, // Adjust based on the number of dropdown items
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    }
-  };
+  const windowWidth = Dimensions.get("window").width;
 
   const handleSearch = (text) => {
     setSearchText(text);
@@ -65,27 +58,55 @@ const Tags = ({ navigation }) => {
     navigation.navigate("TagDetails");
   };
 
+  const mockData = [
+    { id: "1", title: "Documentation", categories: ["Everywhere"] },
+    { id: "2", title: "Art", categories: ["Everywhere"] },
+    { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
+    { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
+    { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
+    { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
+    { id: "7", title: "Gardening", categories: ["Everywhere", "Default Collection"] },
+    { id: "8", title: "Healthcare", categories: ["Everywhere", "Forum Tags"] },
+    { id: "9", title: "Information Technology", categories: ["Everywhere", "Default Collection"] },
+  ];
+
   const mockSearchFunction = (query) => {
-    const mockData = [
-      { id: "1", title: "Documentation" },
-      { id: "2", title: "Art" },
-      { id: "3", title: "Books" },
-      { id: "4", title: "Digital Marketing" },
-    ];
-    if (!query) return mockData;
-    return mockData.filter((item) =>
+    if (!query) return filterByCategory(value); // Initialize with filtered data based on default dropdown value
+
+    const filteredByQuery = mockData.filter((item) =>
       item.title.toLowerCase().includes(query.toLowerCase())
     );
+
+    const filteredByCategory = filterByCategory(value);
+
+    // Intersection of results from query and category filter
+    const results = filteredByQuery.filter(item =>
+      filteredByCategory.some(filteredItem => filteredItem.id === item.id)
+    );
+
+    return results;
+  };
+
+  const filterByCategory = (selectedValue) => {
+    if (selectedValue === 'item1') {
+      return mockData.filter(item => item.categories.includes('Everywhere'));
+    } else if (selectedValue === 'item2') {
+      return mockData.filter(item => item.categories.includes('Default Collection'));
+    } else if (selectedValue === 'item3') {
+      return mockData.filter(item => item.categories.includes('Forum Tags'));
+    } else {
+      return [];
+    }
   };
 
   useEffect(() => {
-    setSearchResults(mockSearchFunction("")); // Initialize with full list
+    setSearchResults(mockSearchFunction("")); // Initialize with full list based on default dropdown value
     Animated.timing(slideAnim, {
       toValue: 0,
       duration: 500,
       useNativeDriver: true,
     }).start();
-  }, []);
+  }, [value]); // Update search results when dropdown value changes
 
   const handleChipPress = (tagTitle) => {
     setTag({ title: tagTitle });
@@ -100,6 +121,10 @@ const Tags = ({ navigation }) => {
     }, 1000);
   };
 
+  const handleDropDownChange = (val) => {
+    setValue(val);
+  };
+
   const renderSearchResultItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => handleResultPress(item)}
@@ -109,67 +134,86 @@ const Tags = ({ navigation }) => {
     </TouchableOpacity>
   );
 
+  const numColumns = Math.floor(windowWidth / 140); // Adjust based on your item width and spacing
+
   return (
-    <View style={TagStyles.container}>
-      <View style={TagStyles.headerContainer}>
-        <Appbar.Header style={TagStyles.header}>
-          <Appbar.BackAction onPress={() => navigation.goBack()} />
-          <Appbar.Content
-            title="Tags"
-            fontSize="20"
-            fontWeight="bold"
-            style={TagStyles.headerText}
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={TagStyles.container}>
+        <View style={TagStyles.headerContainer}>
+          <Appbar.Header style={TagStyles.header}>
+            <Appbar.BackAction onPress={() => navigation.goBack()} />
+            <Appbar.Content
+              title="Tags"
+              fontSize="20"
+              fontWeight="bold"
+              style={TagStyles.headerText}
+            />
+          </Appbar.Header>
+        </View>
+        <View style={TagStyles.searchBarContainer}>
+          <Icon name="search" size={20} color="#000" />
+          <TextInput
+            style={TagStyles.searchInput}
+            placeholder="Search..."
+            value={searchText}
+            onChangeText={handleSearch}
           />
-        </Appbar.Header>
-      </View>
-      <View style={TagStyles.searchBarContainer}>
-        <Icon name="search" size={20} color="#000" />
-        <TextInput
-          style={TagStyles.searchInput}
-          placeholder="Search..."
-          value={searchText}
-          onChangeText={handleSearch}
-        />
-      </View>
-      <View>
-        <TouchableOpacity style={TagStyles.filterButton} onPress={toggleDropdown}>
-          <Text style={{ color: "black" }}>Everywhere</Text>
-          <MaterialIcons name="arrow-drop-down" style={TagStyles.dropdownIcon} />
-        </TouchableOpacity>
-        {isDropdownOpen && (
-          <Animated.View
-            style={[TagStyles.dropdownMenu, { height: dropdownHeight }]}
-          >
-            <TouchableOpacity style={TagStyles.dropdownItem}>
-              <Text>Option 1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={TagStyles.dropdownItem}>
-              <Text>Option 2</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={TagStyles.dropdownItem}>
-              <Text>Option 3</Text>
-            </TouchableOpacity>
-          </Animated.View>
+        </View>
+        <View style={styles.dropDownContainer}>
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items.map(item => ({
+              ...item,
+              icon: () => (
+                <Ionicons
+                  name={value === item.value ? "ellipse" : "ellipse-outline"}
+                  size={20}
+                  color="#000"
+                />
+              )
+            }))}
+            setOpen={setOpen}
+            setValue={handleDropDownChange}
+            setItems={setItems}
+            style={styles.dropDown}
+            dropDownContainerStyle={styles.dropDownContainerStyle}
+          />
+        </View>
+        {loading ? (
+          <View style={TagStyles.loaderContainer}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        ) : (
+          <FlatList
+            data={searchResults}
+            keyExtractor={(item) => item.id}
+            renderItem={renderSearchResultItem}
+            ListEmptyComponent={<Text style={TagStyles.noResultsText}>No Results Found</Text>}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            contentContainerStyle={searchResults.length === 0 && TagStyles.emptyListContainer}
+            horizontal={false} // Ensure vertical scrolling
+            numColumns={numColumns} // Dynamically set number of columns
+          />
         )}
       </View>
-      {loading ? (
-        <View style={TagStyles.loaderContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      ) : (
-        <FlatList
-          data={searchResults}
-          keyExtractor={(item) => item.id}
-          renderItem={renderSearchResultItem}
-          ListEmptyComponent={<Text style={TagStyles.noResultsText}>No Results Found</Text>}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          contentContainerStyle={TagStyles.chipContainer}
-        />
-      )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default Tags;
+
+const styles = StyleSheet.create({
+  dropDownContainer: {
+    marginVertical: 10,
+    zIndex: 1000, // Ensure dropdown is above other elements
+  },
+  dropDown: {
+    backgroundColor: '#fafafa',
+  },
+  dropDownContainerStyle: {
+    backgroundColor: '#dfdfdf',
+  },
+});

@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native';
 export const TagStyles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 8,
     backgroundColor: "#fff",
   },
   headerContainer: {
-    marginTop: -60,
+    marginTop: -60, // Adjust as needed
   },
   header: {
     height: 50,
@@ -34,66 +34,48 @@ export const TagStyles = StyleSheet.create({
   },
   loaderContainer: {
     flex: 1,
+    justifyContent: "flex-start", // Center loading indicator vertically
+    alignItems: "flex-start", // Center loading indicator horizontally
   },
   resultListContainer: {
     flex: 1,
+    marginTop: 10,
   },
   resultItem: {
-    paddingVertical: 8,
-    paddingHorizontal: 16, // Adjust the horizontal padding as needed
+    paddingVertical: 6,
+    paddingHorizontal: 13,
     backgroundColor: "#4b968f",
     borderRadius: 20,
     margin: 5,
-    minWidth: 120, // Set a minimum width
-    height: 40,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    alignSelf: "flex-start", // Align items to the start of the container
+    minWidth: 40,
+    maxWidth : 150,
+    flexShrink: 1,
+    height : 30,
   },
   resultText: {
     fontSize: 16,
     color: "white",
     textAlign: "center",
+    maxWidth: "100%",
   },
   noResultsText: {
     textAlign: "center",
     color: "#999",
-    marginTop: 20,
+    marginTop: 25,
   },
   filterButton: {
     padding: 8,
     borderWidth: 1,
-    borderColor: "black", // border-border
+    borderColor: "black",
     borderRadius: 8,
-    backgroundColor: "white", // bg-secondary
-    color: "#fff", // text-secondary-foreground
+    backgroundColor: "white",
+    color: "#fff",
     width: "100%",
     height: 40,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-  },
-  chipContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 10,
-    justifyContent: "space-evenly",
-  },
-  dropdownMenu: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "black",
-    marginTop: 8,
-  },
-  dropdownItem: {
-    padding: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  dropdownIcon: {
-    fontSize: 24,
-    color: "black",
   },
 });
