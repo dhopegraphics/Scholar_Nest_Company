@@ -34,8 +34,8 @@ export const TagStyles = StyleSheet.create({
   },
   loaderContainer: {
     flex: 1,
-    justifyContent: "flex-start", // Center loading indicator vertically
-    alignItems: "flex-start", // Center loading indicator horizontally
+    justifyContent: "center", // Center loading indicator vertically
+    alignItems: "center", // Center loading indicator horizontally
   },
   resultListContainer: {
     flex: 1,
@@ -50,7 +50,7 @@ export const TagStyles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     minWidth: 40,
-    maxWidth : 150,
+    maxWidth : 200,
     flexShrink: 1,
     height : 30,
   },
