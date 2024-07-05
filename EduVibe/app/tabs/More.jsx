@@ -5,10 +5,10 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  StyleSheet,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"; // Import Material Icon
 import { ButtonsTextStyle } from "../../themes/ButtonsWithTextContainerStyle";
-
 
 const MoreScreen = ({ navigation }) => {
   return (
@@ -98,31 +98,32 @@ const MoreScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
-          <View style={ButtonsTextStyle.buttonContainer}>
-            <TouchableOpacity
-              style={ButtonsTextStyle.MoreSettingsButton}
-              onPress={() => navigation.navigate("AppSettings")}
-            >
-              <Icon
-                style={ButtonsTextStyle.icon}
-                name="settings"
-                size={30}
-                color="#ffffff"
-              />
-              <Text style={ButtonsTextStyle.text}>App Settings</Text>
-              <Icon
-                style={ButtonsTextStyle.rightIcon}
-                name="chevron-right"
-                size={30}
-                color="gray"
-              />
-            </TouchableOpacity>
-          </View>
         </View>
       </ScrollView>
+      <View style={ButtonsTextStyle.SettingsContainer}>
+        <TouchableOpacity
+          style={ButtonsTextStyle.MoreSettingsButton}
+          onPress={() => navigation.navigate("AppSettings")}
+        >
+          <Icon
+            style={ButtonsTextStyle.icon}
+            name="settings"
+            size={30}
+            color="#ffffff"
+          />
+          <Text style={ButtonsTextStyle.text}>App Settings</Text>
+          <Icon
+            style={ButtonsTextStyle.rightIcon}
+            name="chevron-right"
+            size={30}
+            color="gray"
+          />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
+
 
 
 export default MoreScreen;

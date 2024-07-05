@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, FlatList, StyleSheet, RefreshControl, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Avatar } from 'react-native-paper';
 import moment from 'moment';
 import { useSettings } from './SettingsContext';
+import { UpcomingEventStyle } from '../../../themes/UpcomingEventStyle';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
 const UpcomingEventsScreen = () => {
   const { settings } = useSettings();
   const [events, setEvents] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const navigation = useNavigation(); // Hook into navigation object
 
   useEffect(() => {
     loadEvents(); // Load events on initial render
@@ -45,74 +48,44 @@ const UpcomingEventsScreen = () => {
       .join('');
 
     return (
-      <View style={[styles.eventItem, { backgroundColor: settings.themeColor }]}>
+      <View style={[UpcomingEventStyle.eventItem, { backgroundColor: settings.themeColor }]}>
         <Avatar.Text
           size={40}
           label={initials}
-          style={[styles.eventAvatar, { backgroundColor: settings.avatarBackgroundColor }]}
+          style={[UpcomingEventStyle.eventAvatar, { backgroundColor: settings.avatarBackgroundColor }]}
           color={settings.textColor}
         />
-        <View style={styles.eventTextContainer}>
-          <Text style={[styles.eventDate, { color: settings.textColor }]}>{moment(item.date).format('MMMM Do YYYY')}</Text>
-          <Text style={[styles.eventTitle, { color: settings.textColor }]}>{item.title}</Text>
-          <Text style={[styles.eventDetail, { color: settings.textColor }]}>{item.detail}</Text>
+        <View style={UpcomingEventStyle.eventTextContainer}>
+          <Text style={[UpcomingEventStyle.eventDate, { color: settings.textColor }]}>
+            {moment(item.date).format('MMMM Do YYYY')}
+          </Text>
+          <Text style={[UpcomingEventStyle.eventTitle, { color: settings.textColor }]}>{item.title}</Text>
+          <Text style={[UpcomingEventStyle.eventDetail, { color: settings.textColor }]}>{item.detail}</Text>
         </View>
       </View>
     );
   };
 
+  const navigateToNewEvent = () => {
+    navigation.navigate('NewEvent'); // Navigate to 'NewEvent' screen
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={UpcomingEventStyle.container}>
       <FlatList
         data={events}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderEventItem}
-        ListEmptyComponent={<Text style={styles.noEventsText}>No upcoming events</Text>}
+        ListEmptyComponent={<Text style={UpcomingEventStyle.noEventsText}>No upcoming events</Text>}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
       />
+      
+      {/* Rounded Button at Bottom-Right Corner */}
+      <TouchableOpacity style={UpcomingEventStyle.addButton} onPress={navigateToNewEvent}>
+        <Text style={UpcomingEventStyle.addButtonText}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 export default UpcomingEventsScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 16,
-  },
-  eventItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 10,
-  },
-  eventAvatar: {
-    marginRight: 16,
-  },
-  eventTextContainer: {
-    flex: 1,
-  },
-  eventDate: {
-    fontSize: 14,
-  },
-  eventTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 4,
-  },
-  eventDetail: {
-    fontSize: 16,
-    marginTop: 2,
-  },
-  noEventsText: {
-    fontSize: 18,
-    color: '#888',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-});

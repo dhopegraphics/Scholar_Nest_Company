@@ -34,7 +34,7 @@ import SharedFiles from '../screens/AppSettingsScreen/SharedFiles';
 import SpaceUsage from '../screens/AppSettingsScreen/SpaceUsage';
 import Synchronization from '../screens/AppSettingsScreen/Synchronization';
 import CalendarDrawer from './CalendarDrawer';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import NewEvent from '../screens/EventsScreen/NewEventScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -67,6 +67,7 @@ export type StackParamList = {
   SharedFiles: undefined;
   SpaceUsage:undefined;
   Synchronization: undefined;
+  NewEvent : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -92,7 +93,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="AppSettings" component={AppSettings} options={{ headerShown: true }}/>
       <Stack.Screen name="CoursesBrowse" component={CoursesBrowse} options={{ headerShown: false }} />
       <Stack.Screen name="Badges" component={Badges} />
-      <Stack.Screen name="Files" component={Files} />
+      <Stack.Screen name="Files" component={Files} options={{ headerShown: true }} />
       <Stack.Screen name="GradesScreen" component={GradesScreen} />
       <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
       <Stack.Screen name="Reports" component={Reports} />
@@ -105,6 +106,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="SharedFiles" component={SharedFiles} options={{ headerShown: true }} />
       <Stack.Screen name="SpaceUsage" component={SpaceUsage} options={{ headerShown: true }} />
       <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: true }} />
+      <Stack.Screen name="NewEvent" component={NewEvent} options={{ headerShown: true }} />
    </Stack.Navigator>
   );
 };

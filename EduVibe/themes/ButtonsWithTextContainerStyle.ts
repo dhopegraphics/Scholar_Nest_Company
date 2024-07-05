@@ -29,6 +29,16 @@ export const ButtonsTextStyle = StyleSheet.create({
       width: "100%",
       marginBottom: 10,
     },
+    SettingsContainer: {
+      position: 'absolute',
+      bottom: 0, // Adjust this value to set the distance from the bottom
+      width: '100%',
+      paddingHorizontal: 10,
+      paddingTop : -30,
+      backgroundColor: 'white', 
+      paddingVertical : 20,
+    },
+
     button: {
       flexDirection: "row",
       alignItems: "center",
@@ -50,10 +60,9 @@ export const ButtonsTextStyle = StyleSheet.create({
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      paddingVertical: 10,
       paddingHorizontal: 20,
       borderRadius: 5,
-      marginTop : 315,
+      marginTop : 15,
     },
     text: {
       flex: 1,

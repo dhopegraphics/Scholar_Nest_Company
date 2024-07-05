@@ -14,7 +14,7 @@ const Tab_Layout = () => {
   return (
     <>
       <View style={{ flex: 1 }}>
-        <StatusBar barStyle="dark-content" backgroundColor="black" />
+        <StatusBar barStyle="dark-content" backgroundColor="white" />
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
