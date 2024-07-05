@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, Button, StyleSheet, TextInput, Animated, Easing, TouchableOpacity } from 'react-native';
-import { useSettings } from './SettingsContext';
+import { useSettings } from '../../../contexts/SettingsContext';
 import { LinearGradient } from 'expo-linear-gradient'; // Import LinearGradient for gradient backgrounds
 import Ionicons from 'react-native-vector-icons/Ionicons';
 

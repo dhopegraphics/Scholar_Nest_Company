@@ -23,10 +23,10 @@ import GradesScreen from '../screens/drawer/GradesScreen';
 import Reports from '../screens/drawer/Reports';
 import { drawerStyles } from '../../themes/drawerStyles';
 import EventScreen from '../screens/EventsScreen/EventScreen';
-import { EventProvider } from '../screens/EventsScreen/EventContext';
+import { EventProvider } from '../../contexts/EventContext';
 import UpcomingEventsScreen from '../screens/EventsScreen/UpcomingEventsScreen';
 import EventSettingsScreen from '../screens/EventsScreen/EventSettingsScreen';
-import { SettingsProvider } from '../screens/EventsScreen/SettingsContext'; // Import the SettingsProvider
+import { SettingsProvider } from '../../contexts/SettingsContext'; // Import the SettingsProvider
 import AnouncementsDetails from '../screens/Annoucement/AnnouncementsDetails';
 import AboutScreen from '../screens/AppSettingsScreen/AboutScreen';
 import GeneralScreen from '../screens/AppSettingsScreen/GeneralScreen';
@@ -35,6 +35,8 @@ import SpaceUsage from '../screens/AppSettingsScreen/SpaceUsage';
 import Synchronization from '../screens/AppSettingsScreen/Synchronization';
 import CalendarDrawer from './CalendarDrawer';
 import NewEvent from '../screens/EventsScreen/NewEventScreen';
+import CourseDetails from '../screens/CourseBrowseScreen/CourseDetails';
+import { CourseProvider } from '../../contexts/CourseContext';
 
 const Drawer = createDrawerNavigator();
 
@@ -68,6 +70,7 @@ export type StackParamList = {
   SpaceUsage:undefined;
   Synchronization: undefined;
   NewEvent : undefined;
+  CourseDetails : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -107,6 +110,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="SpaceUsage" component={SpaceUsage} options={{ headerShown: true }} />
       <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: true }} />
       <Stack.Screen name="NewEvent" component={NewEvent} options={{ headerShown: true }} />
+      <Stack.Screen name="CourseDetails" component={CourseDetails} options={{ headerShown: true }} />
    </Stack.Navigator>
   );
 };
@@ -150,13 +154,16 @@ const CustomDrawerContent = (props: any) => {
 const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
+
     <SettingsProvider>
+    <CourseProvider>
       <EventProvider>
         <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />} >
           <Drawer.Screen name="Home" component={MainStackScreen} options={{ headerShown: false , drawerPosition: 'right',}} />
           <Drawer.Screen name="PROFILE" component={UserAccountScreen} options={{ headerShown: false }} />
         </Drawer.Navigator>
       </EventProvider>
+      </CourseProvider>
     </SettingsProvider>
   </>
 );

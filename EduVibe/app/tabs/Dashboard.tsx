@@ -1,16 +1,20 @@
-import React, { useCallback, useState } from "react";
-import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from "react-native";
-import CourseCard from "../../components/CourseCard";
+// Dashboard.tsx
+import React, { useCallback, useState } from 'react';
+import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
+import CourseCard from '../../components/CourseCard';
 import { Ionicons } from '@expo/vector-icons';
-import DashboardStyles from "../../themes/DashboardStyles";
-import { useNavigation, DrawerActions } from "@react-navigation/native";
+import DashboardStyles from '../../themes/DashboardStyles';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { useCourseContext } from '../../contexts/useCourseContext';
 
 const Dashboard = () => {
   const navigation = useNavigation();
+  const { setCourse } = useCourseContext();
   const [refreshing, setRefreshing] = useState(false);
 
-  const handlePress = (title: string) => {
-    console.log(`Pressed ${title}`);
+  const handlePress = (course: { title: string; creator: string }) => {
+    setCourse(course);
+    navigation.navigate('CourseDetails');
   };
 
   const handleButtonPress = () => {
@@ -26,11 +30,10 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <>
     <SafeAreaView style={DashboardStyles.safeArea}>
       <View style={DashboardStyles.container}>
         <ScrollView
-        showsVerticalScrollIndicator = {false}
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={DashboardStyles.scrollViewContent}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
@@ -42,36 +45,28 @@ const Dashboard = () => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={DashboardStyles.scrollContainer}
             >
-              <CourseCard
-                title="Course Title 1"
-                creator="Creator 1"
-                onPress={() => handlePress("Course Title 1")} />
-              <CourseCard
-                title="Course Title 2"
-                creator="Creator 2"
-                onPress={() => handlePress("Course Title 2")} />
-              <CourseCard
-                title="Course Title 3"
-                creator="Creator 3"
-                onPress={() => handlePress("Course Title 3")} />
-              <CourseCard
-                title="Course Title 4"
-                creator="Creator 4"
-                onPress={() => handlePress("Course Title 4")} />
-              <CourseCard
-                title="Course Title 5"
-                creator="Creator 5"
-                onPress={() => handlePress("Course Title 5")} />
+              {[
+                { title: 'Course Title 1', creator: 'Creator 1' },
+                { title: 'Course Title 2', creator: 'Creator 2' },
+                { title: 'Course Title 3', creator: 'Creator 3' },
+                { title: 'Course Title 4', creator: 'Creator 4' },
+                { title: 'Course Title 5', creator: 'Creator 5' },
+              ].map((course, index) => (
+                <CourseCard
+                  key={index}
+                  title={course.title}
+                  creator={course.creator}
+                  onPress={() => handlePress(course)}
+                />
+              ))}
             </ScrollView>
           </View>
         </ScrollView>
         <TouchableOpacity style={DashboardStyles.roundedButton} onPress={handleButtonPress}>
-        <Ionicons name="chevron-back-circle" size={24} color="white" />
-      </TouchableOpacity>
+          <Ionicons name="chevron-back-circle" size={24} color="white" />
+        </TouchableOpacity>
       </View>
-
     </SafeAreaView>
-      </>
   );
 };
 

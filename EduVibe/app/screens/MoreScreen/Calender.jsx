@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Modal, ScrollView, RefreshControl , SafeAreaView , Pressable } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useNavigation } from '@react-navigation/native';
-import { useEventContext } from "../EventsScreen/EventContext";
+import { useEventContext } from "../../../contexts/EventContext";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {  DrawerActions } from "@react-navigation/native";
 

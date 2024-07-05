@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { useEventContext } from './EventContext';
+import { useEventContext } from '../../../contexts/EventContext';
 
 const EventScreen = ({ route, navigation }) => {
   const { selectedDate } = route.params;

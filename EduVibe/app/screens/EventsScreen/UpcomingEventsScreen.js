@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, RefreshControl, TouchableOpacity } fr
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Avatar } from 'react-native-paper';
 import moment from 'moment';
-import { useSettings } from './SettingsContext';
+import { useSettings } from '../../../contexts/SettingsContext';
 import { UpcomingEventStyle } from '../../../themes/UpcomingEventStyle';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
