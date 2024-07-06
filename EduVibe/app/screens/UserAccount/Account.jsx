@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Divider } from "react-native-paper";
 import CountryPicker from "react-native-country-picker-modal";
 
-const AccountScreen = ({navigation}) => {
+const AccountScreen = ({ navigation }) => {
   const [username, setUsername] = useState("@johndoe");
   const [name, setName] = useState("John Doe");
   const [phone, setPhone] = useState("(123) 456-7890");
@@ -64,11 +64,7 @@ const AccountScreen = ({navigation}) => {
         {/* Name input */}
         <View style={styles.row}>
           <Text style={styles.label}>Name</Text>
-          <TextInput
-            style={styles.value}
-            value={name}
-            onChangeText={setName}
-          />
+          <TextInput style={styles.value} value={name} onChangeText={setName} />
         </View>
         <Divider />
         {/* Phone input with Country Picker */}
@@ -133,7 +129,9 @@ const AccountScreen = ({navigation}) => {
         </View>
         <Divider />
         {/* Update password button */}
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ChangePasswordScreen")}
+        >
           <View style={styles.row}>
             <Text style={styles.label}>Update password</Text>
             <Icon name="chevron-right" size={24} />
@@ -233,7 +231,7 @@ const styles = StyleSheet.create({
   phoneInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight : 50,
+    marginRight: 50,
   },
 });
 

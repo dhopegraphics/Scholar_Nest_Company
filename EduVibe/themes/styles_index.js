@@ -8,6 +8,15 @@ export const CommonStyle = StyleSheet.create({
     padding: 20,
     backgroundColor: "white",
   },
+  passwordContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
+    paddingBottom: 120,
+    backgroundColor: "white",
+  },
+
   logo: {
     width: 150,
     height: 105,
