@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import { TouchableOpacity, Text, View, StatusBar } from "react-native";
 import {
@@ -47,6 +48,55 @@ import CourseDetailsDrawerNav from "./CourseDetailsDrawerNav";
 import ActivityDetails from "../screens/Annoucement/ActivityDetails";
 import { CourseHeaderProvider } from "../../contexts/CourseHeaderContext";
 import ChatScreen from "../screens/chat/ChatScreen";
+=======
+import React, { useState } from 'react';
+import { TouchableOpacity, Text, View, StatusBar } from 'react-native';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Ionicons } from '@expo/vector-icons';
+import SignInScreen from '../screens/Auth/SignIn';
+import SignUpScreen from '../screens/Auth/SignUp';
+import Survey from '../screens/IntroScreen/Survey';
+import Tab_Layout from '../tabs/Tab_Layout';
+import MessagesScreen from '../tabs/Messages';
+import ContactsMainScreen from '../screens/MessagesScreen/ContactArea/ContactsScreen';
+import QrCodeScanner from '../screens/MoreScreen/QRCodeScannerScreen';
+import AvailableCourses from '../screens/Available/AvailableCourses';
+import GlobalSearch from '../screens/MoreScreen/GlobalSearch';
+import Tags from '../screens/MoreScreen/Tags';
+import AppSettings from '../screens/MoreScreen/AppSettings';
+import CoursesBrowse from '../tabs/CoursesBrowse';
+import UserAccountScreen from '../screens/UserAccount/UserAccountScreen';
+import Badges from '../screens/drawer/Badges';
+import Files from '../screens/drawer/Files';
+import SwitchAccount from '../screens/drawer/SwitchAccount';
+import GradesScreen from '../screens/drawer/GradesScreen';
+import Reports from '../screens/drawer/Reports';
+import { drawerStyles } from '../../themes/drawerStyles';
+import EventScreen from '../screens/EventsScreen/EventScreen';
+import { EventProvider } from '../../contexts/EventContext';
+import UpcomingEventsScreen from '../screens/EventsScreen/UpcomingEventsScreen';
+import EventSettingsScreen from '../screens/EventsScreen/EventSettingsScreen';
+import { SettingsProvider } from '../../contexts/SettingsContext'; // Import the SettingsProvider
+import AnouncementsDetails from '../screens/Annoucement/AnnouncementsDetails';
+import AboutScreen from '../screens/AppSettingsScreen/AboutScreen';
+import GeneralScreen from '../screens/AppSettingsScreen/GeneralScreen';
+import SharedFiles from '../screens/AppSettingsScreen/SharedFiles';
+import SpaceUsage from '../screens/AppSettingsScreen/SpaceUsage';
+import Synchronization from '../screens/AppSettingsScreen/Synchronization';
+import CalendarDrawer from './CalendarDrawer';
+import NewEvent from '../screens/EventsScreen/NewEventScreen';
+import { CourseProvider } from '../../contexts/CourseContext';
+import { TagProvider } from '../../contexts/TagContext';
+import TagDetails from '../screens/TagsDetails/TagDetails';
+import { ParticipantProvider } from '../../contexts/ParticipantContext';
+import CourseDetailsDrawerNav from './CourseDetailsDrawerNav';
+import ActivityDetails from '../screens/Annoucement/ActivityDetails';
+import { CourseHeaderProvider } from '../../contexts/CourseHeaderContext';
+import UserSettings from '../screens/UserAccount/UserSettings';
+import WorkProfile from '../screens/UserAccount/WorkProfile';
+import AccountScreen from '../screens/UserAccount/Account';
+>>>>>>> 9d08cb8d75bec7ef061bb23fa2e529c9202d9565
 
 const Drawer = createDrawerNavigator();
 
@@ -79,11 +129,21 @@ export type StackParamList = {
   SharedFiles: undefined;
   SpaceUsage: undefined;
   Synchronization: undefined;
+<<<<<<< HEAD
   NewEvent: undefined;
   TagDetails: undefined;
   Course_Information: undefined;
   ActivityDetails: undefined;
   ChatScreen: undefined;
+=======
+  NewEvent : undefined;
+  TagDetails :undefined;
+  Course_Information : undefined;
+  ActivityDetails : undefined;
+  UserSettings : undefined ;
+  WorkProfile :undefined ;
+  Account : undefined;
+>>>>>>> 9d08cb8d75bec7ef061bb23fa2e529c9202d9565
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -161,6 +221,7 @@ const MainStackScreen = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="AboutScreen" component={AboutScreen} />
+<<<<<<< HEAD
       <Stack.Screen
         name="GeneralScreen"
         component={GeneralScreen}
@@ -207,6 +268,22 @@ const MainStackScreen = () => {
         options={{ headerShown: true }}
       />
     </Stack.Navigator>
+=======
+      <Stack.Screen name="GeneralScreen" component={GeneralScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="SharedFiles" component={SharedFiles} options={{ headerShown: true }} />
+      <Stack.Screen name="SpaceUsage" component={SpaceUsage} options={{ headerShown: true }} />
+      <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: true }} />
+      <Stack.Screen name="NewEvent" component={NewEvent} options={{ headerShown: true }} />
+      <Stack.Screen name="Course_Information" component={CourseDetailsDrawerNav} options={{ headerShown: false ,
+
+      }} />
+      <Stack.Screen name="TagDetails" component={TagDetails} options={{ headerShown: true }} />
+      <Stack.Screen name="ActivityDetails" component={ActivityDetails} options={{ headerShown: true }} />
+      <Stack.Screen name="UserSettings" component={UserSettings} options={{ headerShown: false }} />
+      <Stack.Screen name="WorkProfile" component={WorkProfile} options={{ headerShown: false }} />
+      <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
+   </Stack.Navigator>
+>>>>>>> 9d08cb8d75bec7ef061bb23fa2e529c9202d9565
   );
 };
 

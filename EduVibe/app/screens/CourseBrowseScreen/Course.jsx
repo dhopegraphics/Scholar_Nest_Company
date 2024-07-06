@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native
 import { useCourseContext } from '../../../contexts/useCourseContext';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CourseCustomHeader from './CourseCustomHeader';
 import { useCourseHeader } from '../../../contexts/CourseHeaderContext';
 
 const Course = () => {

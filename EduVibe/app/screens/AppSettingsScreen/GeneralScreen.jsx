@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React from "react";
 
-const GeneralScreen = () => {
+const GeneralScreen = ({navigation}) => {
   return (
     <ScrollView>
       <SafeAreaView>
@@ -54,7 +54,34 @@ const GeneralScreen = () => {
             possible.
           </Text>
         </View>
+<<<<<<< HEAD
       </SafeAreaView>
+=======
+
+        <View>
+           <Button  title='Open UserSettings' style={{padding:20}}  onPress={() => navigation.navigate("UserSettings")}/>
+
+        </View>
+
+        <View>
+           <Text style={styles.text}>
+            Display debug Messages
+           </Text>
+        </View>
+
+        <View>
+           <Text style={styles.textMessage}>
+            If enabled, error modals will display more data about the error if possible.
+           </Text>
+        </View>
+
+
+        
+
+
+
+        </SafeAreaView>
+>>>>>>> 9d08cb8d75bec7ef061bb23fa2e529c9202d9565
     </ScrollView>
   );
 };
