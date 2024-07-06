@@ -1,7 +1,7 @@
 import { Button, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-const GeneralScreen = () => {
+const GeneralScreen = ({navigation}) => {
   return (
     <ScrollView>
         <SafeAreaView>   
@@ -41,7 +41,7 @@ const GeneralScreen = () => {
         </View>
 
         <View>
-           <Button  title='Open settings' style={{padding:20}}  />
+           <Button  title='Open UserSettings' style={{padding:20}}  onPress={() => navigation.navigate("UserSettings")}/>
 
         </View>
 

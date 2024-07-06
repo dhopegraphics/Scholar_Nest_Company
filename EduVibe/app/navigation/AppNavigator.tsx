@@ -42,6 +42,9 @@ import { ParticipantProvider } from '../../contexts/ParticipantContext';
 import CourseDetailsDrawerNav from './CourseDetailsDrawerNav';
 import ActivityDetails from '../screens/Annoucement/ActivityDetails';
 import { CourseHeaderProvider } from '../../contexts/CourseHeaderContext';
+import UserSettings from '../screens/UserAccount/UserSettings';
+import WorkProfile from '../screens/UserAccount/WorkProfile';
+import AccountScreen from '../screens/UserAccount/Account';
 
 const Drawer = createDrawerNavigator();
 
@@ -78,6 +81,9 @@ export type StackParamList = {
   TagDetails :undefined;
   Course_Information : undefined;
   ActivityDetails : undefined;
+  UserSettings : undefined ;
+  WorkProfile :undefined ;
+  Account : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -122,6 +128,9 @@ const MainStackScreen = () => {
       }} />
       <Stack.Screen name="TagDetails" component={TagDetails} options={{ headerShown: true }} />
       <Stack.Screen name="ActivityDetails" component={ActivityDetails} options={{ headerShown: true }} />
+      <Stack.Screen name="UserSettings" component={UserSettings} options={{ headerShown: false }} />
+      <Stack.Screen name="WorkProfile" component={WorkProfile} options={{ headerShown: false }} />
+      <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
    </Stack.Navigator>
   );
 };
