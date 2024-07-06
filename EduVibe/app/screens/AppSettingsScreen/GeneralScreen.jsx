@@ -54,9 +54,6 @@ const GeneralScreen = ({navigation}) => {
             possible.
           </Text>
         </View>
-<<<<<<< HEAD
-      </SafeAreaView>
-=======
 
         <View>
            <Button  title='Open UserSettings' style={{padding:20}}  onPress={() => navigation.navigate("UserSettings")}/>
@@ -81,7 +78,6 @@ const GeneralScreen = ({navigation}) => {
 
 
         </SafeAreaView>
->>>>>>> 9d08cb8d75bec7ef061bb23fa2e529c9202d9565
     </ScrollView>
   );
 };

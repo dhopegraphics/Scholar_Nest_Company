@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Divider } from "react-native-paper";
 import CountryPicker from "react-native-country-picker-modal";
 
-const AccountScreen = () => {
+const AccountScreen = ({navigation}) => {
   const [username, setUsername] = useState("@johndoe");
   const [name, setName] = useState("John Doe");
   const [phone, setPhone] = useState("(123) 456-7890");
@@ -27,7 +27,7 @@ const AccountScreen = () => {
         <Icon
           name="arrow-back"
           size={24}
-          onPress={() => console.log("Back Pressed")}
+          onPress={() => navigation.navigate("Back")}
         />
         <Text style={styles.headerText}>Account</Text>
         <Icon
