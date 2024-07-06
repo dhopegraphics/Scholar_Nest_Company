@@ -1,4 +1,3 @@
-// CoursesBrowseStyles.ts
 import { StyleSheet } from 'react-native';
 
 export const coursesBrowseStyles = StyleSheet.create({
@@ -48,11 +47,14 @@ export const coursesBrowseStyles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: 'white', // bg-secondary
     color: '#fff', // text-secondary-foreground
-    width: 90,
     height: 40,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+
+    flex: 1,
+    minWidth : 40,
+    maxWidth : 270,
   },
   iconButton: {
     padding: 8,
@@ -115,14 +117,16 @@ export const coursesBrowseStyles = StyleSheet.create({
   dropdownMenu: {
     overflow: 'hidden',
     backgroundColor: 'white',
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: 'black',
     borderRadius: 8,
-    marginTop: 8,
+    marginTop: 5,
+    width : 250,
   },
   dropdownItem: {
     padding: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#dee2e6',
+    height : 50,
   },
 });

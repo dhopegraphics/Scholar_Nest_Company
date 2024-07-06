@@ -8,7 +8,7 @@ Animated.addWhitelistedNativeProps({ text: true });
 const App: React.FC = () => {
   return (
     <>
-      <StatusBar barStyle="default" backgroundColor="white" />
+      <StatusBar barStyle="default" backgroundColor="black" />
       <AppNavigator />
     </>
   );

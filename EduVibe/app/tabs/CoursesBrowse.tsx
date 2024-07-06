@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
-import { Text, View, TextInput, TouchableOpacity, ScrollView, Animated } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, ScrollView, Animated, LayoutChangeEvent } from 'react-native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { ParamListBase } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Example: Import FontAwesome icon
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { coursesBrowseStyles as styles } from '../../themes/CoursesBrowseStyles';
 
 type CoursesBrowseProps = {
@@ -12,6 +12,8 @@ type CoursesBrowseProps = {
 
 const CoursesBrowse: React.FC<CoursesBrowseProps> = ({ navigation }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<string>('Starred');
+  const [buttonWidth, setButtonWidth] = useState<number>(0);
   const dropdownHeight = useRef(new Animated.Value(0)).current;
 
   const toggleDropdown = () => {
@@ -24,7 +26,7 @@ const CoursesBrowse: React.FC<CoursesBrowseProps> = ({ navigation }) => {
     } else {
       setIsDropdownOpen(true);
       Animated.timing(dropdownHeight, {
-        toValue: 150, // Adjust based on the number of dropdown items
+        toValue: 150,
         duration: 300,
         useNativeDriver: false,
       }).start();
@@ -35,12 +37,21 @@ const CoursesBrowse: React.FC<CoursesBrowseProps> = ({ navigation }) => {
     navigation.openDrawer();
   };
 
+  const handleItemSelect = (item: string) => {
+    setSelectedItem(item);
+    toggleDropdown();
+  };
+
+  const onTextLayout = (e: LayoutChangeEvent) => {
+    const { width } = e.nativeEvent.layout;
+    setButtonWidth(Math.min(width + 40, 300)); // Limit button width to 300, add padding
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>EduVibe</Text>
         <TouchableOpacity onPress={openDrawer} style={styles.menuButton}>
-          {/* Replace with MaterialIcons */}
           <MaterialIcons name="menu" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
@@ -49,28 +60,26 @@ const CoursesBrowse: React.FC<CoursesBrowseProps> = ({ navigation }) => {
         <View style={styles.filterRow}>
           <TextInput placeholder="Filter my courses" style={styles.input} />
           <TouchableOpacity style={styles.iconButton}>
-            {/* Replace with FontAwesome */}
             <FontAwesome name="download" size={24} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton}>
-            {/* Replace with FontAwesome */}
             <FontAwesome name="th-large" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.filterButton} onPress={toggleDropdown}>
-          <Text style={{ color: 'black' }}>Starred</Text>
+        <TouchableOpacity style={[styles.filterButton, { width: buttonWidth }]} onPress={toggleDropdown}>
+          <Text onLayout={onTextLayout} style={{ color: 'black' }}>{selectedItem}</Text>
           <MaterialIcons name="arrow-drop-down" style={styles.dropdownIcon} />
         </TouchableOpacity>
         {isDropdownOpen && (
           <Animated.View style={[styles.dropdownMenu, { height: dropdownHeight }]}>
-            <TouchableOpacity style={styles.dropdownItem}>
-              <Text>Option 1</Text>
+            <TouchableOpacity style={styles.dropdownItem} onPress={() => handleItemSelect('All (including removed from view)')}>
+              <Text>All (including removed from view)</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.dropdownItem}>
-              <Text>Option 2</Text>
+            <TouchableOpacity style={styles.dropdownItem} onPress={() => handleItemSelect('Starred')}>
+              <Text>Starred</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.dropdownItem}>
-              <Text>Option 3</Text>
+            <TouchableOpacity style={styles.dropdownItem} onPress={() => handleItemSelect('Removed From View')}>
+              <Text>Removed From View</Text>
             </TouchableOpacity>
           </Animated.View>
         )}
