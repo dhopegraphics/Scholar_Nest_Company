@@ -39,32 +39,46 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   const [isPasswordFocused, setPasswordFocused] = useState<boolean>(false);
   const [isConfirmPasswordFocused, setConfirmPasswordFocused] =
     useState<boolean>(false);
+  const [isEmailFocused, setEmailFocused] = useState<boolean>(false);
 
   const handleUsernameFocus = () => {
     setUsernameFocused(true);
     setPasswordFocused(false);
     setConfirmPasswordFocused(false);
+    setEmailFocused(false);
   };
 
+  const handleEmailFocus = () => {
+    setUsernameFocused(false);
+    setPasswordFocused(false);
+    setConfirmPasswordFocused(false);
+    setEmailFocused(true);
+  };
   const handlePasswordFocus = () => {
     setUsernameFocused(false);
     setPasswordFocused(true);
     setConfirmPasswordFocused(false);
+    setEmailFocused(false);
   };
 
   const handleConfirmPasswordFocus = () => {
     setUsernameFocused(false);
     setPasswordFocused(false);
     setConfirmPasswordFocused(true);
+    setEmailFocused(false);
   };
 
   const usernameRef = useRef<TextInput>(null);
+  const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
   const confirmPasswordRef = useRef<TextInput>(null);
 
   const handleScreenTap = () => {
     if (usernameRef.current) {
       usernameRef.current.blur();
+    }
+    if (emailRef.current) {
+      emailRef.current.blur();
     }
     if (passwordRef.current) {
       passwordRef.current.blur();
@@ -73,6 +87,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
       confirmPasswordRef.current.blur();
     }
     setUsernameFocused(false);
+    setEmailFocused(false);
     setPasswordFocused(false);
     setConfirmPasswordFocused(false);
     Keyboard.dismiss();
@@ -96,6 +111,15 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
               ]}
               placeholder="Username"
               onFocus={handleUsernameFocus}
+            />
+            <TextInput
+              ref={emailRef}
+              style={[
+                CommonStyle.input,
+                isEmailFocused && CommonStyle.focusedInput,
+              ]}
+              placeholder="Email"
+              onFocus={handleEmailFocus}
             />
             <TextInput
               ref={passwordRef}
