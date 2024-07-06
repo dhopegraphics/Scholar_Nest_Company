@@ -41,6 +41,7 @@ import TagDetails from '../screens/TagsDetails/TagDetails';
 import { ParticipantProvider } from '../../contexts/ParticipantContext';
 import CourseDetailsDrawerNav from './CourseDetailsDrawerNav';
 import ActivityDetails from '../screens/Annoucement/ActivityDetails';
+import { CourseHeaderProvider } from '../../contexts/CourseHeaderContext';
 
 const Drawer = createDrawerNavigator();
 
@@ -167,6 +168,7 @@ const AppNavigator = () => (
 
     <SettingsProvider>
     <TagProvider>
+    <CourseHeaderProvider>
     <ParticipantProvider>
     <CourseProvider>
       <EventProvider>
@@ -177,6 +179,7 @@ const AppNavigator = () => (
       </EventProvider>
       </CourseProvider>
       </ParticipantProvider>
+      </CourseHeaderProvider>
       </TagProvider>
     </SettingsProvider>
   </>

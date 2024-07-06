@@ -33,10 +33,10 @@ const Tab_Layout = () => {
               }
 
               // You can return any component that you like here!
-              return <FontAwesome name={iconName} size={20} color={color} />;
+              return <FontAwesome name={iconName} size={24} color={color} />;
             },
             tabBarActiveTintColor: "#6200EE",
-            tabBarInactiveTintColor: "gray",
+            tabBarInactiveTintColor: "black",
           })}
         >
           <Tab.Screen

@@ -1,19 +1,36 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native'; // Import getFocusedRouteNameFromRoute function
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import Course from './Course';
 import ParticipantsTab from './ParticipantsTab';
 import CourseCustomHeader from './CourseCustomHeader';
+import { useCourseHeader } from '../../../contexts/CourseHeaderContext';
 
 const Tab = createMaterialTopTabNavigator();
 
 const CourseDetails = ({ navigation, route }) => {
-  const activeTab = getFocusedRouteNameFromRoute(route) ?? 'Participants'; // Get focused route name or default to 'Participants'
+  const { headerProps, setHeaderProps, scrollY } = useCourseHeader();
+  const activeTab = getFocusedRouteNameFromRoute(route) ?? 'Participants';
+
+  useEffect(() => {
+    setHeaderProps({
+      activeTab,
+      animateType: 'tab',
+    });
+  }, [activeTab]);
+
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, 50],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
 
   return (
     <View style={styles.container}>
-      <CourseCustomHeader activeTab={activeTab} />
+      <Animated.View style={{ opacity: headerHeight }}>
+        <CourseCustomHeader {...headerProps} />
+      </Animated.View>
       <Tab.Navigator
         initialRouteName="Participants"
         screenOptions={{
