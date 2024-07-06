@@ -1,5 +1,6 @@
-import CoursesBrowse from "./CoursesBrowse";
-import Messages from "./Messages";
+
+import CourseBrowseNestDrawer from "../navigation/CourseBrowseNestDrawer";
+import MessagesNestDrawer from "../navigation/MessagesNestDrawer";
 import More from "./More";
 import Notifications from "./Notifications";
 import * as React from "react";
@@ -49,7 +50,7 @@ const Tab_Layout = () => {
           />
           <Tab.Screen
             name="Courses"
-            component={CoursesBrowse}
+            component={CourseBrowseNestDrawer}
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Courses
@@ -57,7 +58,7 @@ const Tab_Layout = () => {
           />
           <Tab.Screen
             name="Messages"
-            component={Messages}
+            component={MessagesNestDrawer}
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Messages

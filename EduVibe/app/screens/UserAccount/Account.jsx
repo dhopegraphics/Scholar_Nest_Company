@@ -133,7 +133,7 @@ const AccountScreen = ({navigation}) => {
         </View>
         <Divider />
         {/* Update password button */}
-        <TouchableOpacity>
+        <TouchableOpacity  onPress={() => navigation.navigate("ChangePasswordScreen")} >
           <View style={styles.row}>
             <Text style={styles.label}>Update password</Text>
             <Icon name="chevron-right" size={24} />

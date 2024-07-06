@@ -15,7 +15,7 @@ const AppSettings = ({ navigation }) => {
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
               style={ButtonsTextStyle.button}
-              onPress={() => navigation.navigate("GeneralScreen")} // Navigate to GlobalSearch
+              onPress={() => navigation.navigate("General")} // Navigate to GlobalSearch
             >
               <FontAwesome5
                 style={ButtonsTextStyle.icon}

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, Text, View, StatusBar } from 'react-native';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import {  StatusBar } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
 import SignInScreen from '../screens/Auth/SignIn';
 import SignUpScreen from '../screens/Auth/SignUp';
 import Survey from '../screens/IntroScreen/Survey';
@@ -14,14 +12,11 @@ import AvailableCourses from '../screens/Available/AvailableCourses';
 import GlobalSearch from '../screens/MoreScreen/GlobalSearch';
 import Tags from '../screens/MoreScreen/Tags';
 import AppSettings from '../screens/MoreScreen/AppSettings';
-import CoursesBrowse from '../tabs/CoursesBrowse';
-import UserAccountScreen from '../screens/UserAccount/UserAccountScreen';
 import Badges from '../screens/drawer/Badges';
 import Files from '../screens/drawer/Files';
 import SwitchAccount from '../screens/drawer/SwitchAccount';
 import GradesScreen from '../screens/drawer/GradesScreen';
 import Reports from '../screens/drawer/Reports';
-import { drawerStyles } from '../../themes/drawerStyles';
 import EventScreen from '../screens/EventsScreen/EventScreen';
 import { EventProvider } from '../../contexts/EventContext';
 import UpcomingEventsScreen from '../screens/EventsScreen/UpcomingEventsScreen';
@@ -46,8 +41,8 @@ import UserSettings from '../screens/UserAccount/UserSettings';
 import WorkProfile from '../screens/UserAccount/WorkProfile';
 import AccountScreen from '../screens/UserAccount/Account';
 import ChatScreen from '../screens/chat/ChatScreen';
+import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
 
-const Drawer = createDrawerNavigator();
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -74,7 +69,7 @@ export type StackParamList = {
   EventSettings: undefined;
   AnnouncementDetails :undefined;
   AboutScreen: undefined;
-  GeneralScreen :undefined;
+  General :undefined;
   SharedFiles: undefined;
   SpaceUsage:undefined;
   Synchronization: undefined;
@@ -86,6 +81,7 @@ export type StackParamList = {
   WorkProfile :undefined ;
   Account : undefined;
   ChatScreen : undefined;
+  ChangePasswordScreen : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -109,7 +105,6 @@ const MainStackScreen = () => {
       }} />
       <Stack.Screen name="Tags" component={Tags} />
       <Stack.Screen name="AppSettings" component={AppSettings} options={{ headerShown: true }}/>
-      <Stack.Screen name="CoursesBrowse" component={CoursesBrowse} options={{ headerShown: false }} />
       <Stack.Screen name="Badges" component={Badges} />
       <Stack.Screen name="Files" component={Files} options={{ headerShown: false }} />
       <Stack.Screen name="GradesScreen" component={GradesScreen} />
@@ -120,59 +115,23 @@ const MainStackScreen = () => {
       <Stack.Screen name="EventSettings" component={EventSettingsScreen} options={{ headerShown: true }} />
       <Stack.Screen name="AnnouncementDetails" component={AnouncementsDetails} options={{ headerShown: false }} />
       <Stack.Screen name="AboutScreen" component={AboutScreen} />
-      <Stack.Screen name="GeneralScreen" component={GeneralScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="General" component={GeneralScreen} options={{ headerShown: true }} />
       <Stack.Screen name="SharedFiles" component={SharedFiles} options={{ headerShown: true }} />
       <Stack.Screen name="SpaceUsage" component={SpaceUsage} options={{ headerShown: true }} />
       <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: true }} />
       <Stack.Screen name="NewEvent" component={NewEvent} options={{ headerShown: true }} />
-      <Stack.Screen name="Course_Information" component={CourseDetailsDrawerNav} options={{ headerShown: false ,
-      }} />
-
+      <Stack.Screen name="Course_Information" component={CourseDetailsDrawerNav} options={{ headerShown: false , }} />
       <Stack.Screen name="TagDetails" component={TagDetails} options={{ headerShown: true }} />
       <Stack.Screen name="ActivityDetails" component={ActivityDetails} options={{ headerShown: true }} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: true }} />
       <Stack.Screen name="UserSettings" component={UserSettings} options={{ headerShown: false }} />
       <Stack.Screen name="WorkProfile" component={WorkProfile} options={{ headerShown: false }} />
       <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ headerShown: false }} />
    </Stack.Navigator>
   );
 };
 
-const CustomDrawerContent = (props: any) => {
-  const { navigation } = props;
-
-  const handleLogout = () => {
-    // Implement your logout logic here
-    // For example, clearing authentication state or tokens
-    navigation.navigate('SignInScreen'); // Navigate to sign-in screen after logout
-  };
-
-  const DrawerItem = ({ label, destination, iconLeft, iconRight }: { label: string; destination: string; iconLeft: string; iconRight: string }) => (
-    <TouchableOpacity style={drawerStyles.drawerItemContainer} onPress={() => navigation.navigate(destination)}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Ionicons name={iconLeft} size={24} color="black" />
-        <Text style={drawerStyles.drawerItemText}>{label}</Text>
-      </View>
-      <Ionicons name={iconRight} size={24} color="black" style={drawerStyles.rightIcon} />
-    </TouchableOpacity>
-  );
-
-  return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem label="Grades" destination="GradesScreen" iconLeft="school-outline" iconRight="chevron-forward-outline" />
-      <DrawerItem label="Files" destination="Files" iconLeft="document-outline" iconRight="chevron-forward-outline" />
-      <DrawerItem label="Reports" destination="Reports" iconLeft="analytics-outline" iconRight="chevron-forward-outline" />
-      <DrawerItem label="Badges" destination="Badges" iconLeft="medal-outline" iconRight="chevron-forward-outline" />
-      <DrawerItem label="SwitchAccount" destination="SwitchAccount" iconLeft="arrow-redo" iconRight="chevron-forward-outline" />
-
-      <TouchableOpacity onPress={handleLogout} style={drawerStyles.logoutButton}>
-        <Ionicons name="log-out-outline" size={30} color="black" style={drawerStyles.logoutIcon} />
-        <Text style={drawerStyles.logoutText}>Logout</Text>
-      </TouchableOpacity>
-    </DrawerContentScrollView>
-  );
-};
 
 const AppNavigator = () => (
   <>
@@ -184,10 +143,7 @@ const AppNavigator = () => (
     <ParticipantProvider>
     <CourseProvider>
       <EventProvider>
-        <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => <CustomDrawerContent {...props} />} >
-          <Drawer.Screen name="Home" component={MainStackScreen} options={{ headerShown: false , drawerPosition: 'right',}} />
-          <Drawer.Screen name="PROFILE" component={UserAccountScreen} options={{ headerShown: false }} />
-        </Drawer.Navigator>
+       <MainStackScreen/>
       </EventProvider>
       </CourseProvider>
       </ParticipantProvider>

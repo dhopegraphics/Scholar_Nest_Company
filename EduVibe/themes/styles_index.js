@@ -82,6 +82,14 @@ export const CommonStyle = StyleSheet.create({
     marginBottom: 10,
     color: "blue",
   },
+  passwordContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
+    paddingBottom: 120,
+    backgroundColor: "white",
+  },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
