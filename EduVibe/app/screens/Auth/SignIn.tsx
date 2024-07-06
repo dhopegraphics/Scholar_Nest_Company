@@ -18,21 +18,13 @@ import { CommonStyle } from "../../../themes/styles_index";
 type StackParamList = {
   SignUpScreen: undefined;
   Back: undefined;
+  ForgotPasswordForm :undefined;
 };
 
 type LoginScreenNavigationProp = StackNavigationProp<
   StackParamList,
   "SignUpScreen"
 >;
-
-type MainTabScreenNavigationProp = StackNavigationProp<
-  StackParamList,
-  "Back"
->;
-
-interface TabLayoutProps {
-  navigation: MainTabScreenNavigationProp;
-}
 
 interface LoginScreenProps {
   navigation: LoginScreenNavigationProp;
@@ -69,8 +61,9 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleScreenTap}>
+
       <SafeAreaView style={CommonStyle.safeArea}>
+            <TouchableWithoutFeedback onPress={handleScreenTap}>
         <ScrollView
           contentContainerStyle={CommonStyle.scrollViewContent}
           showsVerticalScrollIndicator={false}
@@ -103,7 +96,7 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
             >
               <Text style={CommonStyle.loginButtonText}>Login</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity  onPress={() => navigation.navigate("ForgotPasswordForm")} >
               <Text style={CommonStyle.forgotPassword}>Forgot Password?</Text>
             </TouchableOpacity>
             <View style={CommonStyle.buttonContainer}>
@@ -148,8 +141,9 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
             </View>
           </View>
         </ScrollView>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
-    </TouchableWithoutFeedback>
+  
   );
 };
 

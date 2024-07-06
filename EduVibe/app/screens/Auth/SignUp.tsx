@@ -28,11 +28,9 @@ interface SignUpScreenProps {
   navigation: SignUpScreenNavigationProp;
 }
 
-type SurveyScreenNavigationProp = StackNavigationProp<StackParamList, "Survey">;
 
-interface SurveyScreenProps {
-  navigation: SurveyScreenNavigationProp;
-}
+
+
 
 const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   const [isUsernameFocused, setUsernameFocused] = useState<boolean>(false);
@@ -94,12 +92,13 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleScreenTap}>
+
       <SafeAreaView style={CommonStyle.safeArea}>
         <ScrollView
           contentContainerStyle={CommonStyle.scrollViewContent}
           showsVerticalScrollIndicator={false}
         >
+              <TouchableWithoutFeedback onPress={handleScreenTap}>
           <View style={CommonStyle.container}>
             <Image source={imageExport.logo} style={CommonStyle.logo} />
             <Text style={CommonStyle.loginText}>Sign up</Text>
@@ -175,9 +174,10 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
+          </TouchableWithoutFeedback>
         </ScrollView>
       </SafeAreaView>
-    </TouchableWithoutFeedback>
+
   );
 };
 

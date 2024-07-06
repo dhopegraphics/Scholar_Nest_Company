@@ -42,6 +42,7 @@ import WorkProfile from '../screens/UserAccount/WorkProfile';
 import AccountScreen from '../screens/UserAccount/Account';
 import ChatScreen from '../screens/chat/ChatScreen';
 import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
+import ForgotPasswordForm from '../screens/Auth/ForgotPasswordForm';
 
 
 export type StackParamList = {
@@ -82,6 +83,7 @@ export type StackParamList = {
   Account : undefined;
   ChatScreen : undefined;
   ChangePasswordScreen : undefined;
+  ForgotPasswordForm : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -100,9 +102,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />
       <Stack.Screen name="AvailableCourses" component={AvailableCourses} />
       <Stack.Screen name="GlobalSearch" component={GlobalSearch} options={{ headerShown: true }} />
-      <Stack.Screen name="calendar" component={CalendarDrawer} options={{ 
-        headerShown: false,
-      }} />
+      <Stack.Screen name="calendar" component={CalendarDrawer} options={{ headerShown: false,  }} />
       <Stack.Screen name="Tags" component={Tags} />
       <Stack.Screen name="AppSettings" component={AppSettings} options={{ headerShown: true }}/>
       <Stack.Screen name="Badges" component={Badges} />
@@ -128,6 +128,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="WorkProfile" component={WorkProfile} options={{ headerShown: false }} />
       <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ForgotPasswordForm" component={ForgotPasswordForm} options={{ headerShown: false }} />
    </Stack.Navigator>
   );
 };
