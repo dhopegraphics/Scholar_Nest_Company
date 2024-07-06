@@ -154,9 +154,3 @@ const AppNavigator = () => (
 );
 
 export default AppNavigator;
-
-const styles = {
-  headerButton: {
-    padding: 10,
-  },
-};
