@@ -108,12 +108,12 @@ const CourseDetailsDrawerNav = () => {
             </TouchableOpacity>
           ),
           headerStyle: {
-            height : 20,
+            height : 30,
 
           },
           headerLeftContainerStyle : {
-            marginBottom : -20,
-            marginTop : -80,
+            marginBottom : -40,
+            marginTop : -120,
 
           },
           drawerPosition: "right"
