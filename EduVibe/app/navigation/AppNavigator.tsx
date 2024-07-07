@@ -45,6 +45,7 @@ import ForgotPasswordForm from '../screens/Auth/ForgotPasswordForm';
 import ContactDetailsScreen from '../screens/chat/ContactDetailsScreen';
 import { MessageProvider } from '../../contexts/MessageContext';
 import { UsersProvider } from '../../contexts/UsersContext';
+import { ExperienceProvider } from '../../contexts/ExperienceContext';
 
 
 export type StackParamList = {
@@ -147,6 +148,7 @@ const AppNavigator = () => (
 
     <SettingsProvider>
       <UsersProvider>
+        <ExperienceProvider>
       <MessageProvider>
     <TagProvider>
     <CourseHeaderProvider>
@@ -160,6 +162,7 @@ const AppNavigator = () => (
       </CourseHeaderProvider>
       </TagProvider>
       </MessageProvider>
+      </ExperienceProvider>
       </UsersProvider>
     </SettingsProvider>
   </>

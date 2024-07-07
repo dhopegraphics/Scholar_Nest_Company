@@ -1,14 +1,15 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { useCourseContext } from '../../../contexts/useCourseContext';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useCourseHeader } from '../../../contexts/CourseHeaderContext';
+import CourseField from './CourseField'; // Import your CourseField component
 
 const Course = () => {
   const { course } = useCourseContext();
   const navigation = useNavigation();
-  const { headerProps, setHeaderProps, scrollY } = useCourseHeader();
+  const { setHeaderProps, scrollY } = useCourseHeader();
 
   useEffect(() => {
     setHeaderProps((prevProps) => ({
@@ -25,20 +26,25 @@ const Course = () => {
     navigation.dispatch(DrawerActions.openDrawer());
   };
 
+  // Calculate screen dimensions
+  const { height: screenHeight } = Dimensions.get('window');
+
   return (
     <>
       <Animated.View style={[styles.header]}>
       </Animated.View>
       <Animated.ScrollView
-        contentContainerStyle={styles.scrollViewContent}
+        contentContainerStyle={{ minHeight: screenHeight }} // Ensure minHeight to fill screen
+        style={styles.scrollView}
+        scrollEventThrottle={16} // Adjust scroll event throttle for smoother animation
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: true }
         )}
       >
-        <View style={styles.container}>
-          <Text style={styles.title}>{course.title}</Text>
-          <Text style={styles.creator}>Created by: {course.creator}</Text>
+        {/* Render CourseField with minHeight to fill screen */}
+        <View style={{ minHeight: screenHeight }}>
+          <CourseField />
         </View>
       </Animated.ScrollView>
       <TouchableOpacity style={styles.roundedButton} onPress={handleButtonPress}>
@@ -49,11 +55,8 @@ const Course = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
+  scrollView: {
+    flex: 1,
   },
   container: {
     flex: 1,

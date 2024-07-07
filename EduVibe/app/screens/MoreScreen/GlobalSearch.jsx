@@ -1,28 +1,38 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, TextInput, FlatList, StyleSheet, Text, TouchableOpacity, Animated, ActivityIndicator } from "react-native";
+import { View, TextInput, FlatList, StyleSheet, ActivityIndicator, Animated, Text } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { debounce } from 'lodash';
+import ContactsCard from "../../../components/ContactsCard";
+import { useUsers } from "../../../contexts/UsersContext";
+
 
 const GlobalSearch = () => {
+  const { users } = useUsers(); // Fetch users from context
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const slideAnim = useRef(new Animated.Value(-100)).current;  // Initial value for slide: -100 (off-screen)
+  const slideAnim = useRef(new Animated.Value(-100)).current;
+
+  const handleSearchDebounced = useRef(
+    debounce((text) => {
+      setLoading(true);
+      setTimeout(() => {
+        const results = mockSearchFunction(text);
+        setSearchResults(results);
+        setLoading(false);
+
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }).start();
+      }, 1000);
+    }, 300)
+  ).current;
 
   const handleSearch = (text) => {
     setSearchText(text);
-    setLoading(true);
-
-    setTimeout(() => {
-      const results = mockSearchFunction(text);
-      setSearchResults(results);
-      setLoading(false);
-
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-    }, 1000); // Simulate network delay
+    handleSearchDebounced(text);
   };
 
   const handleResultPress = (item) => {
@@ -31,11 +41,9 @@ const GlobalSearch = () => {
 
   const mockSearchFunction = (query) => {
     if (!query) return [];
-    return [
-      { id: '1', title: 'Result 1' },
-      { id: '2', title: 'Result 2' },
-      { id: '3', title: 'Result 3' }
-    ].filter(item => item.title.toLowerCase().includes(query.toLowerCase()));
+    return users.filter(user =>
+      user.name.toLowerCase().includes(query.toLowerCase())
+    );
   };
 
   useEffect(() => {
@@ -67,9 +75,11 @@ const GlobalSearch = () => {
             data={searchResults}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleResultPress(item)} style={styles.resultItem}>
-                <Text style={styles.resultText}>{item.title}</Text>
-              </TouchableOpacity>
+              <ContactsCard 
+                name={item.name} 
+                img={item.img} 
+                onPress={() => handleResultPress(item)} 
+              />
             )}
             ListEmptyComponent={<Text style={styles.noResultsText}>No results found</Text>}
           />
@@ -106,16 +116,6 @@ const styles = StyleSheet.create({
   },
   resultListContainer: {
     flex: 1,
-  },
-  resultItem: {
-    padding: 16,
-    backgroundColor: "black",
-    borderRadius: 25,
-    margin: 5,
-  },
-  resultText: {
-    fontSize: 16,
-    color: "white",
   },
   noResultsText: {
     textAlign: "center",
