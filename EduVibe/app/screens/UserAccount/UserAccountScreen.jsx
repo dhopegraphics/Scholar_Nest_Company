@@ -29,7 +29,7 @@ const UserAccount = ({ navigation }) => {
           <View style={UserAccountStyling.headerAction}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Back');
+                navigation.goBack();
               }}
             >
               <FeatherIcon name="chevron-left" size={24} />
