@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -15,12 +15,15 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const ChatScreen = () => {
-  const [messages, setMessages] = useState([]); // Start with an empty array for messages
+const ChatScreen = ({ contact }) => {
+  const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
-  const [keyboardHeight] = useState(new Animated.Value(0));
-  const [viewHeight, setViewHeight] = useState(new Animated.Value(0));
-  const paddingAboveKeyboard = 0; // Set to 0 for minimal padding
+  const keyboardHeight = useRef(new Animated.Value(0)).current;
+  const viewHeight = useRef(new Animated.Value(0)).current;
+  const flatListRef = useRef(null);
+
+  const paddingAboveKeyboard = 20; // Adjust padding as needed
+  const minViewHeight = -100; // Adjust minimum view height as needed
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -34,7 +37,10 @@ const ChatScreen = () => {
           }),
           Animated.timing(viewHeight, {
             duration: event.duration,
-            toValue: -event.endCoordinates.height - paddingAboveKeyboard,
+            toValue: Math.max(
+              -event.endCoordinates.height - paddingAboveKeyboard,
+              minViewHeight
+            ),
             useNativeDriver: false,
           }),
         ]).start();
@@ -86,32 +92,42 @@ const ChatScreen = () => {
       };
       setMessages([newMessage, ...messages]);
       setInputText("");
+      
+      // Scroll to bottom after sending a message
+      setTimeout(() => {
+        flatListRef.current.scrollToEnd({ animated: true });
+      }, 100);
     }
   };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Image
-            style={styles.avatar}
-            source={{ uri: "https://placekitten.com/50/50" }} // Placeholder image for the user avatar
-          />
+          <Image style={styles.avatar} source={{ uri: contact?.img }} />
           <View>
-            <Text style={styles.userName}>Nick Miller</Text>
+            <Text style={styles.userName}>{contact?.name}</Text>
             <Text style={styles.lastSeen}>last seen 2m ago</Text>
           </View>
         </View>
         <Animated.View
           style={[
             styles.messageListContainer,
-            { marginBottom: keyboardHeight },
+            {
+              marginBottom: keyboardHeight.interpolate({
+                inputRange: [0, 1000], // Adjust the range as needed
+                outputRange: [0, 1000], // Adjust the values as needed
+                extrapolate: "clamp",
+              }),
+            },
           ]}
         >
           <FlatList
+            ref={flatListRef}
             data={messages}
             keyExtractor={(item) => item.id}
             renderItem={renderMessageItem}

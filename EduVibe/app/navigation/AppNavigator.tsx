@@ -40,9 +40,10 @@ import { CourseHeaderProvider } from '../../contexts/CourseHeaderContext';
 import UserSettings from '../screens/UserAccount/UserSettings';
 import WorkProfile from '../screens/UserAccount/WorkProfile';
 import AccountScreen from '../screens/UserAccount/Account';
-import ChatScreen from '../screens/chat/ChatScreen';
 import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
 import ForgotPasswordForm from '../screens/Auth/ForgotPasswordForm';
+import ContactDetailsScreen from '../screens/chat/ContactDetailsScreen';
+import { ContactProvider } from '../../contexts/ContactContext';
 
 
 export type StackParamList = {
@@ -84,6 +85,7 @@ export type StackParamList = {
   ChatScreen : undefined;
   ChangePasswordScreen : undefined;
   ForgotPasswordForm : undefined;
+  ContactDetailsScreen: { contact: { name: string; img: string } };
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -123,7 +125,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="Course_Information" component={CourseDetailsDrawerNav} options={{ headerShown: false , }} />
       <Stack.Screen name="TagDetails" component={TagDetails} options={{ headerShown: true }} />
       <Stack.Screen name="ActivityDetails" component={ActivityDetails} options={{ headerShown: true }} />
-      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="ContactDetailsScreen" component={ContactDetailsScreen} options={{ headerShown: true }} />
       <Stack.Screen name="UserSettings" component={UserSettings} options={{ headerShown: false }} />
       <Stack.Screen name="WorkProfile" component={WorkProfile} options={{ headerShown: false }} />
       <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
@@ -139,6 +141,7 @@ const AppNavigator = () => (
     <StatusBar barStyle="default" backgroundColor="black" />
 
     <SettingsProvider>
+    <ContactProvider>
     <TagProvider>
     <CourseHeaderProvider>
     <ParticipantProvider>
@@ -150,6 +153,7 @@ const AppNavigator = () => (
       </ParticipantProvider>
       </CourseHeaderProvider>
       </TagProvider>
+      </ContactProvider>
     </SettingsProvider>
   </>
 );

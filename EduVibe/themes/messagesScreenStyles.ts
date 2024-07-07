@@ -78,7 +78,6 @@ const messagesScreenstyles = StyleSheet.create({
   },
   dropdownContent: {
     backgroundColor: 'white',
-    borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,

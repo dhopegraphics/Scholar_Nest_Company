@@ -51,7 +51,7 @@ const CustomButton = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#f1f1f1",
     borderRadius: 10,
     minHeight: 62,
     justifyContent: "center",
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   buttonText: {
-    color: "white",
+    color: "black",
     fontWeight: "700",
   },
   disabledButton: {
