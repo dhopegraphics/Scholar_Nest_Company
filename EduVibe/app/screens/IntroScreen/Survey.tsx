@@ -51,6 +51,7 @@ const Survey: React.FC = () => {
       setSelectedAnswer(null); // Reset selected answer for next question
     } else {
       // Navigate to Tab_Layout after finishing the survey
+      //@ts-ignore
       navigation.navigate("Back");
     }
   };

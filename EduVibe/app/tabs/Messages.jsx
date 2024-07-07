@@ -1,16 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import imageExport from "../../assets/images/imageExport";
 import messagesScreenstyles from "../../themes/messagesScreenStyles";
 import ContactsCard from "../../components/ContactsCard"; // Import the ContactsCard component
-import { ContactContext } from "../../contexts/ContactContext";
 
 const MessagesScreen = ({ navigation }) => {
-  const { setSelectedContact } = useContext(ContactContext);
-  
   const [contacts, setContacts] = useState([
-    { name: 'John Doe', img: imageExport.logo }, // Example with imported image
+    { name: 'John Doe', img: "https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80" }, // Example with imported image
     // Add more contacts with appropriate images
   ]);
 
@@ -72,6 +69,7 @@ const MessagesScreen = ({ navigation }) => {
       <View>
         <TouchableOpacity
           style={messagesScreenstyles.contactItem}
+          
           onPress={() => navigation.navigate("ContactsMainScreen")}
         >
           <Icon name="contacts" style={messagesScreenstyles.ContactIcon} size={30} color="black" />

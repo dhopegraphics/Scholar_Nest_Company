@@ -43,7 +43,6 @@ import AccountScreen from '../screens/UserAccount/Account';
 import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
 import ForgotPasswordForm from '../screens/Auth/ForgotPasswordForm';
 import ContactDetailsScreen from '../screens/chat/ContactDetailsScreen';
-import { ContactProvider } from '../../contexts/ContactContext';
 
 
 export type StackParamList = {
@@ -141,7 +140,7 @@ const AppNavigator = () => (
     <StatusBar barStyle="default" backgroundColor="black" />
 
     <SettingsProvider>
-    <ContactProvider>
+
     <TagProvider>
     <CourseHeaderProvider>
     <ParticipantProvider>
@@ -153,7 +152,7 @@ const AppNavigator = () => (
       </ParticipantProvider>
       </CourseHeaderProvider>
       </TagProvider>
-      </ContactProvider>
+
     </SettingsProvider>
   </>
 );

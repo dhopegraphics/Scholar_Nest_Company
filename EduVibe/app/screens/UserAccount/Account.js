@@ -13,11 +13,11 @@ import { Divider } from "react-native-paper";
 import CountryPicker from "react-native-country-picker-modal";
 
 const AccountScreen = ({navigation}) => {
-  const [username, setUsername] = useState("@johndoe");
-  const [name, setName] = useState("John Doe");
-  const [phone, setPhone] = useState("(123) 456-7890");
-  const [birthday, setBirthday] = useState("May 5th, 1996");
-  const [country, setCountry] = useState("United States");
+  const [username, setUsername] = useState(" ");
+  const [name, setName] = useState(" ");
+  const [phone, setPhone] = useState(" ");
+  const [birthday, setBirthday] = useState(" ");
+  const [country, setCountry] = useState(" ");
   const [email, setEmail] = useState("john@example.com");
   const [countryCode, setCountryCode] = useState("US"); // Default country code
 

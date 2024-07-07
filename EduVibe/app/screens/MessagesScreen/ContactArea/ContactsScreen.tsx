@@ -1,4 +1,4 @@
-import React, { useState, useRef,  } from "react";
+import React, { useState, useRef } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Keyboard, TouchableWithoutFeedback, Animated } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -11,11 +11,13 @@ const Tab = createMaterialTopTabNavigator();
 type ContactsMainScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
-
-const ContactsTabs = () => {
+//@ts-ignore
+const ContactsTabs = ({ searchText }) => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Contacts" component={ContactsScreen} />
+      <Tab.Screen name="Contacts">
+        {() => <ContactsScreen searchText={searchText} />}
+      </Tab.Screen>
       <Tab.Screen name="Requests" component={RequestsScreen} />
     </Tab.Navigator>
   );
@@ -46,8 +48,8 @@ const ContactsMainScreen: React.FC<ContactsMainScreenProps> = ({ navigation }) =
       useNativeDriver: false,
     }).start(() => {
       setIsSearchVisible(false);
-      Keyboard.dismiss(); // Dismiss the keyboard
-      setSearchText(""); // Clear search text when closing
+      Keyboard.dismiss();
+      setSearchText("");
     });
   };
 
@@ -77,7 +79,7 @@ const ContactsMainScreen: React.FC<ContactsMainScreenProps> = ({ navigation }) =
             />
           </Animated.View>
         )}
-        <ContactsTabs />
+        <ContactsTabs searchText={searchText} />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f8f8",
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
-    overflow: "hidden", // Ensure content is hidden during animation
+    overflow: "hidden",
   },
   searchInput: {
     height: 40,
