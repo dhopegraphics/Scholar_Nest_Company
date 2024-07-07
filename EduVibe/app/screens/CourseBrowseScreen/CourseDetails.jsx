@@ -32,7 +32,7 @@ const CourseDetails = ({ navigation, route }) => {
         <CourseCustomHeader {...headerProps} />
       </Animated.View>
       <Tab.Navigator
-        initialRouteName="Participants"
+        initialRouteName="Course"
         screenOptions={{
           activeTintColor: '#6200ee',
           inactiveTintColor: 'gray',

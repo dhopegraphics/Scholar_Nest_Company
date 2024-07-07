@@ -16,21 +16,8 @@ const NoNotificationsState = () => {
         <View style={styles.header}>
           <View style={styles.headerTop}>
             <View style={styles.headerAction} />
-
-            <View style={styles.headerAction}>
-              <TouchableOpacity
-                onPress={() => {
-                  // handle onPress
-                }}>
-                <FeatherIcon
-                  color="#266EF1"
-                  name="user-plus"
-                  size={21} />
-              </TouchableOpacity>
-            </View>
           </View>
 
-          <Text style={styles.headerTitle}>Notifications</Text>
         </View>
 
         <View style={styles.empty}>

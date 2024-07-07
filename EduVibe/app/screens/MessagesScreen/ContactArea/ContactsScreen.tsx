@@ -64,6 +64,7 @@ const ContactsMainScreen: React.FC<ContactsMainScreenProps> = ({ navigation }) =
           <TouchableOpacity onPress={toggleSearchBar}>
             <Icon name="search" size={30} color="#000" />
           </TouchableOpacity>
+          
         </View>
         {isSearchVisible && (
           <Animated.View style={[styles.searchBar, { height: animatedHeight }]}>

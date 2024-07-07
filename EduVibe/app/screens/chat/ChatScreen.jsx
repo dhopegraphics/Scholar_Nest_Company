@@ -54,8 +54,14 @@ const ChatScreen = ({ contact }) => {
         item.sender === "me" ? styles.myMessage : styles.theirMessage,
       ]}
     >
-      <Text style={styles.messageText}>{item.text}</Text>
-      {item.time && <Text style={styles.timeText}>{item.time}</Text>}
+      <Text style={item.sender === "me" ? styles.myMessageText : styles.theirMessageText}>
+        {item.text}
+      </Text>
+      {item.time && (
+        <Text style={item.sender === "me" ? styles.myTimeText : styles.theirTimeText}>
+          {item.time}
+        </Text>
+      )}
     </View>
   );
 
@@ -77,7 +83,7 @@ const ChatScreen = ({ contact }) => {
           <Image style={styles.avatar} source={{ uri: contact?.img }} />
           <View>
             <Text style={styles.userName}>{contact?.name}</Text>
-            <Text style={styles.lastSeen}>last seen 2m ago</Text>
+            <Text style={styles.lastSeen}>Last seen 2m ago</Text>
           </View>
         </View>
         <FlatList
@@ -136,8 +142,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   messageContainer: {
-    padding: 10,
     borderRadius: 20,
+    padding: 10,
     marginVertical: 5,
     maxWidth: "70%",
   },
@@ -149,14 +155,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#e5e5ea",
     alignSelf: "flex-start",
   },
-  messageText: {
+  myMessageText: {
     color: "#fff",
   },
-  timeText: {
+  theirMessageText: {
+    color: "#000",
+  },
+  myTimeText: {
     color: "#fff",
     fontSize: 10,
     marginTop: 5,
     alignSelf: "flex-end",
+  },
+  theirTimeText: {
+    color: "#000",
+    fontSize: 10,
+    marginTop: 5,
+    alignSelf: "flex-start",
   },
   inputContainer: {
     flexDirection: "row",

@@ -17,17 +17,29 @@ export const UsersProvider = ({ children }) => {
     setUsers([
       {
         id: '1',
-        img: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80',
+        img: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
         name: 'Bell Burgess',
         phone: '+1 (887) 478-2693',
+        NoteCount: 44,
+        duration: 10,
       },
       {
         id: '2',
         img: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80',
         name: 'Bernard Baker',
         phone: '+1 (862) 581-3022',
+        NoteCount: 22,
+        duration: 10,
       },
-      // Add more users with unique IDs
+      {
+        id: '3',
+        img: 'https://images.unsplash.com/photo-1597347316205-36f6c451902a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
+        name: 'Grace',
+        phone: '+1 (913) 497-2020',
+        NoteCount: 12,
+        duration: 15,
+      },
+      // Add more users with unique IDs and additional information
     ]);
   }, []);
 

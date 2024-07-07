@@ -7,7 +7,7 @@ const CourseCustomHeader = ({ activeTab, animateType }) => {
 
   useEffect(() => {
     if (animateType === 'tab') {
-      if (activeTab === 'Participants') {
+      if (activeTab !== 'Course') {
         Animated.timing(marginAnim, {
           toValue: -130,
           duration: 100,
