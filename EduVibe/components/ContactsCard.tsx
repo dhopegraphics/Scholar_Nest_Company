@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, ImageSourcePropType } from 'react-native';
+import {  Text, TouchableOpacity, Image, StyleSheet,  } from 'react-native';
 
 interface ContactsCardProps {
   name: string;

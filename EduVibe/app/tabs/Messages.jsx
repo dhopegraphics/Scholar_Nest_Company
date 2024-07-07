@@ -1,33 +1,24 @@
-// MessagesScreen.tsx
-import React from "react";
-import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet } from "react-native";
+import React, { useContext, useState } from "react";
+import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StackParamList } from "../navigation/AppNavigator";
 import imageExport from "../../assets/images/imageExport";
 import messagesScreenstyles from "../../themes/messagesScreenStyles";
-import ContactsCard from "../../components/ContactsCard";
+import ContactsCard from "../../components/ContactsCard"; // Import the ContactsCard component
+import { ContactContext } from "../../contexts/ContactContext";
 
-interface MessagesScreenProps {
-  navigation: NativeStackNavigationProp<StackParamList, "MessagesScreen">;
-}
-
-interface Contact {
-  name: string;
-  img: any; // Adjust the type based on how you handle images
-}
-
-const MessagesScreen: React.FC<MessagesScreenProps> = ({ navigation }) => {
-  const contacts: Contact[] = [
+const MessagesScreen = ({ navigation }) => {
+  const { setSelectedContact } = useContext(ContactContext);
+  
+  const [contacts, setContacts] = useState([
     { name: 'John Doe', img: imageExport.logo }, // Example with imported image
     // Add more contacts with appropriate images
-  ];
+  ]);
 
-  const [searchText, setSearchText] = React.useState("");
-  const [showSearchBar, setShowSearchBar] = React.useState(false);
-  const [dropdown1Open, setDropdown1Open] = React.useState(false);
-  const [dropdown2Open, setDropdown2Open] = React.useState(false);
-  const [dropdown3Open, setDropdown3Open] = React.useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [dropdown1Open, setDropdown1Open] = useState(false);
+  const [dropdown2Open, setDropdown2Open] = useState(false);
+  const [dropdown3Open, setDropdown3Open] = useState(false);
 
   const handleSearch = () => {
     console.log("Searching for:", searchText);
@@ -72,7 +63,7 @@ const MessagesScreen: React.FC<MessagesScreenProps> = ({ navigation }) => {
               onBlur={() => setShowSearchBar(false)}
             />
           )}
-          {/* @ts-ignore */}
+        
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <Image source={imageExport.logo} style={messagesScreenstyles.profileIcon} />
           </TouchableOpacity>
@@ -99,6 +90,7 @@ const MessagesScreen: React.FC<MessagesScreenProps> = ({ navigation }) => {
         </TouchableOpacity>
         {dropdown1Open && (
           <View style={messagesScreenstyles.dropdownContent}>
+            {/* Use ContactsCard component here */}
             {contacts.map((contact, index) => (
               <ContactsCard
                 key={index}
