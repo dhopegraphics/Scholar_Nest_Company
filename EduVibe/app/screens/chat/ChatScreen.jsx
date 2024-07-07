@@ -22,8 +22,8 @@ const ChatScreen = ({ contact }) => {
   const viewHeight = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef(null);
 
-  const paddingAboveKeyboard = 20; // Adjust padding as needed
-  const minViewHeight = -100; // Adjust minimum view height as needed
+  const paddingAboveKeyboard = 10;
+  const minViewHeight = -100;
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -32,15 +32,12 @@ const ChatScreen = ({ contact }) => {
         Animated.parallel([
           Animated.timing(keyboardHeight, {
             duration: event.duration,
-            toValue: event.endCoordinates.height,
+            toValue: event.endCoordinates.height + paddingAboveKeyboard,
             useNativeDriver: false,
           }),
           Animated.timing(viewHeight, {
             duration: event.duration,
-            toValue: Math.max(
-              -event.endCoordinates.height - paddingAboveKeyboard,
-              minViewHeight
-            ),
+            toValue: minViewHeight,
             useNativeDriver: false,
           }),
         ]).start();
@@ -90,10 +87,10 @@ const ChatScreen = ({ contact }) => {
         sender: "me",
         time: new Date().toLocaleTimeString(),
       };
+
       setMessages([newMessage, ...messages]);
       setInputText("");
-      
-      // Scroll to bottom after sending a message
+
       setTimeout(() => {
         flatListRef.current.scrollToEnd({ animated: true });
       }, 100);

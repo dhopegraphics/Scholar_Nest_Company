@@ -1,5 +1,5 @@
 import React from 'react';
-import {  Text, TouchableOpacity, Image, StyleSheet,  } from 'react-native';
+import { Text, TouchableOpacity, Image, StyleSheet, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 
 interface ContactsCardProps {
   name: string;
@@ -21,7 +21,13 @@ const ContactsCard: React.FC<ContactsCardProps> = ({ name, img, onPress }) => {
   );
 };
 
-const styles = StyleSheet.create({
+interface Style {
+    card: ViewStyle;
+    image: ImageStyle;
+    name: TextStyle;
+  }
+
+const styles = StyleSheet.create<Style>({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -33,12 +39,10 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     marginRight: 10,
-    borderColor : "black",
-    borderWidth : 1,
   },
   name: {
     fontSize: 16,
-    fontWeight : "bold"
+    fontWeight: 'bold',
   },
 });
 

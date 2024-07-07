@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import imageExport from "../../assets/images/imageExport";
 import messagesScreenstyles from "../../themes/messagesScreenStyles";
 import ContactsCard from "../../components/ContactsCard"; // Import the ContactsCard component
+import { useUsers } from "../../contexts/UsersContext";
 
 const MessagesScreen = ({ navigation }) => {
-  const [contacts, setContacts] = useState([
-    { name: 'John Doe', img: "https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80" }, // Example with imported image
-    // Add more contacts with appropriate images
-  ]);
+  const { users } = useUsers(); // Access users data from UsersContext
 
   const [searchText, setSearchText] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -66,72 +64,75 @@ const MessagesScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View>
-        <TouchableOpacity
-          style={messagesScreenstyles.contactItem}
-          
-          onPress={() => navigation.navigate("ContactsMainScreen")}
-        >
-          <Icon name="contacts" style={messagesScreenstyles.ContactIcon} size={30} color="black" />
-          <Text style={messagesScreenstyles.contactText}>Contacts</Text>
-          <Icon style={messagesScreenstyles.rightIcon} name="chevron-right" size={30} color="gray" />
-        </TouchableOpacity>
+      
+      {/* Wrap your content inside ScrollView */}
+      <ScrollView>
+        <View>
+          <TouchableOpacity
+            style={messagesScreenstyles.contactItem}
+            onPress={() => navigation.navigate("ContactsMainScreen")}
+          >
+            <Icon name="contacts" style={messagesScreenstyles.ContactIcon} size={30} color="black" />
+            <Text style={messagesScreenstyles.contactText}>Contacts</Text>
+            <Icon style={messagesScreenstyles.rightIcon} name="chevron-right" size={30} color="gray" />
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={toggleDropdown1} style={messagesScreenstyles.dropdownButton}>
-          <Text style={messagesScreenstyles.dropdownButtonText}>Starred</Text>
-          <Icon
-            name={dropdown1Open ? "keyboard-arrow-down" : "keyboard-arrow-right"}
-            style={messagesScreenstyles.dropdownIcon}
-            size={30}
-            color="#ffffff"
-          />
-        </TouchableOpacity>
-        {dropdown1Open && (
-          <View style={messagesScreenstyles.dropdownContent}>
-            {/* Use ContactsCard component here */}
-            {contacts.map((contact, index) => (
-              <ContactsCard
-                key={index}
-                name={contact.name}
-                img={contact.img}
-                onPress={() => {
-                  navigation.navigate("ContactDetailsScreen", { contact });
-                }}
-              />
-            ))}
-          </View>
-        )}
+          <TouchableOpacity onPress={toggleDropdown1} style={messagesScreenstyles.dropdownButton}>
+            <Text style={messagesScreenstyles.dropdownButtonText}>Starred</Text>
+            <Icon
+              name={dropdown1Open ? "keyboard-arrow-down" : "keyboard-arrow-right"}
+              style={messagesScreenstyles.dropdownIcon}
+              size={30}
+              color="#ffffff"
+            />
+          </TouchableOpacity>
+          {dropdown1Open && (
+            <View style={messagesScreenstyles.dropdownContent}>
+              {/* Use ContactsCard component here */}
+              {users.map((user, index) => (
+                <ContactsCard
+                  key={index}
+                  name={user.name}
+                  img={user.img}
+                  onPress={() => {
+                    navigation.navigate("ContactDetailsScreen", { contact: user }); // Pass user object to ContactDetailsScreen
+                  }}
+                />
+              ))}
+            </View>
+          )}
 
-        <TouchableOpacity onPress={toggleDropdown2} style={messagesScreenstyles.dropdownButton}>
-          <Text style={messagesScreenstyles.dropdownButtonText}>Group</Text>
-          <Icon
-            name={dropdown2Open ? "keyboard-arrow-down" : "keyboard-arrow-right"}
-            style={messagesScreenstyles.dropdownIcon}
-            size={30}
-            color="#ffffff"
-          />
-        </TouchableOpacity>
-        {dropdown2Open && (
-          <View style={messagesScreenstyles.dropdownContent}>
-            <Text>Dropdown 2 content here</Text>
-          </View>
-        )}
+          <TouchableOpacity onPress={toggleDropdown2} style={messagesScreenstyles.dropdownButton}>
+            <Text style={messagesScreenstyles.dropdownButtonText}>Group</Text>
+            <Icon
+              name={dropdown2Open ? "keyboard-arrow-down" : "keyboard-arrow-right"}
+              style={messagesScreenstyles.dropdownIcon}
+              size={30}
+              color="#ffffff"
+            />
+          </TouchableOpacity>
+          {dropdown2Open && (
+            <View style={messagesScreenstyles.dropdownContent}>
+              <Text>Dropdown 2 content here</Text>
+            </View>
+          )}
 
-        <TouchableOpacity onPress={toggleDropdown3} style={messagesScreenstyles.dropdownButton}>
-          <Text style={messagesScreenstyles.dropdownButtonText}>Private</Text>
-          <Icon
-            name={dropdown3Open ? "keyboard-arrow-down" : "keyboard-arrow-right"}
-            style={messagesScreenstyles.dropdownIcon}
-            size={30}
-            color="#ffffff"
-          />
-        </TouchableOpacity>
-        {dropdown3Open && (
-          <View style={messagesScreenstyles.dropdownContent}>
-            <Text>Dropdown 3 content here</Text>
-          </View>
-        )}
-      </View>
+          <TouchableOpacity onPress={toggleDropdown3} style={messagesScreenstyles.dropdownButton}>
+            <Text style={messagesScreenstyles.dropdownButtonText}>Private</Text>
+            <Icon
+              name={dropdown3Open ? "keyboard-arrow-down" : "keyboard-arrow-right"}
+              style={messagesScreenstyles.dropdownIcon}
+              size={30}
+              color="#ffffff"
+            />
+          </TouchableOpacity>
+          {dropdown3Open && (
+            <View style={messagesScreenstyles.dropdownContent}>
+              <Text>Dropdown 3 content here</Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };

@@ -64,6 +64,7 @@ const Tab_Layout = () => {
               headerShown: false, // Hide header for Messages
             }}
           />
+
           <Tab.Screen
             name="Notifications"
             component={Notifications}

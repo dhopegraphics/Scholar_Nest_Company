@@ -43,6 +43,8 @@ import AccountScreen from '../screens/UserAccount/Account';
 import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
 import ForgotPasswordForm from '../screens/Auth/ForgotPasswordForm';
 import ContactDetailsScreen from '../screens/chat/ContactDetailsScreen';
+import { MessageProvider } from '../../contexts/MessageContext';
+import { UsersProvider } from '../../contexts/UsersContext';
 
 
 export type StackParamList = {
@@ -93,6 +95,9 @@ const MainStackScreen = () => {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   return (
+    <UsersProvider> 
+
+
     <Stack.Navigator initialRouteName="SignInScreen" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SignInScreen" component={SignInScreen} />
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
@@ -131,6 +136,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ForgotPasswordForm" component={ForgotPasswordForm} options={{ headerShown: false }} />
    </Stack.Navigator>
+   </UsersProvider>
   );
 };
 
@@ -140,7 +146,8 @@ const AppNavigator = () => (
     <StatusBar barStyle="default" backgroundColor="black" />
 
     <SettingsProvider>
-
+      <UsersProvider>
+      <MessageProvider>
     <TagProvider>
     <CourseHeaderProvider>
     <ParticipantProvider>
@@ -152,7 +159,8 @@ const AppNavigator = () => (
       </ParticipantProvider>
       </CourseHeaderProvider>
       </TagProvider>
-
+      </MessageProvider>
+      </UsersProvider>
     </SettingsProvider>
   </>
 );
