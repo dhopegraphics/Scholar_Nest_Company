@@ -1,71 +1,51 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-  Animated,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView, Platform, Keyboard, Animated } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChatScreen = ({ contact }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
-  const keyboardHeight = useRef(new Animated.Value(0)).current;
-  const viewHeight = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef(null);
 
-  const paddingAboveKeyboard = 10;
-  const minViewHeight = -100;
-
   useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      (event) => {
-        Animated.parallel([
-          Animated.timing(keyboardHeight, {
-            duration: event.duration,
-            toValue: event.endCoordinates.height + paddingAboveKeyboard,
-            useNativeDriver: false,
-          }),
-          Animated.timing(viewHeight, {
-            duration: event.duration,
-            toValue: minViewHeight,
-            useNativeDriver: false,
-          }),
-        ]).start();
+    const fetchMessages = async () => {
+      try {
+        const storedMessages = await AsyncStorage.getItem(`messages_${contact.id}`);
+        if (storedMessages) {
+          setMessages(JSON.parse(storedMessages));
+        }
+      } catch (error) {
+        console.error('Error fetching messages:', error.message);
       }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      (event) => {
-        Animated.parallel([
-          Animated.timing(keyboardHeight, {
-            duration: event.duration,
-            toValue: 0,
-            useNativeDriver: false,
-          }),
-          Animated.timing(viewHeight, {
-            duration: event.duration,
-            toValue: 0,
-            useNativeDriver: false,
-          }),
-        ]).start();
-      }
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
     };
-  }, [keyboardHeight, viewHeight]);
+
+    fetchMessages();
+  }, [contact]);
+
+  const saveMessage = async () => {
+    if (inputText.trim().length > 0) {
+      const newMessage = {
+        id: (messages.length + 1).toString(),
+        text: inputText,
+        sender: "me",
+        time: new Date().toLocaleTimeString(),
+      };
+
+      const updatedMessages = [newMessage, ...messages];
+      setMessages(updatedMessages);
+      setInputText("");
+
+      try {
+        await AsyncStorage.setItem(`messages_${contact.id}`, JSON.stringify(updatedMessages));
+      } catch (error) {
+        console.error('Error saving message:', error.message);
+      }
+
+      // Scroll to the end of the list after adding a new message
+      flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+    }
+  };
 
   const renderMessageItem = ({ item }) => (
     <View
@@ -79,23 +59,12 @@ const ChatScreen = ({ contact }) => {
     </View>
   );
 
-  const handleSend = () => {
-    if (inputText.trim().length > 0) {
-      const newMessage = {
-        id: (messages.length + 1).toString(),
-        text: inputText,
-        sender: "me",
-        time: new Date().toLocaleTimeString(),
-      };
-
-      setMessages([newMessage, ...messages]);
-      setInputText("");
-
-      setTimeout(() => {
-        flatListRef.current.scrollToEnd({ animated: true });
-      }, 100);
-    }
-  };
+  // Custom getItemLayout function to improve scroll performance
+  const getItemLayout = (data, index) => ({
+    length: 80, // Height of each item
+    offset: 80 * index,
+    index,
+  });
 
   return (
     <KeyboardAvoidingView
@@ -111,44 +80,27 @@ const ChatScreen = ({ contact }) => {
             <Text style={styles.lastSeen}>last seen 2m ago</Text>
           </View>
         </View>
-        <Animated.View
-          style={[
-            styles.messageListContainer,
-            {
-              marginBottom: keyboardHeight.interpolate({
-                inputRange: [0, 1000], // Adjust the range as needed
-                outputRange: [0, 1000], // Adjust the values as needed
-                extrapolate: "clamp",
-              }),
-            },
-          ]}
-        >
-          <FlatList
-            ref={flatListRef}
-            data={messages}
-            keyExtractor={(item) => item.id}
-            renderItem={renderMessageItem}
-            style={styles.messageList}
-            contentContainerStyle={{ padding: 10 }}
-            inverted
-          />
-        </Animated.View>
-        <Animated.View
-          style={[
-            styles.inputContainer,
-            { transform: [{ translateY: viewHeight }] },
-          ]}
-        >
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={renderMessageItem}
+          style={styles.messageList}
+          contentContainerStyle={{ paddingVertical: 10 }}
+          inverted
+          getItemLayout={getItemLayout} // Specify custom getItemLayout for performance
+        />
+        <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             value={inputText}
             onChangeText={setInputText}
             placeholder="Type a message..."
           />
-          <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
+          <TouchableOpacity onPress={saveMessage} style={styles.sendButton}>
             <Icon name="send" size={24} color="white" />
           </TouchableOpacity>
-        </Animated.View>
+        </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -179,9 +131,6 @@ const styles = StyleSheet.create({
   lastSeen: {
     fontSize: 12,
     color: "#888",
-  },
-  messageListContainer: {
-    flex: 1,
   },
   messageList: {
     flex: 1,

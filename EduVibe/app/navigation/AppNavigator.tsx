@@ -129,7 +129,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="Course_Information" component={CourseDetailsDrawerNav} options={{ headerShown: false , }} />
       <Stack.Screen name="TagDetails" component={TagDetails} options={{ headerShown: true }} />
       <Stack.Screen name="ActivityDetails" component={ActivityDetails} options={{ headerShown: true }} />
-      <Stack.Screen name="ContactDetailsScreen" component={ContactDetailsScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="ContactDetailsScreen" component={ContactDetailsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="UserSettings" component={UserSettings} options={{ headerShown: false }} />
       <Stack.Screen name="WorkProfile" component={WorkProfile} options={{ headerShown: false }} />
       <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
