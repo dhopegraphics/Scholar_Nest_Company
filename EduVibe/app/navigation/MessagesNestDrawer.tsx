@@ -4,7 +4,8 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '
 import { Ionicons } from '@expo/vector-icons';
 import { drawerStyles } from '../../themes/drawerStyles';
 import MessagesScreen from '../tabs/Messages';
-import UserAccountScreen from '../screens/UserAccount/UserAccountScreen';
+
+import MainUserAccountScreen from '../screens/UserAccount/MainUserAccountScreen';
 import { UsersProvider } from '../../contexts/UsersContext';
 
 const Drawer = createDrawerNavigator();
@@ -50,7 +51,7 @@ const MessagesNestDrawer = () => {
     <UsersProvider>
      <Drawer.Navigator initialRouteName="MessagesScreen" drawerContent={(props) => <CustomDrawerContent {...props} />} >
           <Drawer.Screen name="MessagesScreen" component={MessagesScreen} options={{ headerShown: false , drawerPosition: 'right',}} />
-          <Drawer.Screen name="Profile" component={UserAccountScreen} options={{ headerShown: false }} />
+          <Drawer.Screen name="Profile" component={MainUserAccountScreen} options={{ headerShown: false }} />
         </Drawer.Navigator>
         </UsersProvider>
   )

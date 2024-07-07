@@ -46,6 +46,7 @@ import ContactDetailsScreen from '../screens/chat/ContactDetailsScreen';
 import { MessageProvider } from '../../contexts/MessageContext';
 import { UsersProvider } from '../../contexts/UsersContext';
 import { ExperienceProvider } from '../../contexts/ExperienceContext';
+import UserAccount from '../screens/UserAccount/UserAccountScreen';
 
 
 export type StackParamList = {
@@ -88,6 +89,7 @@ export type StackParamList = {
   ChangePasswordScreen : undefined;
   ForgotPasswordForm : undefined;
   ContactDetailsScreen: { contact: { name: string; img: string } };
+  UserAccount : undefined ;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -135,7 +137,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="WorkProfile" component={WorkProfile} options={{ headerShown: false }} />
       <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="ForgotPasswordForm" component={ForgotPasswordForm} options={{ headerShown: false }} />
+      <Stack.Screen name="UserAccount" component={UserAccount} options={{ headerShown: false }} />
    </Stack.Navigator>
    </UsersProvider>
   );
@@ -143,6 +145,7 @@ const MainStackScreen = () => {
 
 
 const AppNavigator = () => (
+  
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
 

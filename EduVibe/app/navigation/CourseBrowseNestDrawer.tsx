@@ -4,7 +4,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '
 import { Ionicons } from '@expo/vector-icons';
 import { drawerStyles } from '../../themes/drawerStyles';
 import CoursesBrowse from '../tabs/CoursesBrowse';
-import UserAccountScreen from '../screens/UserAccount/UserAccountScreen';
+import MainUserAccountScreen from '../screens/UserAccount/MainUserAccountScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -48,7 +48,7 @@ const CourseBrowseNestDrawer = () => {
   return (
      <Drawer.Navigator initialRouteName="CoursesBrowse" drawerContent={(props) => <CustomDrawerContent {...props} />} >
           <Drawer.Screen name="CoursesBrowse" component={CoursesBrowse} options={{ headerShown: false , drawerPosition: 'right',}} />
-          <Drawer.Screen name="Profile" component={UserAccountScreen} options={{ headerShown: false }} />
+          <Drawer.Screen name="Profile" component={MainUserAccountScreen} options={{ headerShown: false }} />
         </Drawer.Navigator>
   )
 }

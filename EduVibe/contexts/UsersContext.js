@@ -15,6 +15,11 @@ export const UsersProvider = ({ children }) => {
       { label: 'Job Type', value: 'Full Time' },
       { label: 'Experience', value: '6 years' },
     ],
+    '2': [
+      { label: 'Location', value: 'Ghana' },
+      { label: 'Job Type', value: 'Part Time' },
+      { label: 'Experience', value: '5 years' },
+    ],
   };
 
   // Fetch or set the data for users
@@ -31,6 +36,18 @@ export const UsersProvider = ({ children }) => {
         portfolio: 'UI/UX Designer',
         bio:
           'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.',
+      },
+
+      {
+        id: '2',
+        img: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
+        name: 'Papaa',
+        phone: '+1 (887) 478-2693',
+        NoteCount: 20,
+        duration: 20,
+        portfolio: 'Graphics Designer',
+        bio:
+          'Skilled in design, prototyping, and collaborating with cross-functional teams.',
       },
       // Add more users with unique IDs and additional information
     ]);

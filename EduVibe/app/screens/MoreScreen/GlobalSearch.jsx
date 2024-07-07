@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, TextInput, FlatList, StyleSheet, ActivityIndicator, Animated, Text } from "react-native";
+import { View, TextInput, FlatList, StyleSheet, ActivityIndicator, Animated, Text, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { debounce } from 'lodash';
 import ContactsCard from "../../../components/ContactsCard";
 import { useUsers } from "../../../contexts/UsersContext";
-
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
 const GlobalSearch = () => {
   const { users } = useUsers(); // Fetch users from context
@@ -12,6 +12,7 @@ const GlobalSearch = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const slideAnim = useRef(new Animated.Value(-100)).current;
+  const navigation = useNavigation(); // Get navigation object from the hook
 
   const handleSearchDebounced = useRef(
     debounce((text) => {
@@ -37,6 +38,7 @@ const GlobalSearch = () => {
 
   const handleResultPress = (item) => {
     console.log("Item clicked:", item);
+    navigation.navigate('UserAccount', { userId: item.id }); // Navigate to UserAccount with userId as a parameter
   };
 
   const mockSearchFunction = (query) => {
@@ -75,11 +77,13 @@ const GlobalSearch = () => {
             data={searchResults}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <ContactsCard 
-                name={item.name} 
-                img={item.img} 
-                onPress={() => handleResultPress(item)} 
-              />
+              <TouchableOpacity onPress={() => handleResultPress(item)}>
+                <ContactsCard 
+                  name={item.name} 
+                  img={item.img} 
+                  onPress={() => handleResultPress(item)}
+                />
+              </TouchableOpacity>
             )}
             ListEmptyComponent={<Text style={styles.noResultsText}>No results found</Text>}
           />

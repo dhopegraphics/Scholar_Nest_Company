@@ -16,11 +16,12 @@ import { UserAccountStyling } from '../../../themes/UserAccountStyle';
 
 const tags = ['ios', 'android', 'web', 'ui', 'ux'];
 
-const UserAccount = ({ navigation }) => {
+const UserAccount = ({ navigation, route }) => {
   const { users, stats } = useUsers(); // Fetch users and stats from context
+  const { userId } = route.params; // Get userId from navigation route
 
-  // Find the user with ID '1'
-  const currentUser = users.find((user) => user.id === '1');
+  // Find the user with the specified userId
+  const currentUser = users.find((user) => user.id === userId);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -112,8 +113,8 @@ const UserAccount = ({ navigation }) => {
             </View>
 
             <View style={UserAccountStyling.stats}>
-              {stats['1'] &&
-                stats['1'].map((stat, index) => (
+              {stats[userId] &&
+                stats[userId].map((stat, index) => (
                   <View
                     key={index}
                     style={[
