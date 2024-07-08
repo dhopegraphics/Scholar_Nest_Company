@@ -16,7 +16,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Appbar } from "react-native-paper";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useTagContext } from "../../../contexts/useTagContext";
+
+import { useTagContext } from "../../../contexts/TagContext";
 import { TagStyles } from "../../../themes/TagStyling";
 
 const Tags = ({ navigation }) => {

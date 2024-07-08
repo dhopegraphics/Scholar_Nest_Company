@@ -3,11 +3,12 @@ import {  StatusBar } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from '../screens/Auth/SignIn';
 import SignUpScreen from '../screens/Auth/SignUp';
-import Survey from '../screens/IntroScreen/Survey';
+
+import SurveyScreen from '../screens/IntroScreen/Survey';
 import Tab_Layout from '../tabs/Tab_Layout';
 import MessagesScreen from '../tabs/Messages';
 import ContactsMainScreen from '../screens/MessagesScreen/ContactArea/ContactsScreen';
-import QrCodeScanner from '../screens/MoreScreen/QRCodeScannerScreen';
+import CourseUploadsScreen from '../screens/MoreScreen/CourseUploadsScreen';
 import AvailableCourses from '../screens/Available/AvailableCourses';
 import GlobalSearch from '../screens/MoreScreen/GlobalSearch';
 import Tags from '../screens/MoreScreen/Tags';
@@ -41,7 +42,7 @@ import UserSettings from '../screens/UserAccount/UserSettings';
 import WorkProfile from '../screens/UserAccount/WorkProfile';
 import AccountScreen from '../screens/UserAccount/Account';
 import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
-import ForgotPasswordForm from '../screens/Auth/ForgotPasswordForm';
+
 import ContactDetailsScreen from '../screens/chat/ContactDetailsScreen';
 import { MessageProvider } from '../../contexts/MessageContext';
 import { UsersProvider } from '../../contexts/UsersContext';
@@ -56,7 +57,7 @@ export type StackParamList = {
   Back: undefined;
   MessagesScreen: undefined;
   ContactsMainScreen: undefined;
-  QrCodeScanner: undefined;
+  Uploads: undefined;
   AvailableCourses: undefined;
   GlobalSearch: undefined;
   calendar: undefined;
@@ -104,11 +105,11 @@ const MainStackScreen = () => {
     <Stack.Navigator initialRouteName="SignInScreen" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SignInScreen" component={SignInScreen} />
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-      <Stack.Screen name="Survey" component={Survey} options={{ headerShown: false }} />
+      <Stack.Screen name="Survey" component={SurveyScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Back" component={Tab_Layout} />
       <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
       <Stack.Screen name="ContactsMainScreen" component={ContactsMainScreen} />
-      <Stack.Screen name="QrCodeScanner" component={QrCodeScanner} />
+      <Stack.Screen name="Uploads" component={CourseUploadsScreen} />
       <Stack.Screen name="AvailableCourses" component={AvailableCourses} />
       <Stack.Screen name="GlobalSearch" component={GlobalSearch} options={{ headerShown: true }} />
       <Stack.Screen name="calendar" component={CalendarDrawer} options={{ headerShown: false,  }} />

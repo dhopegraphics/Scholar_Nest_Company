@@ -1,7 +1,7 @@
 // TagDetails.tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useTagContext } from '../../../contexts/useTagContext';
+import { useTagContext } from '../../../contexts/TagContext';
 
 const TagDetails = () => {
   const { tag } = useTagContext();

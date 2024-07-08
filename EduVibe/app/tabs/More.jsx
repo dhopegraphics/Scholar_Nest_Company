@@ -81,15 +81,15 @@ const MoreScreen = ({ navigation }) => {
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
               style={ButtonsTextStyle.button}
-              onPress={() => navigation.navigate("QrCodeScanner")}
+              onPress={() => navigation.navigate("Uploads")}
             >
               <Icon
                 style={ButtonsTextStyle.icon}
-                name="qr-code"
+                name="cloud-upload"
                 size={30}
                 color="#ffffff"
               />
-              <Text style={ButtonsTextStyle.text}>Scan QR Code</Text>
+              <Text style={ButtonsTextStyle.text}>Upload Courses Here</Text>
               <Icon
                 style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"

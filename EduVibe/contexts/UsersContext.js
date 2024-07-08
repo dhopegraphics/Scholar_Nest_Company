@@ -7,6 +7,19 @@ const UsersContext = createContext();
 export const UsersProvider = ({ children }) => {
   // Define the state for the users data
   const [users, setUsers] = useState([]);
+  
+  const tags = {
+    '1': [
+      { label: 'Everywhere', value: 'item1' },
+      { label: 'Default Collection', value: 'item2' },
+      { label: 'Forum Tags', value: 'item3' },
+    ],
+    '2': [
+      { label: 'Everywhere', value: 'item1' },
+      { label: 'Default Collection', value: 'item2' },
+      { label: 'Forum Tags', value: 'item3' },
+    ],
+  };
 
   // Define the stats array for each user based on their id
   const stats = {
@@ -41,6 +54,7 @@ export const UsersProvider = ({ children }) => {
         birthday: '02/07/2012',
         password: ' ',
         country : 'Ghana',
+      
       },
       {
         id: '2',
@@ -57,13 +71,14 @@ export const UsersProvider = ({ children }) => {
         birthday: '07/03/2007',
         password: ' ',
         country : 'Ghana',
+       
       },
       // Add more users with unique IDs and additional information
     ]);
   }, []);
 
   return (
-    <UsersContext.Provider value={{ users, stats }}>
+    <UsersContext.Provider value={{ users, stats  , tags }}>
       {children}
     </UsersContext.Provider>
   );
