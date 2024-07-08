@@ -80,8 +80,8 @@ const MainUserAccountScreen = ({ navigation }) => {
 
                   <Text style={UserAccountStyling.profileSubtitle}>
                     {currentUser.portfolio} {' · '}
-                    <Text style={{ color: '#266EF1' }}>
-                      @{currentUser.name.toLowerCase().replace(/\s/g, '')}
+                    <Text style={{ color: '#266EF1' , flex : 1 , }}>
+                      @{currentUser.username.toLowerCase().replace(/\s/g, '')}
                     </Text>
                   </Text>
                 </View>

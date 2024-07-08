@@ -29,25 +29,34 @@ export const UsersProvider = ({ children }) => {
       {
         id: '1',
         img: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
-        name: 'Bell Burgess',
-        phone: '+1 (887) 478-2693',
+        name: 'BELL BURGESS',
+        phone: '202472680',
         NoteCount: 44,
         duration: 10,
         portfolio: 'UI/UX Designer',
         bio:
           'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.',
+        email: 'bell.burgess@example.com',
+        username: 'bellburgess',
+        birthday: '02/07/2012',
+        password: ' ',
+        country : 'Ghana',
       },
-
       {
         id: '2',
-        img: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
+        img: 'https://placekitten.com/200/200',
         name: 'Papaa',
-        phone: '+1 (887) 478-2693',
+        phone: '597959032',
         NoteCount: 20,
         duration: 20,
         portfolio: 'Graphics Designer',
         bio:
           'Skilled in design, prototyping, and collaborating with cross-functional teams.',
+        email: 'papaa@example.com',
+        username: 'papaa_designs',
+        birthday: '07/03/2007',
+        password: ' ',
+        country : 'Ghana',
       },
       // Add more users with unique IDs and additional information
     ]);

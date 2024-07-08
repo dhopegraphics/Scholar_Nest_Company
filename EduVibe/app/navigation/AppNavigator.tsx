@@ -124,7 +124,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="EventSettings" component={EventSettingsScreen} options={{ headerShown: true }} />
       <Stack.Screen name="AnnouncementDetails" component={AnouncementsDetails} options={{ headerShown: false }} />
       <Stack.Screen name="AboutScreen" component={AboutScreen} />
-      <Stack.Screen name="General" component={GeneralScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="General" component={GeneralScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SharedFiles" component={SharedFiles} options={{ headerShown: true }} />
       <Stack.Screen name="SpaceUsage" component={SpaceUsage} options={{ headerShown: true }} />
       <Stack.Screen name="Synchronization" component={Synchronization} options={{ headerShown: true }} />
