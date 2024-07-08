@@ -47,7 +47,6 @@ const ParentWardSetUpScreen = () => {
       navigation.navigate('WardsScreen', { selectedUsers: updatedSelectedUsers });
     }
   };
-  
 
   const mockSearchFunction = (query) => {
     if (!query) return [];

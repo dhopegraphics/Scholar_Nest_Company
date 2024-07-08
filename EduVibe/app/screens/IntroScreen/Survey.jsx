@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useVisibility } from '../../../contexts/VisibilityContext';
 
 const questions = [
   {
@@ -26,12 +27,13 @@ const SurveyScreen = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill(null));
   const [fadeAnim] = useState(new Animated.Value(1));
-  const [isLoading, setLoading] = useState(false); // State to manage loading indicator
+  const [isLoading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const { setButtonVisible } = useVisibility(); // Import visibility context
 
   useEffect(() => {
-    setLoading(false); // Reset loading state on component unmount or change
-  }, [currentQuestion]); // Watch currentQuestion to reset loading on question change
+    setLoading(false);
+  }, [currentQuestion]);
 
   const handleNext = () => {
     if (currentQuestion < questions.length - 1) {
@@ -78,33 +80,40 @@ const SurveyScreen = () => {
   const handleAnswerSelection = (index) => {
     if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Student') {
       console.log('Student selected');
+      setButtonVisible(false);
       setCurrentQuestion(2);
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Educator') {
       console.log('Educator selected');
       setCurrentQuestion(3);
+      setButtonVisible(false);
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Parent') {
       console.log('Parent selected');
       setCurrentQuestion(1);
+      setButtonVisible(true);
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected');
       setLoading(true); // Show loading indicator before navigating to "ParentWardSetUpScreen"
+      setButtonVisible(true); // Show the button
       navigation.navigate("ParentWardSetUpScreen");
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Will Do it later') {
       console.log('Will Do it later selected');
       setLoading(true); // Show loading indicator before navigating to "Back"
+      setButtonVisible(true); // Show the button
       navigation.navigate("Back");
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected from 3');
       setLoading(true); // Show loading indicator before navigating to "Back"
+      setButtonVisible(false); // Show the button
       navigation.navigate("Back");
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'No') {
       console.log('No selected from 3');
       setLoading(true); // Show loading indicator before navigating to "Back"
+      setButtonVisible(false); // Hide the button
       navigation.navigate("Back");
     } else {
       console.log('Your Hobby');
-      setLoading(true);
       navigation.navigate("Back");
+      setButtonVisible(false); 
     }
 
     setSelectedAnswers(selectedAnswers => {
@@ -116,9 +125,9 @@ const SurveyScreen = () => {
 
   const navigateToBackScreen = () => {
     setTimeout(() => { // Simulating a delay for demonstration purposes
-      setLoading(true); // Hide loading indicator after delay
+      setLoading(false); // Hide loading indicator after delay
       navigation.navigate('Back');
-    }, 4000); // Delay of 2 seconds
+    }, 2000); // Delay of 2 seconds
   };
 
   const progress = (currentQuestion + 1) / questions.length;

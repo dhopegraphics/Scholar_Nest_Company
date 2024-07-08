@@ -1,14 +1,31 @@
-import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import ContactsCard from '../../../components/ContactsCard';
 import { useUsers } from '../../../contexts/UsersContext';
 
 const WardsScreen = ({ route }) => {
   const { users } = useUsers();
-  const { selectedUsers } = route.params;
+  const { selectedUsers: initialSelectedUsers } = route.params;
+  const [selectedUsers, setSelectedUsers] = useState(initialSelectedUsers);
 
-  // Filter out selected users from the original list
   const availableUsers = users.filter(user => !selectedUsers.some(selectedUser => selectedUser.id === user.id));
+
+  const handlePress = (userId) => {
+    Alert.alert(
+      "Remove User",
+      "Are you sure you want to remove this user?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "OK",
+          onPress: () => {
+            const updatedSelectedUsers = selectedUsers.filter(user => user.id !== userId);
+            setSelectedUsers(updatedSelectedUsers);
+          }
+        }
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -16,10 +33,12 @@ const WardsScreen = ({ route }) => {
         data={selectedUsers}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <ContactsCard
-            name={item.name}
-            img={item.img}
-          />
+          <TouchableOpacity onPress={() => handlePress(item.id)}>
+            <ContactsCard
+              name={item.name}
+              img={item.img}
+            />
+          </TouchableOpacity>
         )}
       />
       <FlatList

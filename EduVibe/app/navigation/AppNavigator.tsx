@@ -3,7 +3,7 @@ import {  StatusBar } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from '../screens/Auth/SignIn';
 import SignUpScreen from '../screens/Auth/SignUp';
-
+import { VisibilityProvider } from '../../contexts/VisibilityContext';
 import SurveyScreen from '../screens/IntroScreen/Survey';
 import Tab_Layout from '../tabs/Tab_Layout';
 import MessagesScreen from '../tabs/Messages';
@@ -51,6 +51,8 @@ import UserAccount from '../screens/UserAccount/UserAccountScreen';
 import WardsScreen from '../screens/ParentWards/WardsScreen';
 
 
+
+
 export type StackParamList = {
   SignInScreen: undefined;
   SignUpScreen: undefined;
@@ -94,6 +96,7 @@ export type StackParamList = {
   UserAccount : undefined ;
   ParentWardSetUpScreen : undefined;
   WardsScreen : undefined;
+ 
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -144,6 +147,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="UserAccount" component={UserAccount} options={{ headerShown: false }} />
       <Stack.Screen name="ParentWardSetUpScreen" component={ParentWardSetUpScreen} options={{ headerShown: false }} />
       <Stack.Screen name="WardsScreen" component={WardsScreen} options={{ headerShown: true }} />
+    
    </Stack.Navigator>
    </UsersProvider>
   );
@@ -155,6 +159,7 @@ const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
 
+<VisibilityProvider>
     <SettingsProvider>
       <UsersProvider>
         <ExperienceProvider>
@@ -174,6 +179,7 @@ const AppNavigator = () => (
       </ExperienceProvider>
       </UsersProvider>
     </SettingsProvider>
+    </VisibilityProvider>
   </>
 );
 
