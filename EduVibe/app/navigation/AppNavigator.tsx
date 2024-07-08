@@ -42,12 +42,13 @@ import UserSettings from '../screens/UserAccount/UserSettings';
 import WorkProfile from '../screens/UserAccount/WorkProfile';
 import AccountScreen from '../screens/UserAccount/Account';
 import ChangePasswordScreen from '../screens/Auth/ChangePasswordScreen';
-
+import ParentWardSetUpScreen from '../screens/IntroScreen/ParentWardSetUpScreen';
 import ContactDetailsScreen from '../screens/chat/ContactDetailsScreen';
 import { MessageProvider } from '../../contexts/MessageContext';
 import { UsersProvider } from '../../contexts/UsersContext';
 import { ExperienceProvider } from '../../contexts/ExperienceContext';
 import UserAccount from '../screens/UserAccount/UserAccountScreen';
+import WardsScreen from '../screens/ParentWards/WardsScreen';
 
 
 export type StackParamList = {
@@ -91,6 +92,8 @@ export type StackParamList = {
   ForgotPasswordForm : undefined;
   ContactDetailsScreen: { contact: { name: string; img: string } };
   UserAccount : undefined ;
+  ParentWardSetUpScreen : undefined;
+  WardsScreen : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -139,6 +142,8 @@ const MainStackScreen = () => {
       <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{ headerShown: false }} />
       <Stack.Screen name="UserAccount" component={UserAccount} options={{ headerShown: false }} />
+      <Stack.Screen name="ParentWardSetUpScreen" component={ParentWardSetUpScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="WardsScreen" component={WardsScreen} options={{ headerShown: true }} />
    </Stack.Navigator>
    </UsersProvider>
   );

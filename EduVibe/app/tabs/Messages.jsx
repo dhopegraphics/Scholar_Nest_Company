@@ -88,7 +88,7 @@ const MessagesScreen = ({ navigation }) => {
           </TouchableOpacity>
           {dropdown1Open && (
             <View style={messagesScreenstyles.dropdownContent}>
-              {/* Use ContactsCard component here */}
+            
               {users.map((user, index) => (
                 <ContactsCard
                   key={index}
