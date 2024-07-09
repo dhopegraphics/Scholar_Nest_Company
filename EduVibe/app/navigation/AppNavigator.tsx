@@ -274,7 +274,7 @@ const AppNavigator = () => (
     <VisibilityProvider>
       <SettingsProvider>
         <UsersProvider>
-        <PlacesProvider>
+          <PlacesProvider>
           <ExperienceProvider>
             <MessageProvider>
               <TagProvider>
