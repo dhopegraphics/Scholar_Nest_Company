@@ -51,6 +51,7 @@ import UserAccount from "../screens/UserAccount/UserAccountScreen";
 import WardsScreen from "../screens/ParentWards/WardsScreen";
 import LogOutAlertScreen from "../screens/Auth/LogOutAlertScreen";
 import ForgotPasswordForm from "../screens/Auth/ForgotPasswordForm";
+import { PlacesProvider } from "../../contexts/PlacesContext";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -272,6 +273,7 @@ const AppNavigator = () => (
     <VisibilityProvider>
       <SettingsProvider>
         <UsersProvider>
+          <PlacesProvider>
           <ExperienceProvider>
             <MessageProvider>
               <TagProvider>
@@ -287,6 +289,7 @@ const AppNavigator = () => (
               </TagProvider>
             </MessageProvider>
           </ExperienceProvider>
+          </PlacesProvider>
         </UsersProvider>
       </SettingsProvider>
     </VisibilityProvider>
