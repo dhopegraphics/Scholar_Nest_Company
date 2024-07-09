@@ -7,7 +7,14 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
+import { useUsers } from "../../../contexts/UsersContext"; // Update the path accordingly
+
 const LogOutAlertScreen = ({ navigation }) => {
+  const { users } = useUsers();
+
+  // Assuming you want to display data for user with id '1'
+  const currentUser = users.find((user) => user.id === '1');
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.container}>
@@ -17,13 +24,13 @@ const LogOutAlertScreen = ({ navigation }) => {
               alt=""
               style={styles.alertAvatar}
               source={{
-                uri: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2.5&w=256&h=256&q=80",
+                uri: currentUser?.img, // Update with user's image URI
               }}
             />
             <Text style={styles.alertTitle}>
               Log out of
               {"\n"}
-              @MarkSimmons
+              @{currentUser?.username} {/* Displaying username */}
             </Text>
             <Text style={styles.alertMessage}>
               Are you sure you would like to log out of this account? You will
@@ -42,7 +49,7 @@ const LogOutAlertScreen = ({ navigation }) => {
           <View style={{ marginTop: 8 }}>
             <TouchableOpacity
               onPress={() => {
-                // handle onPress
+                navigation.goBack(); // Navigate back to previous screen
               }}
             >
               <View style={styles.btnSecondary}>

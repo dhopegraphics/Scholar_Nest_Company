@@ -14,7 +14,7 @@ const CustomDrawerContent = (props: any) => {
     const { navigation } = props;
   
     const handleLogout = () => {
-      navigation.navigate('SignInScreen'); 
+      navigation.navigate('LogOutScreen'); 
     };
   
     const DrawerItem = ({ label, destination, iconLeft, iconRight }: { label: string; destination: string; iconLeft: string; iconRight: string }) => (
