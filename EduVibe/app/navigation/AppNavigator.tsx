@@ -52,6 +52,8 @@ import LogOutAlertScreen from "../screens/Auth/LogOutAlertScreen";
 import ForgotPasswordForm from "../screens/Auth/ForgotPasswordForm";
 import { PlacesProvider } from "../../contexts/PlacesContext";
 import UserInterest from "../screens/TagsDetails/UserInterest";
+import { QuestionProvider } from "../../contexts/QuestionContext";
+
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -270,7 +272,7 @@ const MainStackScreen = () => {
 const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
-
+<QuestionProvider>
     <VisibilityProvider>
       <SettingsProvider>
         <UsersProvider>
@@ -294,6 +296,7 @@ const AppNavigator = () => (
         </UsersProvider>
       </SettingsProvider>
     </VisibilityProvider>
+    </QuestionProvider>
   </>
 );
 

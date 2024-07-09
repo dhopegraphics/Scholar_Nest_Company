@@ -98,7 +98,7 @@ const MoreScreen = ({ navigation }) => {
              
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
-          {isButtonVisible && (
+          {isCourseButtonVisible && (
             <TouchableOpacity
               style={ButtonsTextStyle.button}
               onPress={() => navigation.navigate("Uploads")}

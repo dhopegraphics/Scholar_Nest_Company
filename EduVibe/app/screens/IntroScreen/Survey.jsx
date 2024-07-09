@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, ActivityIndicator }
 import { useNavigation } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useVisibility } from '../../../contexts/VisibilityContext';
+import { useQuestionContext } from '../../../contexts/QuestionContext';
 
 const questions = [
   {
@@ -94,6 +95,7 @@ const SurveyScreen = () => {
       setCurrentQuestion(1);
       setButtonVisible(true);
       setCourseButtonVisible (false);
+      
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected');
       setLoading(true); // Show loading indicator before navigating to "ParentWardSetUpScreen"
