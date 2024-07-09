@@ -52,6 +52,7 @@ import WardsScreen from "../screens/ParentWards/WardsScreen";
 import LogOutAlertScreen from "../screens/Auth/LogOutAlertScreen";
 import ForgotPasswordForm from "../screens/Auth/ForgotPasswordForm";
 import { PlacesProvider } from "../../contexts/PlacesContext";
+import UserInterest from "../screens/TagsDetails/UserInterest";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -97,6 +98,7 @@ export type StackParamList = {
   ParentWardSetUpScreen: undefined;
   WardsScreen: undefined;
   LogOutScreen: undefined;
+  UserInterest : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -260,6 +262,11 @@ const MainStackScreen = () => {
           name="LogOutScreen"
           component={LogOutAlertScreen}
           options={{ headerShown: false }}
+        />
+                <Stack.Screen
+          name="UserInterest"
+          component={UserInterest}
+          options={{ headerShown: true }}
         />
       </Stack.Navigator>
     </UsersProvider>

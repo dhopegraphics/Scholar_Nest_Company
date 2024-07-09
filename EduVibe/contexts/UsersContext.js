@@ -7,21 +7,7 @@ const UsersContext = createContext();
 export const UsersProvider = ({ children }) => {
   // Define the state for the users data
   const [users, setUsers] = useState([]);
-  
-  const tags = {
-    '1': [
-      { label: 'Everywhere', value: 'item1' },
-      { label: 'Default Collection', value: 'item2' },
-      { label: 'Forum Tags', value: 'item3' },
-    ],
-    '2': [
-      { label: 'Everywhere', value: 'item1' },
-      { label: 'Default Collection', value: 'item2' },
-      { label: 'Forum Tags', value: 'item3' },
-    ],
-  };
 
-  // Define the stats array for each user based on their id
   const stats = {
     '1': [
       { label: 'Location', value: 'USA' },
@@ -34,6 +20,34 @@ export const UsersProvider = ({ children }) => {
       { label: 'Experience', value: '5 years' },
     ],
   };
+
+  // Define the initial tag data for each user
+  const initialTagData = {
+    '1': [
+      { id: "1", title: "Documentation", categories: ["Everywhere"] },
+      { id: "2", title: "Art", categories: ["Everywhere"] },
+      { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
+      { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
+      { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
+      { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
+      { id: "7", title: "Gardening", categories: ["Everywhere", "Default Collection"] },
+      { id: "8", title: "Healthcare", categories: ["Everywhere", "Forum Tags"] },
+      { id: "9", title: "Information Technology", categories: ["Everywhere", "Default Collection"] },
+    ],
+    '2': [
+      { id: "1", title: "Documentation", categories: ["Everywhere"] },
+      { id: "2", title: "Art", categories: ["Everywhere"] },
+      { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
+      { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
+      { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
+      { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
+      { id: "7", title: "Gardening", categories: ["Everywhere", "Default Collection"] },
+      { id: "8", title: "Healthcare", categories: ["Everywhere", "Forum Tags"] },
+      { id: "9", title: "Information Technology", categories: ["Everywhere", "Default Collection"] },
+    ]
+  };
+
+  const [tagData, setTagData] = useState(initialTagData);
 
   // Fetch or set the data for users
   useEffect(() => {
@@ -53,8 +67,8 @@ export const UsersProvider = ({ children }) => {
         username: 'bellburgess',
         birthday: '02/07/2012',
         password: ' ',
-        country : 'Ghana',
-      
+        country: 'Ghana',
+        tags: tagData['1'],
       },
       {
         id: '2',
@@ -70,15 +84,22 @@ export const UsersProvider = ({ children }) => {
         username: 'papaa_designs',
         birthday: '07/03/2007',
         password: ' ',
-        country : 'Ghana',
-       
+        country: 'Ghana',
+        tags: tagData['2'],
       },
       // Add more users with unique IDs and additional information
     ]);
-  }, []);
+  }, [tagData]); // Ensure useEffect depends on tagData for updates
+
+  const updateUserTags = (userId, updatedTags) => {
+    setTagData(prevTagData => ({
+      ...prevTagData,
+      [userId]: updatedTags,
+    }));
+  };
 
   return (
-    <UsersContext.Provider value={{ users, stats  , tags }}>
+    <UsersContext.Provider value={{ users, updateUserTags, stats , tagData }}>
       {children}
     </UsersContext.Provider>
   );
