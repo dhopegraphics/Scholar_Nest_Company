@@ -28,7 +28,6 @@ import AboutScreen from "../screens/AppSettingsScreen/AboutScreen";
 import GeneralScreen from "../screens/AppSettingsScreen/GeneralScreen";
 import SharedFiles from "../screens/AppSettingsScreen/SharedFiles";
 import SpaceUsage from "../screens/AppSettingsScreen/SpaceUsage";
-import Synchronization from "../screens/AppSettingsScreen/Synchronization";
 import CalendarDrawer from "./CalendarDrawer";
 import NewEvent from "../screens/EventsScreen/NewEventScreen";
 import { CourseProvider } from "../../contexts/CourseContext";
@@ -82,7 +81,6 @@ export type StackParamList = {
   General: undefined;
   SharedFiles: undefined;
   SpaceUsage: undefined;
-  Synchronization: undefined;
   NewEvent: undefined;
   TagDetails: undefined;
   Course_Information: undefined;
@@ -188,11 +186,7 @@ const MainStackScreen = () => {
           component={SpaceUsage}
           options={{ headerShown: true }}
         />
-        <Stack.Screen
-          name="Synchronization"
-          component={Synchronization}
-          options={{ headerShown: true }}
-        />
+        
         <Stack.Screen
           name="NewEvent"
           component={NewEvent}
