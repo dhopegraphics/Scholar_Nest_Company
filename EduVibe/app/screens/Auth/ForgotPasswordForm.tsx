@@ -1,15 +1,15 @@
 // src/components/ForgotPasswordForm.tsx
 
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 
 const ForgotPasswordForm: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   const handleSendEmail = () => {
     // Validate email format (you can use a library like 'validator')
     if (!email) {
-      alert('Please enter a valid email address.');
+      alert("Please enter a valid email address.");
       return;
     }
 
@@ -18,14 +18,15 @@ const ForgotPasswordForm: React.FC = () => {
     // Example: axios.post('/api/forgot-password', { email });
 
     // Show success message or navigate to a confirmation screen
-    alert('Reset link sent! Check your email.');
+    alert("Reset link sent! Check your email.");
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Forgot Password?</Text>
       <Text style={styles.subtitle}>
-        Enter the email address associated with your account. We will email you a link to reset your password.
+        Enter the email address associated with your account. We will email you
+        a link to reset your password.
       </Text>
       <TextInput
         style={styles.input}
@@ -42,11 +43,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
   },
   subtitle: {
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 8,

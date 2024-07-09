@@ -50,6 +50,7 @@ import { ExperienceProvider } from "../../contexts/ExperienceContext";
 import UserAccount from "../screens/UserAccount/UserAccountScreen";
 import WardsScreen from "../screens/ParentWards/WardsScreen";
 import LogOutAlertScreen from "../screens/Auth/LogOutAlertScreen";
+import ForgotPasswordForm from "../screens/Auth/ForgotPasswordForm";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -232,6 +233,11 @@ const MainStackScreen = () => {
         <Stack.Screen
           name="ChangePasswordScreen"
           component={ChangePasswordScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ForgotPasswordForm"
+          component={ForgotPasswordForm}
           options={{ headerShown: false }}
         />
         <Stack.Screen
