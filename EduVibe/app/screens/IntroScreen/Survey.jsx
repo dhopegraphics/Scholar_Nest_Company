@@ -30,6 +30,7 @@ const SurveyScreen = () => {
   const [isLoading, setLoading] = useState(false);
   const navigation = useNavigation();
   const { setButtonVisible } = useVisibility(); // Import visibility context
+  const {setCourseButtonVisible} = useVisibility();
 
   useEffect(() => {
     setLoading(false);
@@ -81,39 +82,47 @@ const SurveyScreen = () => {
     if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Student') {
       console.log('Student selected');
       setButtonVisible(false);
+      setCourseButtonVisible (false);
       setCurrentQuestion(2);
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Educator') {
       console.log('Educator selected');
       setCurrentQuestion(3);
       setButtonVisible(false);
+      setCourseButtonVisible (true);
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Parent') {
       console.log('Parent selected');
       setCurrentQuestion(1);
       setButtonVisible(true);
+      setCourseButtonVisible (false);
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected');
       setLoading(true); // Show loading indicator before navigating to "ParentWardSetUpScreen"
       setButtonVisible(true); // Show the button
+      setCourseButtonVisible (false);
       navigation.navigate("ParentWardSetUpScreen");
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Will Do it later') {
       console.log('Will Do it later selected');
       setLoading(true); // Show loading indicator before navigating to "Back"
       setButtonVisible(true); // Show the button
+      setCourseButtonVisible (false);
       navigation.navigate("Back");
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected from 3');
       setLoading(true); // Show loading indicator before navigating to "Back"
       setButtonVisible(false); // Show the button
+      setCourseButtonVisible (true);
       navigation.navigate("Back");
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'No') {
       console.log('No selected from 3');
       setLoading(true); // Show loading indicator before navigating to "Back"
       setButtonVisible(false); // Hide the button
+      setCourseButtonVisible (false);
       navigation.navigate("Back");
     } else {
       console.log('Your Hobby');
       navigation.navigate("Back");
       setButtonVisible(false); 
+      setCourseButtonVisible (false);
     }
 
     setSelectedAnswers(selectedAnswers => {

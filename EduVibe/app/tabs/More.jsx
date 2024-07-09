@@ -14,6 +14,7 @@ import { useVisibility } from "../../contexts/VisibilityContext"; // import useV
 
 const MoreScreen = ({ navigation }) => {
   const { isButtonVisible } = useVisibility(); // use the visibility state
+  const {isCourseButtonVisible} = useVisibility();
   const { users } = useUsers();
   const [selectedUsers, setSelectedUsers] = useState([]);
 
@@ -75,6 +76,7 @@ const MoreScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
+      
             <TouchableOpacity
               style={ButtonsTextStyle.button}
               onPress={() => navigation.navigate("Tags")}
@@ -93,6 +95,7 @@ const MoreScreen = ({ navigation }) => {
                 color="gray"
               />
             </TouchableOpacity>
+             
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
           {isButtonVisible && (

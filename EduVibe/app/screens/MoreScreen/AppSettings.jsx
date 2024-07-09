@@ -53,24 +53,7 @@ const AppSettings = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
-            <TouchableOpacity
-              style={ButtonsTextStyle.button}
-              onPress={() => navigation.navigate("Synchronization")} // Navigate to Tags
-            >
-              <FontAwesome5
-                style={ButtonsTextStyle.icon}
-                name="sync-alt"
-                size={26}
-                color="#ffffff"
-              />
-              <Text style={ButtonsTextStyle.text}>Synchronization</Text>
-              <Icon
-                style={ButtonsTextStyle.rightIcon}
-                name="chevron-right"
-                size={30}
-                color="gray"
-              />
-            </TouchableOpacity>
+           
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity

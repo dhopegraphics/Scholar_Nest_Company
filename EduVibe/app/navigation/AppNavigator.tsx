@@ -28,7 +28,6 @@ import AboutScreen from "../screens/AppSettingsScreen/AboutScreen";
 import GeneralScreen from "../screens/AppSettingsScreen/GeneralScreen";
 import SharedFiles from "../screens/AppSettingsScreen/SharedFiles";
 import SpaceUsage from "../screens/AppSettingsScreen/SpaceUsage";
-import Synchronization from "../screens/AppSettingsScreen/Synchronization";
 import CalendarDrawer from "./CalendarDrawer";
 import NewEvent from "../screens/EventsScreen/NewEventScreen";
 import { CourseProvider } from "../../contexts/CourseContext";
@@ -52,6 +51,7 @@ import WardsScreen from "../screens/ParentWards/WardsScreen";
 import LogOutAlertScreen from "../screens/Auth/LogOutAlertScreen";
 import ForgotPasswordForm from "../screens/Auth/ForgotPasswordForm";
 import { PlacesProvider } from "../../contexts/PlacesContext";
+import UserInterest from "../screens/TagsDetails/UserInterest";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -81,7 +81,6 @@ export type StackParamList = {
   General: undefined;
   SharedFiles: undefined;
   SpaceUsage: undefined;
-  Synchronization: undefined;
   NewEvent: undefined;
   TagDetails: undefined;
   Course_Information: undefined;
@@ -97,6 +96,7 @@ export type StackParamList = {
   ParentWardSetUpScreen: undefined;
   WardsScreen: undefined;
   LogOutScreen: undefined;
+  UserInterest : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -186,11 +186,7 @@ const MainStackScreen = () => {
           component={SpaceUsage}
           options={{ headerShown: true }}
         />
-        <Stack.Screen
-          name="Synchronization"
-          component={Synchronization}
-          options={{ headerShown: true }}
-        />
+        
         <Stack.Screen
           name="NewEvent"
           component={NewEvent}
@@ -260,6 +256,11 @@ const MainStackScreen = () => {
           name="LogOutScreen"
           component={LogOutAlertScreen}
           options={{ headerShown: false }}
+        />
+                <Stack.Screen
+          name="UserInterest"
+          component={UserInterest}
+          options={{ headerShown: true }}
         />
       </Stack.Navigator>
     </UsersProvider>
