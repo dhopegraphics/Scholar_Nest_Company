@@ -8,10 +8,12 @@ import { View, StatusBar } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 import DifferentDrawerNavigator from "../navigation/DifferentDrawerNavigator";
+import { useQuestionContext } from "../../contexts/QuestionContext";
 
 const Tab = createBottomTabNavigator(); // Temporary workaround with type assertion
 
 const Tab_Layout = () => {
+  const { answer } = useQuestionContext();
   return (
     <>
       <View style={{ flex: 1 }}>
@@ -40,22 +42,22 @@ const Tab_Layout = () => {
             tabBarInactiveTintColor: "black",
           })}
         >
-          <Tab.Screen
+        {answer &&   <Tab.Screen
             name="DifferentDrawerNavigator"
             component={DifferentDrawerNavigator}
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Dashboard
             }}
-          />
-          <Tab.Screen
+          /> }
+         <Tab.Screen
             name="Courses"
             component={CourseBrowseNestDrawer}
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Courses
             }}
-          />
+          /> 
           <Tab.Screen
             name="Messages"
             component={MessagesNestDrawer}
@@ -65,14 +67,14 @@ const Tab_Layout = () => {
             }}
           />
 
-          <Tab.Screen
+{answer &&       <Tab.Screen
             name="Notifications"
             component={Notifications}
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Notifications
             }}
-          />
+          />}
           <Tab.Screen
             name="More"
             component={More}

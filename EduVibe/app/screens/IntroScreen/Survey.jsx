@@ -32,6 +32,8 @@ const SurveyScreen = () => {
   const navigation = useNavigation();
   const { setButtonVisible } = useVisibility(); // Import visibility context
   const {setCourseButtonVisible} = useVisibility();
+  const {setAppSettingsVisible} = useVisibility();
+  const { setAnswer } = useQuestionContext();
 
   useEffect(() => {
     setLoading(false);
@@ -84,47 +86,63 @@ const SurveyScreen = () => {
       console.log('Student selected');
       setButtonVisible(false);
       setCourseButtonVisible (false);
+      setAppSettingsVisible (true);
       setCurrentQuestion(2);
+      setAnswer(!null);
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Educator') {
       console.log('Educator selected');
       setCurrentQuestion(3);
       setButtonVisible(false);
       setCourseButtonVisible (true);
+      setAppSettingsVisible (true);
+      setAnswer(!null);
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Parent') {
       console.log('Parent selected');
       setCurrentQuestion(1);
       setButtonVisible(true);
       setCourseButtonVisible (false);
-      
+      setAppSettingsVisible (false);
+      setAnswer(null);
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected');
       setLoading(true); // Show loading indicator before navigating to "ParentWardSetUpScreen"
       setButtonVisible(true); // Show the button
       setCourseButtonVisible (false);
+      setAppSettingsVisible (false);
+      setAnswer(null);
       navigation.navigate("ParentWardSetUpScreen");
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Will Do it later') {
       console.log('Will Do it later selected');
       setLoading(true); // Show loading indicator before navigating to "Back"
       setButtonVisible(true); // Show the button
       setCourseButtonVisible (false);
+      setAppSettingsVisible (false);
+      setAnswer(null);
       navigation.navigate("Back");
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected from 3');
       setLoading(true); // Show loading indicator before navigating to "Back"
       setButtonVisible(false); // Show the button
       setCourseButtonVisible (true);
+      setAppSettingsVisible (true);
+      setAnswer(!null);
       navigation.navigate("Back");
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'No') {
       console.log('No selected from 3');
       setLoading(true); // Show loading indicator before navigating to "Back"
       setButtonVisible(false); // Hide the button
-      setCourseButtonVisible (false);
+      setCourseButtonVisible (true);
+      setAppSettingsVisible (true);
+      setAnswer(!null);
       navigation.navigate("Back");
+      
     } else {
       console.log('Your Hobby');
       navigation.navigate("Back");
       setButtonVisible(false); 
       setCourseButtonVisible (false);
+      setAppSettingsVisible (true);
+      setAnswer(!null);
     }
 
     setSelectedAnswers(selectedAnswers => {

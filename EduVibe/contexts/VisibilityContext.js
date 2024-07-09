@@ -5,10 +5,11 @@ const VisibilityContext = createContext();
 export const VisibilityProvider = ({ children }) => {
   const [isButtonVisible, setButtonVisible] = useState(false);
   const [isCourseButtonVisible , setCourseButtonVisible] = useState(false);
+  const [isAppSettingsVisible, setAppSettingsVisible] = useState(false);
 
 
   return (
-    <VisibilityContext.Provider value={{ isButtonVisible, setButtonVisible , isCourseButtonVisible , setCourseButtonVisible  }}>
+    <VisibilityContext.Provider value={{ isButtonVisible, setButtonVisible , isCourseButtonVisible , setCourseButtonVisible ,isAppSettingsVisible, setAppSettingsVisible  }}>
       {children}
     </VisibilityContext.Provider>
   );

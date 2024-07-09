@@ -15,6 +15,7 @@ import { useVisibility } from "../../contexts/VisibilityContext"; // import useV
 const MoreScreen = ({ navigation }) => {
   const { isButtonVisible } = useVisibility(); // use the visibility state
   const {isCourseButtonVisible} = useVisibility();
+  const {isAppSettingsVisible} = useVisibility();
   const { users } = useUsers();
   const [selectedUsers, setSelectedUsers] = useState([]);
 
@@ -142,6 +143,7 @@ const MoreScreen = ({ navigation }) => {
         </View>
       </ScrollView>
       <View style={ButtonsTextStyle.SettingsContainer}>
+      {isAppSettingsVisible && (
         <TouchableOpacity
           style={ButtonsTextStyle.MoreSettingsButton}
           onPress={() => navigation.navigate("AppSettings")}
@@ -160,6 +162,7 @@ const MoreScreen = ({ navigation }) => {
             color="gray"
           />
         </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );
