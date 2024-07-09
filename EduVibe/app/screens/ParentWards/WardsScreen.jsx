@@ -36,21 +36,19 @@ const WardsScreen = ({ route }) => {
           <TouchableOpacity onPress={() => handlePress(item.id)}>
             <ContactsCard
               name={item.name}
-              img={item.img}
-            />
+              img={item.img} />
           </TouchableOpacity>
-        )}
-      />
-      <FlatList
+        )} />
+      <FlatList style= {{marginBottom : 450}}
         data={availableUsers}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <ContactsCard
-            name={item.name}
-            img={item.img}
-          />
-        )}
-      />
+          <TouchableOpacity onPress={() => handlePress(item.id)}>
+            <ContactsCard
+              name={item.name}
+              img={item.img} />
+          </TouchableOpacity>
+        )} />
     </View>
   );
 };
@@ -59,7 +57,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#fff",
   },
 });
 

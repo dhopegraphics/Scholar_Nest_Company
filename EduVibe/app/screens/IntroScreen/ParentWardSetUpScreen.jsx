@@ -38,13 +38,14 @@ const ParentWardSetUpScreen = () => {
   };
 
   const handleResultPress = (item) => {
-    // Check if item already exists in selectedUsers
     const isUserSelected = selectedUsers.some(user => user.id === item.id);
     
     if (!isUserSelected) {
       const updatedSelectedUsers = [...selectedUsers, item];
       setSelectedUsers(updatedSelectedUsers);
       navigation.navigate('WardsScreen', { selectedUsers: updatedSelectedUsers });
+    } else {
+      navigation.navigate('WardsScreen', { selectedUsers });
     }
   };
 
@@ -88,7 +89,6 @@ const ParentWardSetUpScreen = () => {
                 <ContactsCard 
                   name={item.name} 
                   img={item.img} 
-                  onPress={() => handleResultPress(item)}
                 />
               </TouchableOpacity>
             )}
@@ -96,6 +96,7 @@ const ParentWardSetUpScreen = () => {
           />
         </Animated.View>
       )}
+      
     </View>
   );
 };
