@@ -1,8 +1,7 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import icons from "../assets/icons/icons";
+import React from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const CourseCard = ({ title, creator, participantsCount, onPress }) => {
+const CourseCard = ({ title, creator, participantsCount, onPress, imageSource }) => {
   return (
     <TouchableOpacity
       style={styles.cardContainer}
@@ -10,32 +9,11 @@ const CourseCard = ({ title, creator, participantsCount, onPress }) => {
       activeOpacity={0.7}
     >
       <View style={styles.innerContainer}>
-        <View style={styles.profileContainer}>
-          <View style={styles.imageWrapper}>
-            <Image
-              source={icons.profile}
-              style={styles.image}
-              resizeMode="cover"
-            />
-          </View>
-
-          <View style={styles.textContainer}>
-            <Text style={styles.title} numberOfLines={1}>
-              {title}
-            </Text>
-            <Text style={styles.creator} numberOfLines={1}>
-              {creator}
-            </Text>
-            <Text style={styles.participants}>Participants: {participantsCount}</Text>
-          </View>
-        </View>
-
-        <View style={styles.menuIcon}>
-          <Image
-            source={icons.menu}
-            style={styles.menuImage}
-            resizeMode="contain"
-          />
+        <Image source={imageSource} style={styles.cardImg} />
+        <View style={styles.cardBody}>
+          <Text style={styles.cardTitle}>{title}</Text>
+          <Text style={styles.cardCreator}>{creator}</Text>
+          <Text style={styles.cardParticipants}>Participants: {participantsCount}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -44,63 +22,41 @@ const CourseCard = ({ title, creator, participantsCount, onPress }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    borderWidth: 1,
-    borderColor: "#d1d5db", // Adjust the border color as needed
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: -30,
-    backgroundColor: "#1f2937", // Background color (dark grey)
-    height: 180, // Set the height of the course card
-    width: 300, // Set the width of the course card if needed
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    marginRight: 16,
+    width: 200,
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
   },
-  innerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+  cardImg: {
+    width: '100%',
+    height: 100,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
-  profileContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
+  cardBody: {
+    padding: 12,
   },
-  imageWrapper: {
-    width: 46,
-    height: 46,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#6b7280", // Secondary border color (grey)
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 0.5,
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#232425',
   },
-  image: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 10,
-  },
-  textContainer: {
-    flex: 1,
-    marginLeft: 10,
-    marginBottom : -130,
-  },
-  title: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#fff",
-  },
-  creator: {
+  cardCreator: {
     fontSize: 12,
-    color: "#9ca3af", // Grey color
+    color: '#333',
   },
-  participants: {
+  cardParticipants: {
+    marginTop: 4,
     fontSize: 12,
-    color: "#9ca3af", // Grey color
-  },
-  menuIcon: {
-    paddingTop: 2,
-  },
-  menuImage: {
-    width: 20,
-    height: 20,
+    color: '#333',
   },
 });
 

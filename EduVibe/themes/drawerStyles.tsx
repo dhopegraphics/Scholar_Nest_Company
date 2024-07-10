@@ -22,7 +22,7 @@ export const drawerStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 320, // Adjust the marginTop to move the button up
+    marginTop: 200, // Adjust the marginTop to move the button up
     borderTopColor: 'grey',
     paddingTop: 10, // Adjust the paddingTop for vertical alignment
     backgroundColor: '#dc3545', // Example background color

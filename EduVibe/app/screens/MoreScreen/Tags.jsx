@@ -16,11 +16,12 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Appbar } from "react-native-paper";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useTagContext } from "../../../contexts/useTagContext";
+
+import { useTagContext } from "../../../contexts/TagContext";
 import { TagStyles } from "../../../themes/TagStyling";
 
 const Tags = ({ navigation }) => {
-  const { setTag } = useTagContext();
+  const { setTag, TagData } = useTagContext();
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -58,22 +59,10 @@ const Tags = ({ navigation }) => {
     navigation.navigate("TagDetails");
   };
 
-  const mockData = [
-    { id: "1", title: "Documentation", categories: ["Everywhere"] },
-    { id: "2", title: "Art", categories: ["Everywhere"] },
-    { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
-    { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
-    { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
-    { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
-    { id: "7", title: "Gardening", categories: ["Everywhere", "Default Collection"] },
-    { id: "8", title: "Healthcare", categories: ["Everywhere", "Forum Tags"] },
-    { id: "9", title: "Information Technology", categories: ["Everywhere", "Default Collection"] },
-  ];
-
   const mockSearchFunction = (query) => {
     if (!query) return filterByCategory(value); // Initialize with filtered data based on default dropdown value
 
-    const filteredByQuery = mockData.filter((item) =>
+    const filteredByQuery = TagData.filter((item) =>
       item.title.toLowerCase().includes(query.toLowerCase())
     );
 
@@ -89,11 +78,11 @@ const Tags = ({ navigation }) => {
 
   const filterByCategory = (selectedValue) => {
     if (selectedValue === 'item1') {
-      return mockData.filter(item => item.categories.includes('Everywhere'));
+      return TagData.filter(item => item.categories.includes('Everywhere'));
     } else if (selectedValue === 'item2') {
-      return mockData.filter(item => item.categories.includes('Default Collection'));
+      return TagData.filter(item => item.categories.includes('Default Collection'));
     } else if (selectedValue === 'item3') {
-      return mockData.filter(item => item.categories.includes('Forum Tags'));
+      return TagData.filter(item => item.categories.includes('Forum Tags'));
     } else {
       return [];
     }

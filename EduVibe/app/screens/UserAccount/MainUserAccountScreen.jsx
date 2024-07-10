@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
-  StyleSheet,
   SafeAreaView,
   View,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   Text,
   Image,
 } from 'react-native';
@@ -13,13 +11,17 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import ExperienceCard from '../../../components/ExperienceCard';
 import { useUsers } from '../../../contexts/UsersContext';
 import { UserAccountStyling } from '../../../themes/UserAccountStyle';
+import { useTagContext } from '../../../contexts/TagContext';
+import PlaceCard from '../../../components/PlaceCard';
+import { PlacesContext } from '../../../contexts/PlacesContext';
 
 const tags = ['ios', 'android', 'web', 'ui', 'ux'];
 
 const MainUserAccountScreen = ({ navigation }) => {
-  const { users, stats } = useUsers(); // Fetch users and stats from context
+  const { users, stats } = useUsers();
+  const { setTag } = useTagContext();
+  const { places } = useContext(PlacesContext);
 
-  // Find the user with ID '1'
   const currentUser = users.find((user) => user.id === '1');
 
   return (
@@ -27,33 +29,18 @@ const MainUserAccountScreen = ({ navigation }) => {
       <View style={UserAccountStyling.container}>
         <View style={UserAccountStyling.header}>
           <View style={UserAccountStyling.headerAction}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-            >
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <FeatherIcon name="chevron-left" size={24} />
             </TouchableOpacity>
           </View>
 
           <View style={UserAccountStyling.search}>
-            <View style={UserAccountStyling.searchIcon}>
-              
-            </View>
-<Text style={UserAccountStyling.profileTitle}>
-
-{currentUser.name}
-</Text>
+            <View style={UserAccountStyling.searchIcon}></View>
+            <Text style={UserAccountStyling.profileTitle}>{currentUser.name}</Text>
           </View>
 
-          <View
-            style={[UserAccountStyling.headerAction, { alignItems: 'flex-end' }]}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}
-            >
+          <View style={[UserAccountStyling.headerAction, { alignItems: 'flex-end' }]}>
+            <TouchableOpacity onPress={() => { /* handle onPress */ }}>
               <FeatherIcon name="more-vertical" size={24} />
             </TouchableOpacity>
           </View>
@@ -66,10 +53,9 @@ const MainUserAccountScreen = ({ navigation }) => {
                 <View style={UserAccountStyling.avatar}>
                   <Image
                     alt=""
-                    source={{ uri: currentUser.img }} // Use the user's img from context
+                    source={{ uri: currentUser.img }}
                     style={UserAccountStyling.avatarImg}
                   />
-
                   <View style={UserAccountStyling.avatarNotification} />
                 </View>
 
@@ -77,10 +63,9 @@ const MainUserAccountScreen = ({ navigation }) => {
                   <Text style={UserAccountStyling.profileTitle}>
                     {currentUser.name}
                   </Text>
-
                   <Text style={UserAccountStyling.profileSubtitle}>
                     {currentUser.portfolio} {' · '}
-                    <Text style={{ color: '#266EF1' , flex : 1 , }}>
+                    <Text style={{ color: '#266EF1', flex: 1 }}>
                       @{currentUser.username.toLowerCase().replace(/\s/g, '')}
                     </Text>
                   </Text>
@@ -96,7 +81,8 @@ const MainUserAccountScreen = ({ navigation }) => {
                   <TouchableOpacity
                     key={index}
                     onPress={() => {
-                      // handle onPress
+                      setTag({ title: tag });
+                      navigation.navigate('TagDetails');
                     }}
                   >
                     <Text style={UserAccountStyling.profileTagsItem}>
@@ -127,6 +113,24 @@ const MainUserAccountScreen = ({ navigation }) => {
                 ))}
             </View>
             <ExperienceCard navigation={navigation} />
+
+            {/* Worked Places Section */}
+            <View style={{ marginTop: 16 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 8 }}>Worked Places</Text>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                {places.map((place) => (
+                  <PlaceCard
+                    key={place.id}
+                    id={place.id}
+                    img={place.img}
+                    name={place.name}
+                    description={place.description}
+                   
+                  />
+                ))}
+              </ScrollView>
+            </View>
+
           </View>
         </ScrollView>
       </View>
@@ -135,4 +139,3 @@ const MainUserAccountScreen = ({ navigation }) => {
 };
 
 export default MainUserAccountScreen;
-

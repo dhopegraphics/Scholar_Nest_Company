@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,10 +7,28 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons"; // Import Material Icon
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { ButtonsTextStyle } from "../../themes/ButtonsWithTextContainerStyle";
+import { useUsers } from "../../contexts/UsersContext";
+import { useVisibility } from "../../contexts/VisibilityContext"; // import useVisibility
 
 const MoreScreen = ({ navigation }) => {
+  const { isButtonVisible } = useVisibility(); // use the visibility state
+  const {isCourseButtonVisible} = useVisibility();
+  const {isAppSettingsVisible} = useVisibility();
+  const { users } = useUsers();
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const handleResultPress = (item) => {
+    const isUserSelected = selectedUsers.some(user => user.id === item.id);
+
+    if (!isUserSelected) {
+      const updatedSelectedUsers = [...selectedUsers, item];
+      setSelectedUsers(updatedSelectedUsers);
+      navigation.navigate('WardsScreen', { selectedUsers: updatedSelectedUsers });
+    }
+  };
+
   return (
     <SafeAreaView style={ButtonsTextStyle.safeArea}>
       <ScrollView contentContainerStyle={ButtonsTextStyle.scrollViewContent}>
@@ -22,7 +40,7 @@ const MoreScreen = ({ navigation }) => {
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
               style={ButtonsTextStyle.button}
-              onPress={() => navigation.navigate("GlobalSearch")} // Navigate to GlobalSearch
+              onPress={() => navigation.navigate("GlobalSearch")}
             >
               <Icon
                 style={ButtonsTextStyle.icon}
@@ -42,7 +60,7 @@ const MoreScreen = ({ navigation }) => {
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
               style={ButtonsTextStyle.button}
-              onPress={() => navigation.navigate("calendar")} // Navigate to Calendar
+              onPress={() => navigation.navigate("calendar")}
             >
               <Icon
                 style={ButtonsTextStyle.icon}
@@ -60,9 +78,10 @@ const MoreScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
+      
             <TouchableOpacity
               style={ButtonsTextStyle.button}
-              onPress={() => navigation.navigate("Tags")} // Navigate to Tags
+              onPress={() => navigation.navigate("Tags")}
             >
               <Icon
                 style={ButtonsTextStyle.icon}
@@ -78,19 +97,21 @@ const MoreScreen = ({ navigation }) => {
                 color="gray"
               />
             </TouchableOpacity>
+             
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
+          {isCourseButtonVisible && (
             <TouchableOpacity
               style={ButtonsTextStyle.button}
-              onPress={() => navigation.navigate("QrCodeScanner")}
+              onPress={() => navigation.navigate("Uploads")}
             >
               <Icon
                 style={ButtonsTextStyle.icon}
-                name="qr-code"
+                name="cloud-upload"
                 size={30}
                 color="#ffffff"
               />
-              <Text style={ButtonsTextStyle.text}>Scan QR Code</Text>
+              <Text style={ButtonsTextStyle.text}>Upload Courses Here</Text>
               <Icon
                 style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
@@ -98,10 +119,32 @@ const MoreScreen = ({ navigation }) => {
                 color="gray"
               />
             </TouchableOpacity>
+                )}
+            {isButtonVisible && (
+              <TouchableOpacity
+                style={ButtonsTextStyle.button}
+                onPress={() => navigation.navigate("WardsScreen", { selectedUsers })}
+              >
+                <Icon
+                  style={ButtonsTextStyle.icon}
+                  name="supervised-user-circle"
+                  size={30}
+                  color="#ffffff"
+                />
+                <Text style={ButtonsTextStyle.text}>Your Wards</Text>
+                <Icon
+                  style={ButtonsTextStyle.rightIcon}
+                  name="chevron-right"
+                  size={30}
+                  color="gray"
+                />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </ScrollView>
       <View style={ButtonsTextStyle.SettingsContainer}>
+      {isAppSettingsVisible && (
         <TouchableOpacity
           style={ButtonsTextStyle.MoreSettingsButton}
           onPress={() => navigation.navigate("AppSettings")}
@@ -120,11 +163,10 @@ const MoreScreen = ({ navigation }) => {
             color="gray"
           />
         </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );
 };
-
-
 
 export default MoreScreen;
