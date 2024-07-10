@@ -57,6 +57,8 @@ import OnBoardingScreen from "../screens/Onboarding/Onboarding";
 import WelcomeIntroScreen from "../screens/Welcome/WelcomeIntro";
 import MainUserAccountScreen from "../screens/UserAccount/MainUserAccountScreen";
 import ExperienceDetailsScreen from "../screens/Experience/ExperienceDetailsScreen";
+import { GroupProvider } from "../../contexts/GroupContexts";
+import GroupDetailsScreen from "../screens/GroupChat/GroupDetailsScreen";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -106,6 +108,7 @@ export type StackParamList = {
   WelcomeIntroScreen: undefined;
   MainUserAccountScreen: undefined;
   ExperienceDetails : undefined;
+  GroupDetailsScreen:  { group: { name: string; img: string } } ;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -287,7 +290,11 @@ const MainStackScreen = () => {
           component={ExperienceDetailsScreen}
           options={{ headerShown: false }}
         />
-
+        <Stack.Screen
+          name="GroupDetailsScreen"
+          component={GroupDetailsScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </UsersProvider>
   );
@@ -297,6 +304,7 @@ const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
     <QuestionProvider>
+      <GroupProvider>
       <VisibilityProvider>
         <SettingsProvider>
           <UsersProvider>
@@ -320,6 +328,7 @@ const AppNavigator = () => (
           </UsersProvider>
         </SettingsProvider>
       </VisibilityProvider>
+      </GroupProvider>
     </QuestionProvider>
   </>
 );

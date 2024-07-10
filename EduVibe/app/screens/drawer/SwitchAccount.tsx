@@ -1,19 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import imageExport from '../../../assets/images/imageExport';
-
-const SwitchAccount  = () => {
+//@ts-ignore
+const SwitchAccount  = ({navigation}) => {
   return (
-    <View style={styles.cardContainer}>
+    <><View style={styles.cardContainer}>
       <View style={styles.infoContainer}>
-        <Text style={styles.title}>Moodle - Open-source learning platform</Text>
-        <Text style={styles.subtitle}>moodle.org</Text>
+        <Text style={styles.title}>EduVibe - learning platform</Text>
+        <Text style={styles.subtitle}>scholarnestcompany.edu.gh</Text>
       </View>
-      <TouchableOpacity style={styles.touchableContainer} onPress={() => alert('Card pressed!')}>
+      <TouchableOpacity style={styles.touchableContainer} onPress={() => navigation.navigate("Back")}>
         <Image source={imageExport.logo} style={styles.logo} />
         <Text style={styles.name}>isaac mensah</Text>
       </TouchableOpacity>
-    </View>
+    </View><View style={styles.cardContainer}>
+        <View style={styles.infoContainer}>
+          <Text style={styles.title}>You Want To Change Your User Setup ?</Text>
+          <Text style={styles.subtitle}>To Educator , Parent or Student </Text>
+        </View>
+        <TouchableOpacity style={styles.touchableContainer} onPress={() => navigation.navigate("Survey")}>
+          <Image source={imageExport.Logout} style={styles.logo} />
+          <Text style={styles.Textname}>Click Here</Text>
+        </TouchableOpacity>
+      </View></>
   );
 };
 
@@ -48,10 +57,14 @@ const styles = StyleSheet.create({
   logo: {
     width: 40,
     height: 40,
-    marginRight: 10,
+    marginRight: 15,
   },
   name: {
     fontSize: 16,
+  },
+  Textname: {
+    fontSize: 16,
+    fontWeight : "bold"
   },
 });
 
