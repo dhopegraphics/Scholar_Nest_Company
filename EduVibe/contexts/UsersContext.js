@@ -69,6 +69,7 @@ export const UsersProvider = ({ children }) => {
         password: ' ',
         country: 'Ghana',
         tags: tagData['1'],
+        lastseen : 20 ,
       },
       {
         id: '2',
@@ -86,6 +87,7 @@ export const UsersProvider = ({ children }) => {
         password: ' ',
         country: 'Ghana',
         tags: tagData['2'],
+        lastseen : 20 ,
       },
       // Add more users with unique IDs and additional information
     ]);

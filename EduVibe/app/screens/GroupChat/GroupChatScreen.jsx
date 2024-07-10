@@ -1,45 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-  Alert,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView, Platform, Keyboard, Animated } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import ActionSheet from "react-native-actionsheet";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ChatScreen = ({ contact }) => {
+const GroupChatScreen = ({ group }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
-  const [selectedMessage, setSelectedMessage] = useState(null);
   const flatListRef = useRef(null);
-  const actionSheetRef = useRef(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const storedMessages = await AsyncStorage.getItem(
-          `messages_${contact.id}`
-        );
+        const storedMessages = await AsyncStorage.getItem(`messages_${group.id}`);
         if (storedMessages) {
           setMessages(JSON.parse(storedMessages));
         }
       } catch (error) {
-        console.error("Error fetching messages:", error.message);
+        console.error('Error fetching messages:', error.message);
       }
     };
 
     fetchMessages();
-  }, [contact]);
+  }, [group]);
 
   const saveMessage = async () => {
     if (inputText.trim().length > 0) {
@@ -55,12 +37,9 @@ const ChatScreen = ({ contact }) => {
       setInputText("");
 
       try {
-        await AsyncStorage.setItem(
-          `messages_${contact.id}`,
-          JSON.stringify(updatedMessages)
-        );
+        await AsyncStorage.setItem(`messages_${group.id}`, JSON.stringify(updatedMessages));
       } catch (error) {
-        console.error("Error saving message:", error.message);
+        console.error('Error saving message:', error.message);
       }
 
       // Scroll to the end of the list after adding a new message
@@ -68,68 +47,25 @@ const ChatScreen = ({ contact }) => {
     }
   };
 
-  const handleLongPress = (message) => {
-    setSelectedMessage(message);
-    actionSheetRef.current.show();
-  };
-
-  const handleActionSheet = (index) => {
-    switch (index) {
-      case 0: // Reply
-        setInputText(`@${selectedMessage.id}: `);
-        break;
-      case 1: // Forward
-        Alert.alert("Forward", `Forward message: ${selectedMessage.text}`);
-        break;
-      case 2: // Delete
-        deleteMessage(selectedMessage.id);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const deleteMessage = async (messageId) => {
-    const updatedMessages = messages.filter((msg) => msg.id !== messageId);
-    setMessages(updatedMessages);
-
-    try {
-      await AsyncStorage.setItem(
-        `messages_${contact.id}`,
-        JSON.stringify(updatedMessages)
-      );
-    } catch (error) {
-      console.error("Error deleting message:", error.message);
-    }
-  };
-
   const renderMessageItem = ({ item }) => (
-    <TouchableOpacity
-      onLongPress={() => handleLongPress(item)}
+    <View
       style={[
         styles.messageContainer,
         item.sender === "me" ? styles.myMessage : styles.theirMessage,
       ]}
     >
-      <Text
-        style={
-          item.sender === "me" ? styles.myMessageText : styles.theirMessageText
-        }
-      >
+      <Text style={item.sender === "me" ? styles.myMessageText : styles.theirMessageText}>
         {item.text}
       </Text>
       {item.time && (
-        <Text
-          style={
-            item.sender === "me" ? styles.myTimeText : styles.theirTimeText
-          }
-        >
+        <Text style={item.sender === "me" ? styles.myTimeText : styles.theirTimeText}>
           {item.time}
         </Text>
       )}
-    </TouchableOpacity>
+    </View>
   );
 
+  // Custom getItemLayout function to improve scroll performance
   const getItemLayout = (data, index) => ({
     length: 80, // Height of each item
     offset: 80 * index,
@@ -138,16 +74,15 @@ const ChatScreen = ({ contact }) => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1  }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Image style={styles.avatar} source={{ uri: contact?.img }} />
+          <Image style={styles.avatar} source={{ uri: group?.img }} />
           <View>
-            <Text style={styles.userName}>{contact?.name}</Text>
-            <Text style={styles.lastSeen}>Last seen 2m ago</Text>
+            <Text style={styles.userName}>{group?.name}</Text>
           </View>
         </View>
         <FlatList
@@ -158,7 +93,7 @@ const ChatScreen = ({ contact }) => {
           style={styles.messageList}
           contentContainerStyle={{ paddingVertical: 10 }}
           inverted
-          getItemLayout={getItemLayout} // Specify custom getItemLayout for performance
+          getItemLayout={getItemLayout} 
         />
         <View style={styles.inputContainer}>
           <TextInput
@@ -171,14 +106,6 @@ const ChatScreen = ({ contact }) => {
             <Icon name="send" size={24} color="white" />
           </TouchableOpacity>
         </View>
-        <ActionSheet
-          ref={actionSheetRef}
-          title={"Choose an action"}
-          options={["Reply", "Forward", "Delete", "Cancel"]}
-          cancelButtonIndex={3}
-          destructiveButtonIndex={2}
-          onPress={(index) => handleActionSheet(index)}
-        />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -272,5 +199,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen;
+export default GroupChatScreen;
 
