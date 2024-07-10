@@ -5,7 +5,7 @@ import More from "./More";
 import Notifications from "./Notifications";
 import * as React from "react";
 import { View, StatusBar } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomTabBarHeightContext, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 import DifferentDrawerNavigator from "../navigation/DifferentDrawerNavigator";
 
@@ -17,14 +17,18 @@ const Tab_Layout = () => {
     <>
       <View style={{ flex: 1 }}>
         <StatusBar barStyle="dark-content" backgroundColor="white" />
-        <Tab.Navigator
+        <Tab.Navigator 
           screenOptions={({ route }) => ({
+            tabBarStyle: {height:60},
+          
+            tabBarIconStyle: {textAlignVertical: "center", textAlign:"center"},
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
               if (route.name === "DifferentDrawerNavigator") {
                 iconName = focused ? "dashboard" : "dashboard";
-                size = "10"
+                
+                
               } else if (route.name === "Courses") {
                 iconName = focused ? "book" : "book";
               } else if (route.name === "Messages") {
@@ -37,12 +41,14 @@ const Tab_Layout = () => {
               }
 
               // You can return any component that you like here!
-              return <FontAwesome name={iconName} size={24} color={color} />;
+              
+              return <FontAwesome name={iconName} size={25} color={color}  />;
              
             },
-            tabBarActiveTintColor: "#1fd655",
+            tabBarActiveTintColor: "#009688",
             tabBarInactiveTintColor: "black",
           })}
+          
         >
           <Tab.Screen
             name="DifferentDrawerNavigator"
@@ -50,6 +56,8 @@ const Tab_Layout = () => {
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Dashboard
+              tabBarIconStyle: {textAlignVertical: "center", textAlign:"center"}
+             
             }}
           />
           <Tab.Screen
@@ -58,6 +66,7 @@ const Tab_Layout = () => {
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Courses
+              tabBarIconStyle: { textAlign:"center"}
             }}
           />
           <Tab.Screen
