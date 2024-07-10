@@ -93,7 +93,7 @@ const GroupChatScreen = ({ group }) => {
           style={styles.messageList}
           contentContainerStyle={{ paddingVertical: 10 }}
           inverted
-          getItemLayout={getItemLayout} // Specify custom getItemLayout for performance
+          getItemLayout={getItemLayout} 
         />
         <View style={styles.inputContainer}>
           <TextInput
