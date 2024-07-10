@@ -6,7 +6,11 @@ import { useExperience } from '../contexts/ExperienceContext';
 const CARD_WIDTH = Math.min(Dimensions.get('screen').width * 0.75, 400);
 
 const ExperienceCard = ({ navigation }) => {
-  const items = useExperience(); // Use the custom hook to get the items
+  const { items } = useExperience(); // Destructure items from context
+
+  const navigateToExperienceDetails = (item) => {
+    navigation.navigate('ExperienceDetails', { item });
+  };
 
   return (
     <View style={styles.list}>
@@ -27,12 +31,10 @@ const ExperienceCard = ({ navigation }) => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
-        {items.map(({ icon, label, company, jobType, years }, index) => (
+        {items && items.map(({ icon, label, company, jobType, years }, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => {
-              // handle onPress
-            }}
+            onPress={() => navigateToExperienceDetails({ icon, label, company, jobType, years })}
           >
             <View style={styles.card}>
               <View style={styles.cardTop}>
