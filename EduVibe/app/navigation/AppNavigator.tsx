@@ -53,7 +53,8 @@ import ForgotPasswordForm from "../screens/Auth/ForgotPasswordForm";
 import { PlacesProvider } from "../../contexts/PlacesContext";
 import UserInterest from "../screens/TagsDetails/UserInterest";
 import { QuestionProvider } from "../../contexts/QuestionContext";
-
+import OnBoardingScreen from "../screens/Onboarding/Onboarding";
+import WelcomeIntroScreen from "../screens/Welcome/WelcomeIntro";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -98,7 +99,9 @@ export type StackParamList = {
   ParentWardSetUpScreen: undefined;
   WardsScreen: undefined;
   LogOutScreen: undefined;
-  UserInterest : undefined;
+  UserInterest: undefined;
+  Onboarding: undefined;
+  WelcomeIntroScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -109,9 +112,14 @@ const MainStackScreen = () => {
   return (
     <UsersProvider>
       <Stack.Navigator
-        initialRouteName="SignInScreen"
+        initialRouteName="Onboarding"
         screenOptions={{ headerShown: false }}
       >
+        <Stack.Screen name="Onboarding" component={OnBoardingScreen} />
+        <Stack.Screen
+          name="WelcomeIntroScreen"
+          component={WelcomeIntroScreen}
+        />
         <Stack.Screen name="SignInScreen" component={SignInScreen} />
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
         <Stack.Screen
@@ -188,7 +196,7 @@ const MainStackScreen = () => {
           component={SpaceUsage}
           options={{ headerShown: true }}
         />
-        
+
         <Stack.Screen
           name="NewEvent"
           component={NewEvent}
@@ -259,7 +267,7 @@ const MainStackScreen = () => {
           component={LogOutAlertScreen}
           options={{ headerShown: false }}
         />
-                <Stack.Screen
+        <Stack.Screen
           name="UserInterest"
           component={UserInterest}
           options={{ headerShown: true }}
@@ -272,30 +280,30 @@ const MainStackScreen = () => {
 const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
-<QuestionProvider>
-    <VisibilityProvider>
-      <SettingsProvider>
-        <UsersProvider>
-          <PlacesProvider>
-          <ExperienceProvider>
-            <MessageProvider>
-              <TagProvider>
-                <CourseHeaderProvider>
-                  <ParticipantProvider>
-                    <CourseProvider>
-                      <EventProvider>
-                        <MainStackScreen />
-                      </EventProvider>
-                    </CourseProvider>
-                  </ParticipantProvider>
-                </CourseHeaderProvider>
-              </TagProvider>
-            </MessageProvider>
-          </ExperienceProvider>
-          </PlacesProvider>
-        </UsersProvider>
-      </SettingsProvider>
-    </VisibilityProvider>
+    <QuestionProvider>
+      <VisibilityProvider>
+        <SettingsProvider>
+          <UsersProvider>
+            <PlacesProvider>
+              <ExperienceProvider>
+                <MessageProvider>
+                  <TagProvider>
+                    <CourseHeaderProvider>
+                      <ParticipantProvider>
+                        <CourseProvider>
+                          <EventProvider>
+                            <MainStackScreen />
+                          </EventProvider>
+                        </CourseProvider>
+                      </ParticipantProvider>
+                    </CourseHeaderProvider>
+                  </TagProvider>
+                </MessageProvider>
+              </ExperienceProvider>
+            </PlacesProvider>
+          </UsersProvider>
+        </SettingsProvider>
+      </VisibilityProvider>
     </QuestionProvider>
   </>
 );
