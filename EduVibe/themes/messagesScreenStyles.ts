@@ -18,7 +18,7 @@ const messagesScreenstyles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 30,
     color: 'black',
     fontWeight: 'bold',
   },

@@ -38,8 +38,6 @@ const styles = StyleSheet.create({
       marginTop:''
       
   
-      
-
   }, 
   text:{
       fontSize:20,

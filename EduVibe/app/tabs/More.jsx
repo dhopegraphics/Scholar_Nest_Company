@@ -18,6 +18,7 @@ const MoreScreen = ({ navigation }) => {
           <View style={ButtonsTextStyle.more}>
             <Text style={ButtonsTextStyle.moreText}>More</Text>
           </View>
+          
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
               style={ButtonsTextStyle.button}

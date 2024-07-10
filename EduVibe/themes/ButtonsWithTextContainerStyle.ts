@@ -66,7 +66,7 @@ export const ButtonsTextStyle = StyleSheet.create({
     },
     text: {
       flex: 1,
-      fontSize: 17,
+      fontSize: 16,
       marginLeft: 10,
       color: "black",
     },

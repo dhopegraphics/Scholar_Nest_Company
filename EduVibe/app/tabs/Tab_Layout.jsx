@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 import DifferentDrawerNavigator from "../navigation/DifferentDrawerNavigator";
 
+
 const Tab = createBottomTabNavigator(); // Temporary workaround with type assertion
 
 const Tab_Layout = () => {
@@ -23,20 +24,23 @@ const Tab_Layout = () => {
 
               if (route.name === "DifferentDrawerNavigator") {
                 iconName = focused ? "dashboard" : "dashboard";
+                size = "10"
               } else if (route.name === "Courses") {
                 iconName = focused ? "book" : "book";
               } else if (route.name === "Messages") {
-                iconName = focused ? "snapchat" : "snapchat";
+                iconName = focused ? "comments" :"comment"
+                  
               } else if (route.name === "Notifications") {
-                iconName = focused ? "bell" : "bell-o";
+                iconName = focused ? "bell" : "bell";
               } else if (route.name === "More") {
                 iconName = focused ? "align-center" : "align-justify";
               }
 
               // You can return any component that you like here!
               return <FontAwesome name={iconName} size={24} color={color} />;
+             
             },
-            tabBarActiveTintColor: "#6200EE",
+            tabBarActiveTintColor: "#1fd655",
             tabBarInactiveTintColor: "black",
           })}
         >
@@ -62,6 +66,7 @@ const Tab_Layout = () => {
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Messages
+              
             }}
           />
 
