@@ -19,11 +19,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 type StackParamList = {
+  SignInScreen: undefined;
   Back: undefined;
 };
 type ForgotPasswordFormNavigationProp = StackNavigationProp<
   StackParamList,
-  "Back"
+  "SignInScreen"
 >;
 interface ForgotPasswordFormProps {
   navigation: ForgotPasswordFormNavigationProp;
@@ -57,7 +58,7 @@ const ForgotPasswordForm: React.FC = (props) => {
         placeholder="Username@gmail.com"
         keyboardType="email-address"
       />
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleSendEmail}>
         <Text style={[styles.buttonText, { fontFamily: "Nunito_600SemiBold" }]}>
           Send
         </Text>
@@ -66,7 +67,7 @@ const ForgotPasswordForm: React.FC = (props) => {
         <Text style={[styles.backText, { fontFamily: "Nunito_700Bold" }]}>
           Back To?
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Back")}>
+        <TouchableOpacity onPress={() => navigation.navigate("SignInScreen")}>
           <Text style={[styles.loginText, { fontFamily: "Nunito_700Bold" }]}>
             Sign In
           </Text>
