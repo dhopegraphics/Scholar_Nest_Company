@@ -68,6 +68,7 @@ const Dashboard = () => {
                   creator={course.creator}
                   participantsCount={course.participants.length}
                   onPress={() => handlePress(course)}
+                  imageSource={{ uri: 'https://placekitten.com/200/200' }} 
                 />
               ))}
             </ScrollView>

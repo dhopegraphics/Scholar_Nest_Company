@@ -1,30 +1,17 @@
-// PlaceCard.js
-
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Image,
-  Text,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, TouchableWithoutFeedback , Image, Text } from 'react-native';
 
-const PlaceCard = ({ id, img, name, description, onPress }) => {
+const PlaceCard = ({ id, img, name, description,  }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableWithoutFeedback >
       <View style={styles.card}>
         <Image source={{ uri: img }} style={styles.cardImg} />
-        <View style={styles.cardLikeWrapper}>
-        </View>
-        <View style={styles.cardTop}></View>
         <View style={styles.cardBody}>
-          <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>{name}</Text>
-          </View>
+          <Text style={styles.cardTitle}>{name}</Text>
           <Text style={styles.cardDescription}>{description}</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -32,7 +19,8 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 8,
     backgroundColor: '#fff',
-    marginBottom: 16,
+    marginRight: 16,
+    width: 200, // Make the card smaller
     shadowColor: 'rgba(0, 0, 0, 0.5)',
     shadowOffset: {
       width: 0,
@@ -42,36 +30,23 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
   },
-  cardLikeWrapper: {
-    position: 'absolute',
-    zIndex: 1,
-    top: 12,
-    right: 12,
-  },
-  cardTop: {},
   cardImg: {
     width: '100%',
-    height: 160,
+    height: 100, // Adjust the height to make the card smaller
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
   },
   cardBody: {
     padding: 12,
   },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '500',
     color: '#232425',
-    marginRight: 'auto',
   },
   cardDescription: {
-    marginTop: 8,
-    fontSize: 14,
+    marginTop: 4,
+    fontSize: 12,
     color: '#333',
   },
 });

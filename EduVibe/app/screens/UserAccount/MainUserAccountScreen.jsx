@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,15 +11,17 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import ExperienceCard from '../../../components/ExperienceCard';
 import { useUsers } from '../../../contexts/UsersContext';
 import { UserAccountStyling } from '../../../themes/UserAccountStyle';
-import { useTagContext } from '../../../contexts/TagContext'; // Import the context
+import { useTagContext } from '../../../contexts/TagContext';
+import PlaceCard from '../../../components/PlaceCard';
+import { PlacesContext } from '../../../contexts/PlacesContext';
 
 const tags = ['ios', 'android', 'web', 'ui', 'ux'];
 
 const MainUserAccountScreen = ({ navigation }) => {
   const { users, stats } = useUsers();
-  const { setTag } = useTagContext(); // Use the context
+  const { setTag } = useTagContext();
+  const { places } = useContext(PlacesContext);
 
-  // Find the user with ID '1'
   const currentUser = users.find((user) => user.id === '1');
 
   return (
@@ -79,8 +81,8 @@ const MainUserAccountScreen = ({ navigation }) => {
                   <TouchableOpacity
                     key={index}
                     onPress={() => {
-                      setTag({ title: tag }); // Set the selected tag
-                      navigation.navigate('TagDetails'); // Navigate to the TagDetails screen
+                      setTag({ title: tag });
+                      navigation.navigate('TagDetails');
                     }}
                   >
                     <Text style={UserAccountStyling.profileTagsItem}>
@@ -111,6 +113,24 @@ const MainUserAccountScreen = ({ navigation }) => {
                 ))}
             </View>
             <ExperienceCard navigation={navigation} />
+
+            {/* Worked Places Section */}
+            <View style={{ marginTop: 16 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 8 }}>Worked Places</Text>
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                {places.map((place) => (
+                  <PlaceCard
+                    key={place.id}
+                    id={place.id}
+                    img={place.img}
+                    name={place.name}
+                    description={place.description}
+                   
+                  />
+                ))}
+              </ScrollView>
+            </View>
+
           </View>
         </ScrollView>
       </View>

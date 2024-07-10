@@ -55,6 +55,7 @@ import UserInterest from "../screens/TagsDetails/UserInterest";
 import { QuestionProvider } from "../../contexts/QuestionContext";
 import OnBoardingScreen from "../screens/Onboarding/Onboarding";
 import WelcomeIntroScreen from "../screens/Welcome/WelcomeIntro";
+import MainUserAccountScreen from "../screens/UserAccount/MainUserAccountScreen";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -102,6 +103,7 @@ export type StackParamList = {
   UserInterest: undefined;
   Onboarding: undefined;
   WelcomeIntroScreen: undefined;
+  MainUserAccountScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -271,6 +273,11 @@ const MainStackScreen = () => {
           name="UserInterest"
           component={UserInterest}
           options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="MainUserAccountScreen"
+          component={MainUserAccountScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </UsersProvider>
