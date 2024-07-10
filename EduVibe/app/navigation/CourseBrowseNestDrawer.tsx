@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { TouchableOpacity, Text, View, StatusBar } from "react-native";
+import React, { useContext } from "react";
+import { TouchableOpacity, Text, View } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -8,12 +8,16 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { drawerStyles } from "../../themes/drawerStyles";
 import CoursesBrowse from "../tabs/CoursesBrowse";
-import MainUserAccountScreen from "../screens/UserAccount/MainUserAccountScreen";
+import ContactsCard from "../../components/ContactsCard";
+
+import { useUsers } from "../../contexts/UsersContext";
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props: any) => {
   const { navigation } = props;
+  const { users } = useUsers(); // Get users from context
+  const user = users[0]; // Assuming you want to display the first user
 
   const handleLogout = () => {
     navigation.navigate("LogOutScreen");
@@ -50,6 +54,13 @@ const CustomDrawerContent = (props: any) => {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
+
+      <ContactsCard
+        name={user.name}
+        img={user.img}
+        onPress={() => navigation.navigate("MainUserAccountScreen")}
+      />
+
       <DrawerItem
         label="Grades"
         destination="GradesScreen"
@@ -81,10 +92,7 @@ const CustomDrawerContent = (props: any) => {
         iconRight="chevron-forward-outline"
       />
 
-      <TouchableOpacity
-        onPress={handleLogout}
-        style={drawerStyles.logoutButton}
-      >
+      <TouchableOpacity onPress={handleLogout} style={drawerStyles.logoutButton}>
         <Ionicons
           name="log-out-outline"
           size={30}
@@ -104,14 +112,10 @@ const CourseBrowseNestDrawer = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen
-        name="CoursesBrowse"
+        name=" "
         component={CoursesBrowse}
         options={{ headerShown: false, drawerPosition: "right" }}
-      />
-      <Drawer.Screen
-        name="Profile"
-        component={MainUserAccountScreen}
-        options={{ headerShown: false }}
+        
       />
     </Drawer.Navigator>
   );

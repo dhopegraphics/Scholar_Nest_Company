@@ -53,6 +53,7 @@ import ForgotPasswordForm from "../screens/Auth/ForgotPasswordForm";
 import { PlacesProvider } from "../../contexts/PlacesContext";
 import UserInterest from "../screens/TagsDetails/UserInterest";
 import { QuestionProvider } from "../../contexts/QuestionContext";
+import MainUserAccountScreen from "../screens/UserAccount/MainUserAccountScreen";
 
 
 export type StackParamList = {
@@ -99,6 +100,7 @@ export type StackParamList = {
   WardsScreen: undefined;
   LogOutScreen: undefined;
   UserInterest : undefined;
+  MainUserAccountScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -264,6 +266,12 @@ const MainStackScreen = () => {
           component={UserInterest}
           options={{ headerShown: true }}
         />
+                <Stack.Screen
+          name="MainUserAccountScreen"
+          component={MainUserAccountScreen}
+          options={{ headerShown: false }}
+        />
+
       </Stack.Navigator>
     </UsersProvider>
   );

@@ -11,7 +11,6 @@ interface Course {
   title: string;
   creator: string;
   participants: Participant[];
-  tag : string;
 }
 
 interface CourseContextType {
