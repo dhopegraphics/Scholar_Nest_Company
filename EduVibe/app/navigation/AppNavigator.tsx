@@ -162,7 +162,7 @@ const MainStackScreen = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="GradesScreen" component={GradesScreen} />
-        <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
+        <Stack.Screen name="SwitchAccount" component={SwitchAccount}  />
         <Stack.Screen name="Reports" component={Reports} />
         <Stack.Screen
           name="EventScreen"
