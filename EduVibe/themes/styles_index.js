@@ -16,6 +16,17 @@ export const CommonStyle = StyleSheet.create({
     marginLeft: 10,
     marginTop: 40,
   },
+  visibleIcon: {
+    position: "absolute",
+    right: 30,
+    top: 15,
+  },
+  icon2: {
+    position: "absolute",
+    left: 30,
+    top: 17.8,
+    marginTop: -2,
+  },
   loginText: {
     fontSize: 40,
     fontWeight: "bold",
@@ -34,15 +45,29 @@ export const CommonStyle = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 30,
   },
+  input1: {
+    height: 55,
+    marginHorizontal: 16,
+    borderRadius: 30,
+    borderWidth: 1,
+    marginBottom: 10,
+    borderColor: "#CCCCCC",
+    paddingLeft: 39,
+    fontSize: 16,
+    backgroundColor: "white",
+    color: "#A1A1A1",
+  },
   focusedInput: {
     borderColor: "#4b968f",
   },
   forgotPassword: {
     color: "blue",
     marginBottom: 10,
+    marginTop: 15,
+    alignSelf: "center",
   },
   loginButton: {
-    width: "90%",
+    width: 150,
     height: 40,
     backgroundColor: "#4b968f",
     alignItems: "center",
@@ -50,6 +75,9 @@ export const CommonStyle = StyleSheet.create({
     marginBottom: 10,
     color: "white",
     borderRadius: 30,
+    marginTop: 5,
+
+    alignSelf: "center",
   },
   loginButtonText: {
     color: "white",
@@ -66,6 +94,7 @@ export const CommonStyle = StyleSheet.create({
     borderColor: "#CCCCCC",
     justifyContent: "center",
     padding: 5,
+    marginLeft: 20,
     marginBottom: 10,
     color: "blue",
   },
@@ -109,7 +138,7 @@ export const CommonStyle = StyleSheet.create({
     width: "90%",
     height: 1,
     backgroundColor: "#CCCCCC",
-    marginVertical: 20,
+    marginVertical: 10,
   },
   guestSection: {
     marginTop: 20,
@@ -162,5 +191,12 @@ export const CommonStyle = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1,
     backgroundColor: "#f8f8f8",
+  },
+  errorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 16,
+    position: "absolute",
+    top: 40,
   },
 });
