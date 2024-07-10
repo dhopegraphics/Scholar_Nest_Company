@@ -20,7 +20,9 @@ export const UserAccountStyling = StyleSheet.create({
       height: 40,
       borderRadius: 12,
       overflow: 'hidden',
-      marginHorizontal: 16,
+      marginHorizontal: 90,
+    
+      marginBottom : -25,
     },
     searchIcon: {
       position: 'absolute',

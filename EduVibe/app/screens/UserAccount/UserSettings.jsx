@@ -47,15 +47,7 @@ const UserSettings = ({ navigation }) => {
           </Text>
 
           <View style={[UserSettingsStyles.headerActionRight, {  }]}>
-            <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}>
-              <FeatherIcon
-                color="#000"
-                name="more-vertical"
-                size={24} />
-            </TouchableOpacity>
+           
           </View>
         </View>
 

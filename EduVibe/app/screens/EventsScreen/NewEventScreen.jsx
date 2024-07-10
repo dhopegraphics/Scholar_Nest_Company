@@ -1,209 +1,288 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform, TouchableWithoutFeedback, Keyboard, ScrollView, Dimensions } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Modal from "react-native-modal";
+import { NewEventStyling } from "../../../themes/NewEvent";
 
-const NewEvent = () => {
-  const [eventTitle, setEventTitle] = useState('');
-  const [eventDetails, setEventDetails] = useState('');
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
-  const [eventDate, setEventDate] = useState(new Date());
-  const [eventTime, setEventTime] = useState(new Date());
-  const [reminder, setReminder] = useState('');
-  const [titleFocused, setTitleFocused] = useState(false);
-  const [detailsFocused, setDetailsFocused] = useState(false);
+const categoryColors = {
+  Meeting: "#0984e3",
+  Birthday: "#00b894",
+  Reminder: "#00cec9",
+};
 
-  const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || eventDate;
-    setShowDatePicker(Platform.OS === 'ios'); // Hide date picker on iOS when selecting date
-    setEventDate(currentDate);
+function NewEvent() {
+  const [timers, setTimers] = useState([]);
+  const [newTimerTitle, setNewTimerTitle] = useState("");
+  const [newTimerCategory, setNewTimerCategory] = useState("");
+  const [newTimerDateTime, setNewTimerDateTime] = useState("");
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const [categorySelectedMessage, setCategorySelectedMessage] = useState("");
+  const [dateSelectedMessage, setDateSelectedMessage] = useState("");
+
+  useEffect(() => {
+    const intervalIds = {};
+
+    const updateTimers = () => {
+      setTimers((prevTimers) =>
+        prevTimers.map((timer) => {
+          const targetTime = new Date(timer.targetDateTime).getTime();
+          const currentTime = new Date().getTime();
+          const timeRemaining = Math.max(
+            Math.floor((targetTime - currentTime) / 1000),
+            0
+          );
+
+          if (timeRemaining === 0) {
+            clearInterval(intervalIds[timer.id]);
+            return { ...timer, isRunning: false, timeRemaining: 0 };
+          }
+
+          return { ...timer, timeRemaining };
+        })
+      );
+    };
+
+    timers.forEach((timer) => {
+      if (timer.isRunning && timer.timeRemaining > 0 && timerRunning) {
+        intervalIds[timer.id] = setInterval(updateTimers, 1000);
+      }
+    });
+
+    return () => {
+      Object.values(intervalIds).forEach((intervalId) =>
+        clearInterval(intervalId)
+      );
+    };
+  }, [timers, timerRunning]);
+
+  const removeTimer = (timerId) => {
+    setTimers((prevTimers) =>
+      prevTimers.filter((timer) => timer.id !== timerId)
+    );
   };
 
-  const handleTimeChange = (event, selectedTime) => {
-    const currentTime = selectedTime || eventTime;
-    setShowTimePicker(Platform.OS === 'ios'); // Hide time picker on iOS when selecting time
-    setEventTime(currentTime);
+  const calculateTimeRemaining = (targetTime) => {
+    const currentTime = new Date().getTime();
+    const timeDifference = targetTime - currentTime;
+    const secondsRemaining = Math.max(Math.floor(timeDifference / 1000), 0);
+    return secondsRemaining;
   };
 
-  const showDatepicker = () => {
-    setShowDatePicker(true);
+  const formatTimeRemaining = (seconds) => {
+    const days = Math.floor(seconds / (3600 * 24));
+    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    return {
+      days,
+      hours,
+      minutes,
+      seconds: remainingSeconds,
+    };
   };
 
-  const showTimepicker = () => {
-    setShowTimePicker(true);
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
   };
 
-  const setEventReminder = () => {
-    // Function to set reminder
-    setReminder(`Reminder set for ${eventDate.toLocaleDateString()} at ${eventTime.toLocaleTimeString()}`);
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
   };
 
-  const handleTitleFocus = () => {
-    setTitleFocused(true);
+  const handleConfirm = (date) => {
+    setSelectedDate(date);
+    setNewTimerDateTime(date.toISOString());
+    setDateSelectedMessage("Date has been selected successfully");
+    hideDatePicker();
+    setTimeout(() => {
+      setDateSelectedMessage("");
+    }, 1000);
   };
 
-  const handleTitleBlur = () => {
-    setTitleFocused(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
 
-  const handleDetailsFocus = () => {
-    setDetailsFocused(true);
+  const handleCategorySelection = (category) => {
+    setSelectedCategory(category);
+    setCategorySelectedMessage("Category has been selected successfully");
+    setModalVisible(false);
+    setTimeout(() => {
+      setCategorySelectedMessage("");
+    }, 1000);
   };
 
-  const handleDetailsBlur = () => {
-    setDetailsFocused(false);
-  };
+  const addTimer = () => {
+    if (!newTimerTitle || !selectedCategory || !newTimerDateTime) return;
 
-  const dismissKeyboard = () => {
-    Keyboard.dismiss();
-  };
+    const targetDateTime = new Date(newTimerDateTime).getTime();
 
-  const onSaveEvent = () => {
-    // Logic to save the event
-    // This is where you would typically save eventTitle, eventDetails, eventDate, eventTime, etc.
-    // Example: Save to AsyncStorage or send to backend API
-    console.log('Event saved:', { eventTitle, eventDetails, eventDate, eventTime });
+    const newTimer = {
+      id: timers.length + 1,
+      category: selectedCategory,
+      targetDateTime,
+      timeRemaining: calculateTimeRemaining(targetDateTime),
+      isRunning: true,
+      title: newTimerTitle,
+      showTitleInput: false,
+    };
+
+    setTimers([...timers, newTimer]);
+    setNewTimerTitle("");
+    setNewTimerCategory("");
+    setNewTimerDateTime("");
+    setTimerRunning(true);
   };
 
   return (
-    <TouchableWithoutFeedback onPress={dismissKeyboard}>
-      <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollViewContainer} keyboardShouldPersistTaps="handled">
-          <Text style={styles.headerText}>New Event</Text>
-          <TextInput
-            style={[
-              styles.input,
-              styles.leftAlign,
-              titleFocused ? styles.inputFocused : null,
-            ]}
-            placeholder="Event Title"
-            placeholderTextColor="#888"
-            value={eventTitle}
-            onChangeText={text => setEventTitle(text)}
-            onFocus={handleTitleFocus}
-            onBlur={handleTitleBlur}
-          />
-          <TextInput
-            style={[
-              styles.input,
-              styles.leftAlign,
-              styles.detailsInput,
-              detailsFocused ? styles.inputFocused : null,
-            ]}
-            placeholder="Event Details"
-            placeholderTextColor="#888"
-            multiline={true}
-            numberOfLines={4}
-            value={eventDetails}
-            onChangeText={text => setEventDetails(text)}
-            onFocus={handleDetailsFocus}
-            onBlur={handleDetailsBlur}
-          />
-          <TouchableOpacity style={[styles.button, styles.leftAlign]} onPress={showDatepicker}>
-            <Text style={styles.buttonText}>Select Event Date</Text>
-          </TouchableOpacity>
-          {showDatePicker && (
-            <DateTimePicker
-              value={eventDate}
-              mode="date"
-              is24Hour={true}
-              display="default"
-              onChange={handleDateChange}
-            />
-          )}
-          <TouchableOpacity style={[styles.button, styles.leftAlign]} onPress={showTimepicker}>
-            <Text style={styles.buttonText}>Select Event Time</Text>
-          </TouchableOpacity>
-          {showTimePicker && (
-            <DateTimePicker
-              value={eventTime}
-              mode="time"
-              is24Hour={true}
-              display="default"
-              onChange={handleTimeChange}
-            />
-          )}
-          <TouchableOpacity style={[styles.button, styles.leftAlign]} onPress={setEventReminder}>
-            <Text style={styles.buttonText}>Set Reminder</Text>
-          </TouchableOpacity>
-          {reminder ? <Text style={[styles.reminderText, styles.leftAlign]}>{reminder}</Text> : null}
-        </ScrollView>
-        <TouchableOpacity style={styles.saveButton} onPress={onSaveEvent}>
-          <Text style={styles.buttonText}>Save Event</Text>
+    <ScrollView style={NewEventStyling.container}>
+      <View style={NewEventStyling.inputContainer}>
+        <Text style={NewEventStyling.heading}>Event Countdown Timer</Text>
+        <TextInput
+          style={NewEventStyling.input}
+          placeholder="Timer Title"
+          placeholderTextColor="#aaa"
+          value={newTimerTitle}
+          onChangeText={(text) => setNewTimerTitle(text)}
+        />
+        <TouchableOpacity
+          style={NewEventStyling.button}
+          onPress={toggleModal}
+          disabled={!newTimerTitle}
+        >
+          <Text style={NewEventStyling.buttonText}>Select Category</Text>
+        </TouchableOpacity>
+        <Modal isVisible={isModalVisible}>
+          <View style={NewEventStyling.modalContainer}>
+            <Text style={NewEventStyling.modalTitle}>Select a Category</Text>
+            <TouchableOpacity
+              style={NewEventStyling.categoryButton}
+              onPress={() => handleCategorySelection("Meeting")}
+            >
+              <Text style={NewEventStyling.buttonText}>Meeting</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={NewEventStyling.categoryButton}
+              onPress={() => handleCategorySelection("Birthday")}
+            >
+              <Text style={NewEventStyling.buttonText}>Birthday</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={NewEventStyling.categoryButton}
+              onPress={() => handleCategorySelection("Reminder")}
+            >
+              <Text style={NewEventStyling.buttonText}>Reminder</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Text style={NewEventStyling.messageText}>
+          {categorySelectedMessage}
+        </Text>
+        <TouchableOpacity
+          style={NewEventStyling.button}
+          onPress={showDatePicker}
+          disabled={!newTimerTitle || !selectedCategory}
+        >
+          <Text style={NewEventStyling.buttonText}>Select Date</Text>
+        </TouchableOpacity>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="datetime"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+          customPicker={
+            <View style={{ backgroundColor: 'black', padding: 20 }}>
+              <Text style={{ color: 'white' }}>Select Date and Time</Text>
+            </View>
+          }
+        />
+        <Text style={NewEventStyling.messageText}>{dateSelectedMessage}</Text>
+        <TouchableOpacity
+          style={NewEventStyling.button}
+          onPress={addTimer}
+          disabled={!newTimerTitle || !selectedCategory || !newTimerDateTime}
+        >
+          <Text style={NewEventStyling.buttonText}>Add Timer</Text>
         </TouchableOpacity>
       </View>
-    </TouchableWithoutFeedback>
-  );
-};
+      <View style={NewEventStyling.timersContainer}>
+        {timers.map((timer) => {
+          const timeRemaining = formatTimeRemaining(timer.timeRemaining);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-  },
-  scrollViewContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start', // Align items to the left
-    width: '100%',
-    marginBottom: 80, // Adjust as needed to accommodate the save button
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    alignSelf: 'flex-start', // Align text to the left
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-    borderRadius: 5,
-  },
-  inputFocused: {
-    borderColor: '#007BFF', // Example border color when focused
-  },
-  detailsInput: {
-    height: 100,
-    textAlignVertical: 'top', // Ensure text starts from top in multiline input
-  },
-  leftAlign: {
-    alignSelf: 'flex-start', // Align button text to the left
-  },
-  button: {
-    backgroundColor: '#007BFF',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  reminderText: {
-    marginTop: 20,
-    fontSize: 16,
-    color: '#555',
-    alignSelf: 'flex-start', // Align text to the left
-  },
-  saveButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
-    backgroundColor: '#28a745', // Green color for save button
-    paddingVertical: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-});
+          return (
+            <View
+              key={timer.id}
+              style={[
+                NewEventStyling.card,
+                {
+                  backgroundColor: categoryColors[timer.category] || "transparent",
+                },
+              ]}
+            >
+              <Text style={NewEventStyling.cardTitle}>{timer.title}</Text>
+              <Text style={NewEventStyling.cardCategory}>{timer.category}</Text>
+              <View style={NewEventStyling.timerInfo}>
+                {timeRemaining.days > 0 && (
+                  <View style={NewEventStyling.timeInfo}>
+                    <Text>
+                      <Text style={NewEventStyling.timeValue}>
+                        {timeRemaining.days}
+                      </Text>{" "}
+                      days
+                    </Text>
+                  </View>
+                )}
+                <View style={NewEventStyling.timeInfo}>
+                  <Text>
+                    <Text style={NewEventStyling.timeValue}>
+                      {timeRemaining.hours}
+                    </Text>{" "}
+                    hours
+                  </Text>
+                </View>
+                <View style={NewEventStyling.timeInfo}>
+                  <Text>
+                    <Text style={NewEventStyling.timeValue}>
+                      {timeRemaining.minutes}
+                    </Text>{" "}
+                    minutes
+                  </Text>
+                </View>
+                <View style={NewEventStyling.timeInfo}>
+                  <Text>
+                    <Text style={NewEventStyling.timeValue}>
+                      {timeRemaining.seconds}
+                    </Text>{" "}
+                    seconds
+                  </Text>
+                </View>
+              </View>
+              <TouchableOpacity
+                style={NewEventStyling.button}
+                onPress={() => removeTimer(timer.id)}
+                disabled={timer.timeRemaining <= 0}
+              >
+                <Text style={NewEventStyling.buttonText}>Remove</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </View>
+    </ScrollView>
+  );
+}
 
 export default NewEvent;

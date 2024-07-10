@@ -38,13 +38,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: 20,
     backgroundColor: '#f5f5f5',
   },
   participantsList: {
     flexGrow: 1,
     justifyContent: 'center',
     width: '100%',
+    marginBottom : 500,
   },
   participantButton: {
     flexDirection: 'row',
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginBottom: 10,
     width: '100%',
+
   },
   avatar: {
     width: 50,

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#fff',
     marginRight: 16,
-    width: 200,
+    width: 270,
     shadowColor: 'rgba(0, 0, 0, 0.5)',
     shadowOffset: {
       width: 0,
