@@ -7,24 +7,13 @@ import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { useCourseContext } from '../../contexts/useCourseContext';
 import { ParticipantContext } from '../../contexts/ParticipantContext';
 
-// Define Course interface
-interface Course {
-  title: string;
-  creator: string;
-  participants: {
-    username: string;
-    lastAccessed: string;
-    avatar: string;
-  }[];
-}
-
 const Dashboard = () => {
   const navigation = useNavigation();
   const { setCourse } = useCourseContext();
   const participantContext = useContext(ParticipantContext);
   const [refreshing, setRefreshing] = useState(false);
 
-  const handlePress = (course: Course) => {
+  const handlePress = (course) => {
     setCourse(course);
     if (participantContext) {
       participantContext.setParticipants(course.participants);
@@ -61,14 +50,14 @@ const Dashboard = () => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={DashboardStyles.scrollContainer}
             >
-              {participantContext?.courses.map((course: Course, index: number) => (
+              {participantContext?.courses.map((course, index) => (
                 <CourseCard
                   key={index}
                   title={course.title}
                   creator={course.creator}
                   participantsCount={course.participants.length}
                   onPress={() => handlePress(course)}
-                  imageSource={{ uri: 'https://placekitten.com/200/200' }} 
+                  imageSource={{ uri: course.image }} // Pass the image source dynamically
                 />
               ))}
             </ScrollView>

@@ -1,4 +1,3 @@
-// CourseContext.tsx
 import React, { createContext, useState, ReactNode } from 'react';
 
 interface Participant {
@@ -11,6 +10,7 @@ interface Course {
   title: string;
   creator: string;
   participants: Participant[];
+  image: string; // Add the image property to the Course interface
 }
 
 interface CourseContextType {
