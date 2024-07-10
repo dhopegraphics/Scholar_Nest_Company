@@ -1,7 +1,9 @@
-import React, { createContext, useContext } from 'react';
+// ExperienceContext.js
 
-// Define the items array
-const items = [
+import React, { createContext, useContext, useState } from 'react';
+
+// Initial items array
+const initialItems = [
   {
     icon: 'figma',
     label: 'Senior UI/UX Designer',
@@ -25,21 +27,37 @@ const items = [
   },
 ];
 
-// Create the context
+// Create context
 const ExperienceContext = createContext();
 
-// Create the provider component
-const ExperienceProvider = ({ children }) => {
+// Provider component
+export const ExperienceProvider = ({ children }) => {
+  const [items, setItems] = useState(initialItems);
+
+  // Function to update an experience item
+  const updateExperienceItem = (updatedItem) => {
+    const updatedItems = items.map(item => item.label === updatedItem.label ? updatedItem : item);
+    setItems(updatedItems);
+  };
+
+  // Context value includes items and updateExperienceItem function
+  const contextValue = {
+    items,
+    updateExperienceItem,
+  };
+
   return (
-    <ExperienceContext.Provider value={items}>
+    <ExperienceContext.Provider value={contextValue}>
       {children}
     </ExperienceContext.Provider>
   );
 };
 
-// Custom hook to use the ExperienceContext
-const useExperience = () => {
-  return useContext(ExperienceContext);
+// Custom hook to use experience context
+export const useExperience = () => {
+  const context = useContext(ExperienceContext);
+  if (!context) {
+    throw new Error('useExperience must be used within an ExperienceProvider');
+  }
+  return context;
 };
-
-export { ExperienceProvider, useExperience };

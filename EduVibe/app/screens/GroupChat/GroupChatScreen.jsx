@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeArea
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ChatScreen = ({ contact }) => {
+const GroupChatScreen = ({ group }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const flatListRef = useRef(null);
@@ -11,7 +11,7 @@ const ChatScreen = ({ contact }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const storedMessages = await AsyncStorage.getItem(`messages_${contact.id}`);
+        const storedMessages = await AsyncStorage.getItem(`messages_${group.id}`);
         if (storedMessages) {
           setMessages(JSON.parse(storedMessages));
         }
@@ -21,7 +21,7 @@ const ChatScreen = ({ contact }) => {
     };
 
     fetchMessages();
-  }, [contact]);
+  }, [group]);
 
   const saveMessage = async () => {
     if (inputText.trim().length > 0) {
@@ -37,7 +37,7 @@ const ChatScreen = ({ contact }) => {
       setInputText("");
 
       try {
-        await AsyncStorage.setItem(`messages_${contact.id}`, JSON.stringify(updatedMessages));
+        await AsyncStorage.setItem(`messages_${group.id}`, JSON.stringify(updatedMessages));
       } catch (error) {
         console.error('Error saving message:', error.message);
       }
@@ -74,16 +74,15 @@ const ChatScreen = ({ contact }) => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{ flex: 1  }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Image style={styles.avatar} source={{ uri: contact?.img }} />
+          <Image style={styles.avatar} source={{ uri: group?.img }} />
           <View>
-            <Text style={styles.userName}>{contact?.name}</Text>
-            <Text style={styles.lastSeen}>Last seen 2m ago</Text>
+            <Text style={styles.userName}>{group?.name}</Text>
           </View>
         </View>
         <FlatList
@@ -94,7 +93,7 @@ const ChatScreen = ({ contact }) => {
           style={styles.messageList}
           contentContainerStyle={{ paddingVertical: 10 }}
           inverted
-          getItemLayout={getItemLayout} // Specify custom getItemLayout for performance
+          getItemLayout={getItemLayout} 
         />
         <View style={styles.inputContainer}>
           <TextInput
@@ -200,5 +199,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen;
+export default GroupChatScreen;
 

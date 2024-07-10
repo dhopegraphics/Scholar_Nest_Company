@@ -56,6 +56,9 @@ import { QuestionProvider } from "../../contexts/QuestionContext";
 import OnBoardingScreen from "../screens/Onboarding/Onboarding";
 import WelcomeIntroScreen from "../screens/Welcome/WelcomeIntro";
 import MainUserAccountScreen from "../screens/UserAccount/MainUserAccountScreen";
+import ExperienceDetailsScreen from "../screens/Experience/ExperienceDetailsScreen";
+import { GroupProvider } from "../../contexts/GroupContexts";
+import GroupDetailsScreen from "../screens/GroupChat/GroupDetailsScreen";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -104,6 +107,8 @@ export type StackParamList = {
   Onboarding: undefined;
   WelcomeIntroScreen: undefined;
   MainUserAccountScreen: undefined;
+  ExperienceDetails : undefined;
+  GroupDetailsScreen:  { group: { name: string; img: string } } ;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -160,7 +165,7 @@ const MainStackScreen = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="GradesScreen" component={GradesScreen} />
-        <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
+        <Stack.Screen name="SwitchAccount" component={SwitchAccount}  />
         <Stack.Screen name="Reports" component={Reports} />
         <Stack.Screen
           name="EventScreen"
@@ -279,6 +284,17 @@ const MainStackScreen = () => {
           component={MainUserAccountScreen}
           options={{ headerShown: false }}
         />
+
+<Stack.Screen
+          name="ExperienceDetails"
+          component={ExperienceDetailsScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="GroupDetailsScreen"
+          component={GroupDetailsScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </UsersProvider>
   );
@@ -288,6 +304,7 @@ const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
     <QuestionProvider>
+      <GroupProvider>
       <VisibilityProvider>
         <SettingsProvider>
           <UsersProvider>
@@ -311,6 +328,7 @@ const AppNavigator = () => (
           </UsersProvider>
         </SettingsProvider>
       </VisibilityProvider>
+      </GroupProvider>
     </QuestionProvider>
   </>
 );
