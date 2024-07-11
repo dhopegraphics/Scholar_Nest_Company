@@ -10,35 +10,20 @@ import {
   SafeAreaView,
   ScrollView,
   ActivityIndicator,
+  Alert
 } from "react-native";
 import {
   Entypo,
-  FontAwesome,
   Fontisto,
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { signIn } from "../../../lib/appwrite";
 import imageExport from "../../../assets/images/imageExport";
 import { CommonStyle } from "../../../themes/styles_index";
-// Define the navigation prop types
-type StackParamList = {
-  SignUpScreen: undefined;
-  Back: undefined;
-  ForgotPasswordForm: undefined;
-};
 
-type LoginScreenNavigationProp = StackNavigationProp<
-  StackParamList,
-  "SignUpScreen"
->;
-
-interface LoginScreenProps {
-  navigation: LoginScreenNavigationProp;
-}
-
-const SignInScreen: React.FC<LoginScreenProps> = (props) => {
+const SignInScreen = ({ navigation }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [buttonSpinner, setButtonSpinner] = useState(false);
   const [isUsernameFocused, setUsernameFocused] = useState(false);
@@ -47,14 +32,11 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
     email: "",
     password: "",
   });
-
-  const [required, setRequired] = useState("");
-
   const [error, setError] = useState({
     password: "",
   });
 
-  const handlePasswordValidation = (value: string) => {
+  const handlePasswordValidation = (value) => {
     const password = value;
     const passwordSpecialCharacter = /(?=.*[!@#$&*])/;
     const passwordOneNumber = /(?=.*[0-9])/;
@@ -87,8 +69,6 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
     }
   };
 
-  const navigation = useNavigation<LoginScreenNavigationProp>();
-
   const handleUsernameFocus = () => {
     setUsernameFocused(true);
     setPasswordFocused(false);
@@ -99,8 +79,8 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
     setPasswordFocused(true);
   };
 
-  const usernameRef = useRef<TextInput>(null);
-  const passwordRef = useRef<TextInput>(null);
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const handleScreenTap = () => {
     if (usernameRef.current) {
@@ -112,6 +92,19 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
     setUsernameFocused(false);
     setPasswordFocused(false);
     Keyboard.dismiss();
+  };
+
+  const handleLogin = async () => {
+    try {
+      setButtonSpinner(true);
+      // Perform client-side validation if needed before calling signIn
+      await signIn(userInfo.email, userInfo.password);
+      setButtonSpinner(false);
+      navigation.navigate("Back");
+    } catch (error) {
+      setButtonSpinner(false);
+      Alert.alert("Login Failed", error.message);
+    }
   };
 
   return (
@@ -143,7 +136,7 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
                 size={20}
                 color={"#A1A1A1"}
               />
-              {required && (
+              {error.password && (
                 <View style={CommonStyle.errorContainer}>
                   <Entypo name="cross" size={18} color={"red"} />
                 </View>
@@ -195,10 +188,9 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
               >
                 <Text style={CommonStyle.forgotPassword}>Forgot Password?</Text>
               </TouchableOpacity>
-
               <TouchableOpacity
                 style={CommonStyle.loginButton}
-                onPress={() => navigation.navigate("Back")}
+                onPress={handleLogin}
               >
                 {buttonSpinner ? (
                   <ActivityIndicator size="small" color={"white"} />
@@ -206,7 +198,6 @@ const SignInScreen: React.FC<LoginScreenProps> = (props) => {
                   <Text style={CommonStyle.loginButtonText}>Login</Text>
                 )}
               </TouchableOpacity>
-
               <View style={CommonStyle.buttonContainer}>
                 <TouchableOpacity style={CommonStyle.googleButton}>
                   <Image

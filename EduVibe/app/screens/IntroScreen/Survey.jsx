@@ -137,12 +137,7 @@ const SurveyScreen = () => {
       navigation.navigate("Back");
       
     } else {
-      console.log('Your Hobby');
       navigation.navigate("Back");
-      setButtonVisible(false); 
-      setCourseButtonVisible (false);
-      setAppSettingsVisible (true);
-      setAnswer(!null);
     }
 
     setSelectedAnswers(selectedAnswers => {

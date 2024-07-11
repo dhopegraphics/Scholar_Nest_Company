@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { StatusBar } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignInScreen from "../screens/Auth/SignIn";
@@ -59,6 +59,7 @@ import MainUserAccountScreen from "../screens/UserAccount/MainUserAccountScreen"
 import ExperienceDetailsScreen from "../screens/Experience/ExperienceDetailsScreen";
 import { GroupProvider } from "../../contexts/GroupContexts";
 import GroupDetailsScreen from "../screens/GroupChat/GroupDetailsScreen";
+import { useGlobalContext } from "../../contexts/GlobalProvider";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -114,12 +115,24 @@ export type StackParamList = {
 const Stack = createNativeStackNavigator<StackParamList>();
 
 const MainStackScreen = () => {
+  const { isLogged, loading } = useGlobalContext();
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+
+  useEffect(() => {
+    // Optionally, add any initialization logic here
+  }, []);
+
+  if (loading) {
+    // Optionally, show a loading indicator or splash screen
+    return null;
+  }
+
+
 
   return (
     <UsersProvider>
       <Stack.Navigator
-        initialRouteName="Onboarding"
+        initialRouteName={isLogged ? "Back" : "Onboarding"} // Navigate to "Back" if logged in, else "Onboarding"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Onboarding" component={OnBoardingScreen} />
