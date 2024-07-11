@@ -44,8 +44,7 @@ export const UsersProvider = ({ children }) => {
         NoteCount: 44,
         duration: 10,
         portfolio: 'UI/UX Designer',
-        bio:
-          'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.',
+        bio: 'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.',
         email: 'bell.burgess@example.com',
         username: 'bellburgess',
         birthday: '02/07/2012',

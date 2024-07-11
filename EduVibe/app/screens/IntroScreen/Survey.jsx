@@ -60,7 +60,7 @@ const SurveyScreen = () => {
       });
     } else {
       setLoading(true); // Show loading indicator before navigating to "Back"
-      navigateToBackScreen();
+      navigation.navigate("Back");
     }
   };
 
@@ -142,6 +142,7 @@ const SurveyScreen = () => {
       setAppSettingsVisible (true);
       setButtonVisible(false); 
       setLoading(true);
+      setAnswer(!null);
     }
 
     setSelectedAnswers(selectedAnswers => {

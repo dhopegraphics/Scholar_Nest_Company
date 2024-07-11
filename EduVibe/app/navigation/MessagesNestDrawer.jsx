@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, Text, View } from "react-native";
 import {
   createDrawerNavigator,
@@ -9,18 +9,35 @@ import { Ionicons } from "@expo/vector-icons";
 import { drawerStyles } from "../../themes/drawerStyles";
 import ContactsCard from "../../components/ContactsCard";
 import MessagesScreen from "../tabs/Messages";
-
-import { useUsers } from "../../contexts/UsersContext";
+import { signOut, getCurrentUser } from "../../lib/appwrite";
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawerContent = (props: any) => {
+const CustomDrawerContent = (props) => {
   const { navigation } = props;
-  const { users } = useUsers(); // Get users from context
-  const user = users[0]; // Assuming you want to display the first user
+  const [currentUser, setCurrentUser] = useState(null); // State to store the current user
 
-  const handleLogout = () => {
-    navigation.navigate("LogOutScreen");
+  useEffect(() => {
+    // Fetch the current user when the component mounts
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Failed to fetch current user:", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(); // Sign out the user
+      navigation.navigate("LogOutScreen"); // Navigate to LogOutScreen
+    } catch (error) {
+      console.error("Failed to log out:", error);
+    }
   };
 
   const DrawerItem = ({
@@ -28,11 +45,6 @@ const CustomDrawerContent = (props: any) => {
     destination,
     iconLeft,
     iconRight,
-  }: {
-    label: string;
-    destination: string;
-    iconLeft: string;
-    iconRight: string;
   }) => (
     <TouchableOpacity
       style={drawerStyles.drawerItemContainer}
@@ -55,11 +67,13 @@ const CustomDrawerContent = (props: any) => {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
 
-      <ContactsCard
-        name={user.name}
-        img={user.img}
-        onPress={() => navigation.navigate("MainUserAccountScreen")}
-      />
+      {currentUser && (
+        <ContactsCard
+          name={currentUser.username} // Adjust the field as per your user document structure
+          img={currentUser.avatar} // Adjust the field as per your user document structure
+          onPress={() => navigation.navigate("MainUserAccountScreen")}
+        />
+      )}
 
       <DrawerItem
         label="Grades"
@@ -99,7 +113,9 @@ const CustomDrawerContent = (props: any) => {
           color="black"
           style={drawerStyles.logoutIcon}
         />
-        <Text style={drawerStyles.logoutText}>Logout</Text>
+        <Text style={drawerStyles.logoutText}>
+          Logout   
+          </Text>
       </TouchableOpacity>
     </DrawerContentScrollView>
   );
