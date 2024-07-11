@@ -87,7 +87,9 @@ const ChangePasswordScreen: React.FC<ChangePasswordScreenProp> = ({
   };
 
   const handleSheetClose = () => {
-    setIsSheetOpen(false); // Close the sheet
+    if (sheetRef.current) {
+      sheetRef.current.close();
+    } // Close the sheet
   };
 
   const savePassword = () => {
