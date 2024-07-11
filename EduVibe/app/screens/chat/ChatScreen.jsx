@@ -138,9 +138,9 @@ const ChatScreen = ({ contact }) => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 50}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -273,4 +273,3 @@ const styles = StyleSheet.create({
 });
 
 export default ChatScreen;
-
