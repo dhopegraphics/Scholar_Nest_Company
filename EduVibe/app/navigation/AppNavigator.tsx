@@ -316,6 +316,7 @@ const MainStackScreen = () => {
 const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
+    <ActionSheetProvider>
     <QuestionProvider>
       <GroupProvider>
         <VisibilityProvider>
@@ -329,9 +330,9 @@ const AppNavigator = () => (
                         <ParticipantProvider>
                           <CourseProvider>
                             <EventProvider>
-                              <ActionSheetProvider>
+                              
                                 <MainStackScreen />
-                              </ActionSheetProvider>
+                           
                             </EventProvider>
                           </CourseProvider>
                         </ParticipantProvider>
@@ -345,6 +346,7 @@ const AppNavigator = () => (
         </VisibilityProvider>
       </GroupProvider>
     </QuestionProvider>
+    </ActionSheetProvider>
   </>
 );
 

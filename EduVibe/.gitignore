@@ -2,7 +2,11 @@
 
 # dependencies
 node_modules/
+<<<<<<< HEAD
 hooks/
+=======
+lib/
+>>>>>>> 908b46e (actionsheet-reinstated)
 
 hooks/
 
