@@ -22,7 +22,7 @@ import EventScreen from "../screens/EventsScreen/EventScreen";
 import { EventProvider } from "../../contexts/EventContext";
 import UpcomingEventsScreen from "../screens/EventsScreen/UpcomingEventsScreen";
 import EventSettingsScreen from "../screens/EventsScreen/EventSettingsScreen";
-import { SettingsProvider } from "../../contexts/SettingsContext"; // Import the SettingsProvider
+import { SettingsProvider } from "../../contexts/SettingsContext";
 import AnouncementsDetails from "../screens/Annoucement/AnnouncementsDetails";
 import AboutScreen from "../screens/AppSettingsScreen/AboutScreen";
 import GeneralScreen from "../screens/AppSettingsScreen/GeneralScreen";
@@ -60,6 +60,7 @@ import ExperienceDetailsScreen from "../screens/Experience/ExperienceDetailsScre
 import { GroupProvider } from "../../contexts/GroupContexts";
 import GroupDetailsScreen from "../screens/GroupChat/GroupDetailsScreen";
 import { useGlobalContext } from "../../contexts/GlobalProvider";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet"; // Add this import
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -108,8 +109,8 @@ export type StackParamList = {
   Onboarding: undefined;
   WelcomeIntroScreen: undefined;
   MainUserAccountScreen: undefined;
-  ExperienceDetails : undefined;
-  GroupDetailsScreen:  { group: { name: string; img: string } } ;
+  ExperienceDetails: undefined;
+  GroupDetailsScreen: { group: { name: string; img: string } };
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -130,7 +131,6 @@ const MainStackScreen = () => {
 
 
   return (
-    <UsersProvider>
       <Stack.Navigator
         initialRouteName={isLogged ? "Back" : "Onboarding"} // Navigate to "Back" if logged in, else "Onboarding"
         screenOptions={{ headerShown: false }}
@@ -309,7 +309,7 @@ const MainStackScreen = () => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-    </UsersProvider>
+
   );
 };
 
@@ -318,29 +318,31 @@ const AppNavigator = () => (
     <StatusBar barStyle="default" backgroundColor="black" />
     <QuestionProvider>
       <GroupProvider>
-      <VisibilityProvider>
-        <SettingsProvider>
-          <UsersProvider>
-            <PlacesProvider>
-              <ExperienceProvider>
-                <MessageProvider>
-                  <TagProvider>
-                    <CourseHeaderProvider>
-                      <ParticipantProvider>
-                        <CourseProvider>
-                          <EventProvider>
-                            <MainStackScreen />
-                          </EventProvider>
-                        </CourseProvider>
-                      </ParticipantProvider>
-                    </CourseHeaderProvider>
-                  </TagProvider>
-                </MessageProvider>
-              </ExperienceProvider>
-            </PlacesProvider>
-          </UsersProvider>
-        </SettingsProvider>
-      </VisibilityProvider>
+        <VisibilityProvider>
+          <SettingsProvider>
+            <UsersProvider>
+              <PlacesProvider>
+                <ExperienceProvider>
+                  <MessageProvider>
+                    <TagProvider>
+                      <CourseHeaderProvider>
+                        <ParticipantProvider>
+                          <CourseProvider>
+                            <EventProvider>
+                              <ActionSheetProvider>
+                                <MainStackScreen />
+                              </ActionSheetProvider>
+                            </EventProvider>
+                          </CourseProvider>
+                        </ParticipantProvider>
+                      </CourseHeaderProvider>
+                    </TagProvider>
+                  </MessageProvider>
+                </ExperienceProvider>
+              </PlacesProvider>
+            </UsersProvider>
+          </SettingsProvider>
+        </VisibilityProvider>
       </GroupProvider>
     </QuestionProvider>
   </>
