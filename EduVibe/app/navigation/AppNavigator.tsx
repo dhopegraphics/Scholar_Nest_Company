@@ -22,7 +22,7 @@ import EventScreen from "../screens/EventsScreen/EventScreen";
 import { EventProvider } from "../../contexts/EventContext";
 import UpcomingEventsScreen from "../screens/EventsScreen/UpcomingEventsScreen";
 import EventSettingsScreen from "../screens/EventsScreen/EventSettingsScreen";
-import { SettingsProvider } from "../../contexts/SettingsContext"; // Import the SettingsProvider
+import { SettingsProvider } from "../../contexts/SettingsContext";
 import AnouncementsDetails from "../screens/Annoucement/AnnouncementsDetails";
 import AboutScreen from "../screens/AppSettingsScreen/AboutScreen";
 import GeneralScreen from "../screens/AppSettingsScreen/GeneralScreen";
@@ -59,6 +59,7 @@ import MainUserAccountScreen from "../screens/UserAccount/MainUserAccountScreen"
 import ExperienceDetailsScreen from "../screens/Experience/ExperienceDetailsScreen";
 import { GroupProvider } from "../../contexts/GroupContexts";
 import GroupDetailsScreen from "../screens/GroupChat/GroupDetailsScreen";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet"; // Add this import
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -107,196 +108,186 @@ export type StackParamList = {
   Onboarding: undefined;
   WelcomeIntroScreen: undefined;
   MainUserAccountScreen: undefined;
-  ExperienceDetails : undefined;
-  GroupDetailsScreen:  { group: { name: string; img: string } } ;
+  ExperienceDetails: undefined;
+  GroupDetailsScreen: { group: { name: string; img: string } };
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
 const MainStackScreen = () => {
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = React.useState(false);
 
   return (
-    <UsersProvider>
-      <Stack.Navigator
-        initialRouteName="Onboarding"
-        screenOptions={{ headerShown: false }}
-      >
-        <Stack.Screen name="Onboarding" component={OnBoardingScreen} />
-        <Stack.Screen
-          name="WelcomeIntroScreen"
-          component={WelcomeIntroScreen}
-        />
-        <Stack.Screen name="SignInScreen" component={SignInScreen} />
-        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-        <Stack.Screen
-          name="Survey"
-          component={SurveyScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Back" component={Tab_Layout} />
-        <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
-        <Stack.Screen
-          name="ContactsMainScreen"
-          component={ContactsMainScreen}
-        />
-        <Stack.Screen name="Uploads" component={CourseUploadsScreen} />
-        <Stack.Screen name="AvailableCourses" component={AvailableCourses} />
-        <Stack.Screen
-          name="GlobalSearch"
-          component={GlobalSearch}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="calendar"
-          component={CalendarDrawer}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Tags" component={Tags} />
-        <Stack.Screen
-          name="AppSettings"
-          component={AppSettings}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen name="Badges" component={Badges} />
-        <Stack.Screen
-          name="Files"
-          component={Files}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="GradesScreen" component={GradesScreen} />
-        <Stack.Screen name="SwitchAccount" component={SwitchAccount}  />
-        <Stack.Screen name="Reports" component={Reports} />
-        <Stack.Screen
-          name="EventScreen"
-          component={EventScreen}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="UpcomingEvents"
-          component={UpcomingEventsScreen}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="EventSettings"
-          component={EventSettingsScreen}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="AnnouncementDetails"
-          component={AnouncementsDetails}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="AboutScreen" component={AboutScreen} />
-        <Stack.Screen
-          name="General"
-          component={GeneralScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SharedFiles"
-          component={SharedFiles}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="SpaceUsage"
-          component={SpaceUsage}
-          options={{ headerShown: true }}
-        />
-
-        <Stack.Screen
-          name="NewEvent"
-          component={NewEvent}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="Course_Information"
-          component={CourseDetailsDrawerNav}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="TagDetails"
-          component={TagDetails}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="ActivityDetails"
-          component={ActivityDetails}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="ContactDetailsScreen"
-          component={ContactDetailsScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="UserSettings"
-          component={UserSettings}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="WorkProfile"
-          component={WorkProfile}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Account"
-          component={AccountScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ChangePasswordScreen"
-          component={ChangePasswordScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ForgotPasswordForm"
-          component={ForgotPasswordForm}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="UserAccount"
-          component={UserAccount}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ParentWardSetUpScreen"
-          component={ParentWardSetUpScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="WardsScreen"
-          component={WardsScreen}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="LogOutScreen"
-          component={LogOutAlertScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="UserInterest"
-          component={UserInterest}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="MainUserAccountScreen"
-          component={MainUserAccountScreen}
-          options={{ headerShown: false }}
-        />
-
-<Stack.Screen
-          name="ExperienceDetails"
-          component={ExperienceDetailsScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="GroupDetailsScreen"
-          component={GroupDetailsScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </UsersProvider>
+    <Stack.Navigator
+      initialRouteName="Onboarding"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="Onboarding" component={OnBoardingScreen} />
+      <Stack.Screen name="WelcomeIntroScreen" component={WelcomeIntroScreen} />
+      <Stack.Screen name="SignInScreen" component={SignInScreen} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <Stack.Screen
+        name="Survey"
+        component={SurveyScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Back" component={Tab_Layout} />
+      <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
+      <Stack.Screen name="ContactsMainScreen" component={ContactsMainScreen} />
+      <Stack.Screen name="Uploads" component={CourseUploadsScreen} />
+      <Stack.Screen name="AvailableCourses" component={AvailableCourses} />
+      <Stack.Screen
+        name="GlobalSearch"
+        component={GlobalSearch}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="calendar"
+        component={CalendarDrawer}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Tags" component={Tags} />
+      <Stack.Screen
+        name="AppSettings"
+        component={AppSettings}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen name="Badges" component={Badges} />
+      <Stack.Screen
+        name="Files"
+        component={Files}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="GradesScreen" component={GradesScreen} />
+      <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
+      <Stack.Screen name="Reports" component={Reports} />
+      <Stack.Screen
+        name="EventScreen"
+        component={EventScreen}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="UpcomingEvents"
+        component={UpcomingEventsScreen}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="EventSettings"
+        component={EventSettingsScreen}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="AnnouncementDetails"
+        component={AnouncementsDetails}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="AboutScreen" component={AboutScreen} />
+      <Stack.Screen
+        name="General"
+        component={GeneralScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SharedFiles"
+        component={SharedFiles}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="SpaceUsage"
+        component={SpaceUsage}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="NewEvent"
+        component={NewEvent}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="Course_Information"
+        component={CourseDetailsDrawerNav}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TagDetails"
+        component={TagDetails}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="ActivityDetails"
+        component={ActivityDetails}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="ContactDetailsScreen"
+        component={ContactDetailsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UserSettings"
+        component={UserSettings}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="WorkProfile"
+        component={WorkProfile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Account"
+        component={AccountScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChangePasswordScreen"
+        component={ChangePasswordScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForgotPasswordForm"
+        component={ForgotPasswordForm}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UserAccount"
+        component={UserAccount}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ParentWardSetUpScreen"
+        component={ParentWardSetUpScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="WardsScreen"
+        component={WardsScreen}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="LogOutScreen"
+        component={LogOutAlertScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UserInterest"
+        component={UserInterest}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="MainUserAccountScreen"
+        component={MainUserAccountScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ExperienceDetails"
+        component={ExperienceDetailsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="GroupDetailsScreen"
+        component={GroupDetailsScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
   );
 };
 
@@ -305,29 +296,31 @@ const AppNavigator = () => (
     <StatusBar barStyle="default" backgroundColor="black" />
     <QuestionProvider>
       <GroupProvider>
-      <VisibilityProvider>
-        <SettingsProvider>
-          <UsersProvider>
-            <PlacesProvider>
-              <ExperienceProvider>
-                <MessageProvider>
-                  <TagProvider>
-                    <CourseHeaderProvider>
-                      <ParticipantProvider>
-                        <CourseProvider>
-                          <EventProvider>
-                            <MainStackScreen />
-                          </EventProvider>
-                        </CourseProvider>
-                      </ParticipantProvider>
-                    </CourseHeaderProvider>
-                  </TagProvider>
-                </MessageProvider>
-              </ExperienceProvider>
-            </PlacesProvider>
-          </UsersProvider>
-        </SettingsProvider>
-      </VisibilityProvider>
+        <VisibilityProvider>
+          <SettingsProvider>
+            <UsersProvider>
+              <PlacesProvider>
+                <ExperienceProvider>
+                  <MessageProvider>
+                    <TagProvider>
+                      <CourseHeaderProvider>
+                        <ParticipantProvider>
+                          <CourseProvider>
+                            <EventProvider>
+                              <ActionSheetProvider>
+                                <MainStackScreen />
+                              </ActionSheetProvider>
+                            </EventProvider>
+                          </CourseProvider>
+                        </ParticipantProvider>
+                      </CourseHeaderProvider>
+                    </TagProvider>
+                  </MessageProvider>
+                </ExperienceProvider>
+              </PlacesProvider>
+            </UsersProvider>
+          </SettingsProvider>
+        </VisibilityProvider>
       </GroupProvider>
     </QuestionProvider>
   </>
