@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import imageExport from "../../assets/images/imageExport";
 import messagesScreenstyles from "../../themes/messagesScreenStyles";
 import ContactsCard from "../../components/ContactsCard"; // Import the ContactsCard component
 import GroupCard from "../../components/GroupCard"; // Import the GroupCard component
 import { useUsers } from "../../contexts/UsersContext";
 import { useGroup } from "../../contexts/GroupContexts";
+import { getCurrentUser } from "../../lib/appwrite";
 
 const MessagesScreen = ({ navigation }) => {
   const { users } = useUsers(); // Access users data from UsersContext
   const { group } = useGroup(); // Access group data from GroupContext
+  const [currentUser, setCurrentUser] = useState(null); // State to store the current user
+
+  useEffect(() => {
+    // Fetch the current user when the component mounts
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Failed to fetch current user:", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
 
   const [searchText, setSearchText] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -61,10 +76,11 @@ const MessagesScreen = ({ navigation }) => {
               onBlur={() => setShowSearchBar(false)}
             />
           )}
-        
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Image source={imageExport.logo} style={messagesScreenstyles.profileIcon} />
-          </TouchableOpacity>
+          {currentUser && (
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Image source={{ uri: currentUser.avatar }} style={messagesScreenstyles.profileIcon} />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       

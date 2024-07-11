@@ -1,19 +1,32 @@
-import React, { useState, useRef } from 'react';
-import { Text, View, TextInput, TouchableOpacity, ScrollView, Animated, LayoutChangeEvent } from 'react-native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { ParamListBase } from '@react-navigation/native';
+import React, { useState, useRef, useEffect } from 'react';
+import { Text, View, TextInput, TouchableOpacity, ScrollView, Animated, LayoutChangeEvent, Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { coursesBrowseStyles as styles } from '../../themes/CoursesBrowseStyles';
+import { getCurrentUser } from "../../lib/appwrite";
+import { useUsers } from "../../contexts/UsersContext";
 
-type CoursesBrowseProps = {
-  navigation: DrawerNavigationProp<ParamListBase, 'CoursesBrowse'>;
-};
+const CoursesBrowse = ({ navigation }) => {
+  const { users } = useUsers(); // Access users data from UsersContext
+  const [currentUser, setCurrentUser] = useState(null); // State to store the current user
 
-const CoursesBrowse: React.FC<CoursesBrowseProps> = ({ navigation }) => {
+  useEffect(() => {
+    // Fetch the current user when the component mounts
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Failed to fetch current user:", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<string>('Starred');
-  const [buttonWidth, setButtonWidth] = useState<number>(0);
+  const [selectedItem, setSelectedItem] = useState('Starred');
+  const [buttonWidth, setButtonWidth] = useState(0);
   const dropdownHeight = useRef(new Animated.Value(0)).current;
 
   const toggleDropdown = () => {
@@ -37,12 +50,12 @@ const CoursesBrowse: React.FC<CoursesBrowseProps> = ({ navigation }) => {
     navigation.openDrawer();
   };
 
-  const handleItemSelect = (item: string) => {
+  const handleItemSelect = (item) => {
     setSelectedItem(item);
     toggleDropdown();
   };
 
-  const onTextLayout = (e: LayoutChangeEvent) => {
+  const onTextLayout = (e) => {
     const { width } = e.nativeEvent.layout;
     setButtonWidth(Math.min(width + 40, 300)); // Limit button width to 300, add padding
   };
@@ -51,9 +64,11 @@ const CoursesBrowse: React.FC<CoursesBrowseProps> = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>EduVibe</Text>
-        <TouchableOpacity onPress={openDrawer} style={styles.menuButton}>
-          <MaterialIcons name="menu" size={24} color="#fff" />
-        </TouchableOpacity>
+        {currentUser && (
+          <TouchableOpacity onPress={openDrawer} >
+            <Image source={{ uri: currentUser.avatar }} style={styles.profileIcon} />
+          </TouchableOpacity>
+        )}
       </View>
       <ScrollView style={styles.content}>
         <Text style={styles.coursesTitle}>My courses</Text>

@@ -129,4 +129,16 @@ export const coursesBrowseStyles = StyleSheet.create({
     borderBottomColor: '#dee2e6',
     height : 50,
   },
+  profileIcon: {
+    width: 35,
+    height: 35,
+    borderRadius: 18,
+    marginLeft: 17,
+    alignSelf: 'flex-end',
+    paddingBottom : 2,
+    paddingTop : 5,
+    paddingHorizontal : 5,
+    marginRight : 10,
+    marginHorizontal : 5,
+  }
 });

@@ -56,7 +56,7 @@ const CustomDrawerContent = (props) => {
       </View>
       <Ionicons
         name={iconRight}
-        size={24}
+        size={25}
         color="black"
         style={drawerStyles.rightIcon}
       />
