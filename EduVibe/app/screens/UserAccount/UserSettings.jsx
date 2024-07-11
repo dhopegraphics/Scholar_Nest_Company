@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { useUsers } from '../../../contexts/UsersContext';
-import { UserSettingsStyles } from '../../../contexts/UserSettingsStyles';
+import { UserSettingsStyles } from '../../../themes/UserSettingsStyles';
 
 const UserSettings = ({ navigation }) => {
   const { users } = useUsers();
