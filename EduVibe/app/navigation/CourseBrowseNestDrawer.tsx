@@ -99,7 +99,9 @@ const CustomDrawerContent = (props: any) => {
           color="black"
           style={drawerStyles.logoutIcon}
         />
-        <Text style={drawerStyles.logoutText}>Logout</Text>
+        <Text style={drawerStyles.logoutText}>
+          Logout   
+          </Text>
       </TouchableOpacity>
     </DrawerContentScrollView>
   );

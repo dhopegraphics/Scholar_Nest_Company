@@ -138,6 +138,10 @@ const SurveyScreen = () => {
       
     } else {
       navigation.navigate("Back");
+      setCourseButtonVisible (false);
+      setAppSettingsVisible (true);
+      setButtonVisible(false); 
+      setLoading(true);
     }
 
     setSelectedAnswers(selectedAnswers => {

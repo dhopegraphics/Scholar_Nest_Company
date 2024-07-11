@@ -17,12 +17,12 @@ export const appwriteConfig = {
     coursesStorageId: "668fd02f0022ef781b02",
     databaseId: "668fc1590028eb686fb6",
     userCollectionId: "669011d1002a6af7e7f2",
-    coursesCollectionId: "668fc472002bb64206e0",
     surveysCollectionId: "668fcb140000008d1207",
     eventsCollectionId: "668fca200019cbb6b7a6",
     messagesCollectionId: "668fc6fd0039f925afc7",
     tagsCollectionId: "668fc5f2000325d26822",
-    videoCollectionId: "668fc6fd0039f925afc8",
+    videoCollectionId: "668fc472002bb64206e0",
+    statsCollectionId: "66903d1a00329bd5db09",
 };
 
 const client = new Client();
