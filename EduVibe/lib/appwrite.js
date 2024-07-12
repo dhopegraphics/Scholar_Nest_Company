@@ -249,3 +249,15 @@ export async function getLatestPosts() {
         throw new Error(error);
     }
 }
+
+export async function getAllUsers() {
+    try {
+        const response = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId
+        );
+        return response.documents;
+    } catch (error) {
+        throw new Error(`Failed to fetch all users: ${error.message}`);
+    }
+}

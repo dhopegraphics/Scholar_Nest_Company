@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getCurrentUser } from '../lib/appwrite';
+import { getCurrentUser, getAllUsers } from '../lib/appwrite';
 
 // Define the context
 const UsersContext = createContext();
@@ -38,6 +38,27 @@ export const UsersProvider = ({ children }) => {
       try {
         const currentUser = await getCurrentUser();
         setCurrentUserId(currentUser.userId); // Store the current user ID
+
+        const allUsers = await getAllUsers();
+        const allUsersData = allUsers.map(user => ({
+          id: user.userId,
+          img: user.avatar,
+          name: user.username,
+          email: user.email,
+          username: user.username,
+          tags: tagData[user.userId] || [], // Provide default empty array if no tags found
+          phone: user.phone || 'N/A', // Replace with actual data if available
+          NoteCount: user.NoteCount || 0, // Replace with actual data if available
+          duration: user.duration || 0, // Replace with actual data if available
+          portfolio: user.portfolio || 'N/A', // Replace with actual data if available
+          bio: user.bio || 'N/A', // Replace with actual data if available
+          birthday: user.birthday || 'N/A', // Replace with actual data if available
+          password: user.password || ' ', // Replace with actual data if available
+          country: user.country || 'N/A', // Replace with actual data if available
+          lastseen: user.lastseen || 0, // Replace with actual data if available
+        }));
+
+        // Combine the current user data and all users data
         setUsers([
           {
             id: currentUser.userId,
@@ -56,6 +77,7 @@ export const UsersProvider = ({ children }) => {
             country: 'Ghana', // Placeholder data, update as needed
             lastseen: 20, // Placeholder data, update as needed
           },
+          ...allUsersData,
         ]);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
