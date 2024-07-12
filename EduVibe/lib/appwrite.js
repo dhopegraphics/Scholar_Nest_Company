@@ -349,3 +349,49 @@ export async function getUser(userId) {
       throw new Error(`Failed to fetch user details: ${error.message}`);
     }
 }
+
+export async function sendMessage(senderId, receiverId, content) {
+    try {
+        const messageId = ID.unique();
+        const createdAt = new Date().toISOString();
+        const updatedAt = createdAt;
+
+        const newMessage = await databases.createDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.messagesCollectionId,
+            messageId,
+            {
+                senderId: senderId,
+                receiverId: receiverId,
+                content: content,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+            }
+        );
+
+        return newMessage;
+    } catch (error) {
+        throw new Error(`Failed to send message: ${error.message}`);
+    }
+}
+
+
+export async function getMessages(senderId, receiverId) {
+    try {
+      const messages = await databases.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.messagesCollectionId,
+        [
+          Query.or(
+            Query.and(Query.equal("senderId", senderId), Query.equal("receiverId", receiverId)),
+            Query.and(Query.equal("senderId", receiverId), Query.equal("receiverId", senderId))
+          ),
+          Query.sort("createdAt", "asc")
+        ]
+      );
+  
+      return messages.documents;
+    } catch (error) {
+      throw new Error(`Failed to fetch messages: ${error.message}`);
+    }
+  }
