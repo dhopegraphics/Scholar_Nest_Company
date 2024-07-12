@@ -111,6 +111,21 @@ export async function getCurrentUser() {
     }
 }
 
+export async function updateUser(userId, updateData) {
+    try {
+        const updatedUser = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            userId,
+            updateData
+        );
+
+        return updatedUser;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 export async function signOut() {
     try {
         const session = await account.deleteSession("current");
@@ -256,7 +271,10 @@ export async function getAllUsers() {
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId
         );
-        return response.documents;
+
+        // Exclude current user from the list
+        const currentUserId = (await getAccount()).$id;
+        return response.documents.filter(user => user.userId !== currentUserId);
     } catch (error) {
         throw new Error(`Failed to fetch all users: ${error.message}`);
     }
