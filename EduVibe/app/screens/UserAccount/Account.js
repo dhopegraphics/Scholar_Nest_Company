@@ -11,32 +11,35 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Divider } from "react-native-paper";
 import CountryPicker from "react-native-country-picker-modal";
+import * as ImagePicker from "expo-image-picker";
 import { AccountStyling } from "../../../themes/AccountStyling";
-import { useUsers } from "../../../contexts/UsersContext";
+import { useUsers, updateAvatar } from "../../../contexts/UsersContext"; // Import updateAvatar
 
 const AccountScreen = ({ navigation }) => {
-  const { users , currentUserId } = useUsers(); // Fetch users from context
-  const currentUser = users.find((user) => user.id === currentUserId ); // Find the user with ID '1'
+  const { users, currentUserId } = useUsers();
+  const currentUser = users.find((user) => user.id === currentUserId);
 
-  // Default parameter values
-  const defaultUsername = currentUser ? currentUser.username : " ";
-  const defaultName = currentUser ? currentUser.name : " ";
-  const defaultPhone = currentUser ? currentUser.phone : " ";
-  const defaultBirthday = currentUser ? currentUser.birthday : " ";
-  const defaultCountry = currentUser ? currentUser.country : " ";
+  // Initialize state variables with default values
+  const defaultUsername = currentUser ? currentUser.username : "";
+  const defaultName = currentUser ? currentUser.name : "";
+  const defaultPhone = currentUser ? currentUser.phone : "";
+  const defaultBirthday = currentUser ? currentUser.birthday : "";
+  const defaultCountry = currentUser ? currentUser.country : "";
   const defaultEmail = currentUser ? currentUser.email : "";
+  const defaultAvatar = currentUser ? currentUser.img : "https://placekitten.com/200/200";
 
-  // State variables
+  // State variables for user information
   const [username, setUsername] = useState(defaultUsername);
   const [name, setName] = useState(defaultName);
   const [phone, setPhone] = useState(defaultPhone);
   const [birthday, setBirthday] = useState(defaultBirthday);
   const [country, setCountry] = useState(defaultCountry);
   const [email, setEmail] = useState(defaultEmail);
+  const [avatar, setAvatar] = useState(defaultAvatar); // Avatar URL state
 
-  const [countryCode, setCountryCode] = useState("GH"); // Default country code
+  const [countryCode, setCountryCode] = useState("GH");
 
-  // Update state when currentUser changes
+  // Effect to update fields when currentUser changes
   useEffect(() => {
     if (currentUser) {
       setUsername(currentUser.username);
@@ -45,8 +48,35 @@ const AccountScreen = ({ navigation }) => {
       setBirthday(currentUser.birthday);
       setCountry(currentUser.country);
       setEmail(currentUser.email);
+      setAvatar(currentUser.img);
     }
   }, [currentUser]);
+
+  // Function to pick avatar from gallery
+  const pickAvatar = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+
+      if (!result.cancelled) {
+        // Set local state for immediate UI update
+        setAvatar(result.uri);
+
+        // Call updateAvatar to update avatar in Appwrite database
+        updateAvatar(currentUserId, result.uri)
+          .then(() => console.log('Avatar updated successfully'))
+          .catch(error =>
+            console.error('Failed to update avatar:', error.message)
+          );
+      }
+    } catch (error) {
+      console.error('Failed to update avatar:', error.message);
+    }
+  };
 
   return (
     <ScrollView style={AccountStyling.container}>
@@ -65,12 +95,11 @@ const AccountScreen = ({ navigation }) => {
       </View>
 
       <View style={AccountStyling.profileContainer}>
-        <Image
-          style={AccountStyling.avatar}
-          source={{ uri: currentUser ? currentUser.img : "https://placekitten.com/200/200" }}
-        />
-        <TouchableOpacity style={AccountStyling.cameraIconContainer}>
-          <Icon name="camera-alt" size={24} color="white" />
+        <TouchableOpacity onPress={pickAvatar}>
+          <Image style={AccountStyling.avatar} source={{ uri: avatar }} />
+          <View style={AccountStyling.cameraIconContainer}>
+            <Icon name="camera-alt" size={20} color="white" />
+          </View>
         </TouchableOpacity>
       </View>
 

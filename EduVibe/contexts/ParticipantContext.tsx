@@ -11,6 +11,7 @@ interface Course {
   creator: string;
   participants: Participant[];
   image: string; // Add the image property to the Course interface
+  
 }
 
 interface ParticipantContextType {

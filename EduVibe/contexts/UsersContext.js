@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getCurrentUser, getAllUsers } from '../lib/appwrite';
+import { getCurrentUser, getAllUsers, databases, updateAvatar } from '../lib/appwrite'; // Adjust imports as per your setup
 
 // Define the context
 const UsersContext = createContext();
@@ -10,6 +10,7 @@ export const UsersProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [tagData, setTagData] = useState({});
+  const [stats, setStats] = useState({}); // State for stats
 
   // Fetch or set the data for users
   useEffect(() => {
@@ -50,13 +51,15 @@ export const UsersProvider = ({ children }) => {
         };
 
         // Define stats object with the current user ID
-        const stats = {
+        const userStats = {
           [currentUser.userId]: [
             { label: 'Location', value: 'USA' },
             { label: 'Job Type', value: 'Full Time' },
             { label: 'Experience', value: '6 years' },
           ],
         };
+
+        setStats(userStats); // Set the stats state
 
         setTagData(initialTagData);
 
@@ -87,7 +90,30 @@ export const UsersProvider = ({ children }) => {
     };
 
     fetchUserData();
-  }, []); // Ensure useEffect depends on tagData for updates
+  }, [tagData]); // Ensure useEffect depends on tagData for updates
+
+
+  const updateAvatar = async (userId, avatarUrl) => {
+    setUsers(prevUsers =>
+      prevUsers.map(user => {
+        if (user.id === userId) {
+          return { ...user, img: avatarUrl };
+        }
+        return user;
+      })
+    );
+
+    try {
+      await databases.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.userCollectionId,
+        userId,
+        { avatar: avatarUrl }
+      );
+    } catch (error) {
+      console.error('Failed to update user avatar:', error);
+    }
+  };
 
   const updateUserTags = (userId, updatedTags) => {
     setTagData(prevTagData => ({
@@ -97,7 +123,7 @@ export const UsersProvider = ({ children }) => {
   };
 
   return (
-    <UsersContext.Provider value={{ users, currentUserId, updateUserTags, tagData }}>
+    <UsersContext.Provider value={{ users, currentUserId, updateUserTags, stats, tagData, updateAvatar }}>
       {children}
     </UsersContext.Provider>
   );
