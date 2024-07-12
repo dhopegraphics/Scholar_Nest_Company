@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   ScrollView,
   ActivityIndicator,
-  Alert
+  Alert,
 } from "react-native";
 import {
   Entypo,
@@ -124,7 +124,7 @@ const SignInScreen = ({ navigation }) => {
                   CommonStyle.input1,
                   isUsernameFocused && CommonStyle.focusedInput,
                 ]}
-                placeholder="Username"
+                placeholder="Email"
                 onFocus={handleUsernameFocus}
                 onChangeText={(value) =>
                   setUserInfo({ ...userInfo, email: value })
