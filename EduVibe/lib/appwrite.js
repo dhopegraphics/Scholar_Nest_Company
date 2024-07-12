@@ -252,12 +252,41 @@ export async function getLatestPosts() {
 
 export async function getAllUsers() {
     try {
+        // Fetch the current user's account information
+        const currentUser = await getCurrentUser();
+        const currentUserId = currentUser.userId;
+
+        // Fetch all users
         const response = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId
         );
-        return response.documents;
+
+        // Filter out the current user from the list
+        const users = response.documents.filter(user => user.userId !== currentUserId);
+
+        return users;
     } catch (error) {
         throw new Error(`Failed to fetch all users: ${error.message}`);
     }
 }
+
+
+export async function getEmailByUsername(username) {
+    try {
+        const userDocuments = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal("username", username)]
+        );
+  
+        if (userDocuments.documents.length === 0) {
+            throw new Error("No user found with this username");
+        }
+  
+        return userDocuments.documents[0].email;
+    } catch (error) {
+        throw new Error(`Failed to fetch email: ${error.message}`);
+    }
+  }
+  

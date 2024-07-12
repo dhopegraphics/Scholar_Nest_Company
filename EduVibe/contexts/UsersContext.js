@@ -11,7 +11,7 @@ export const UsersProvider = ({ children }) => {
   const [currentUserId, setCurrentUserId] = useState(null);
 
   const stats = {
-    '1': [
+    id  : [
       { label: 'Location', value: 'USA' },
       { label: 'Job Type', value: 'Full Time' },
       { label: 'Experience', value: '6 years' },
@@ -20,7 +20,7 @@ export const UsersProvider = ({ children }) => {
 
   // Define the initial tag data for each user
   const initialTagData = {
-    '1': [
+    id : [
       { id: "1", title: "Documentation", categories: ["Everywhere"] },
       { id: "2", title: "Art", categories: ["Everywhere"] },
       { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
@@ -109,3 +109,4 @@ export const useUsers = () => {
   }
   return context;
 };
+
