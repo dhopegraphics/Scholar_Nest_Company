@@ -123,7 +123,7 @@ const SignInScreen = ({ navigation }) => {
                                     CommonStyle.input1,
                                     isUsernameFocused && CommonStyle.focusedInput,
                                 ]}
-                                placeholder="Username"
+                                placeholder="Username or Email"
                                 onFocus={handleUsernameFocus}
                                 onChangeText={(value) =>
                                     setUserInfo({ ...userInfo, username: value })
@@ -219,7 +219,7 @@ const SignInScreen = ({ navigation }) => {
                             </Text>
                             <View style={CommonStyle.guestSection}>
                                 <Text style={CommonStyle.guestText}>
-                                    To browse the community discussions about Edu Vibe, you can
+                                    To browse the community discussions about EduVibe, you can
                                     log in as a guest.
                                 </Text>
                                 <Text style={CommonStyle.guestText}>

@@ -8,6 +8,7 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import {
   useFonts,
@@ -18,6 +19,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { ScrollView } from "react-native-gesture-handler";
 type StackParamList = {
   SignInScreen: undefined;
   Back: undefined;
@@ -49,6 +51,7 @@ const ForgotPasswordForm: React.FC = (props) => {
   };
 
   return (
+    
     <LinearGradient colors={["#E5ECF9", "#F6F7F9"]} style={styles.container}>
       <Text style={[styles.headerText, { fontFamily: "Nunito_600SemiBold" }]}>
         Reset Email Password
@@ -73,7 +76,10 @@ const ForgotPasswordForm: React.FC = (props) => {
           </Text>
         </TouchableOpacity>
       </View>
+      
     </LinearGradient>
+    
+    
   );
 };
 

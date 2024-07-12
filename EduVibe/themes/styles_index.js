@@ -28,7 +28,7 @@ export const CommonStyle = StyleSheet.create({
     marginTop: -2,
   },
   loginText: {
-    fontSize: 40,
+    fontSize: 35,
     fontWeight: "bold",
     alignSelf: "flex-start",
     marginBottom: 20,
