@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -14,15 +14,17 @@ import { UserAccountStyling } from '../../../themes/UserAccountStyle';
 import { useTagContext } from '../../../contexts/TagContext';
 import PlaceCard from '../../../components/PlaceCard';
 import { PlacesContext } from '../../../contexts/PlacesContext';
-
-const tags = ['ios', 'android', 'web', 'ui', 'ux'];
+import { TextInput } from 'react-native-gesture-handler';
 
 const MainUserAccountScreen = ({ navigation }) => {
-  const { users, stats } = useUsers();
+  const { users, stats  , currentUserId } = useUsers();
   const { setTag } = useTagContext();
   const { places } = useContext(PlacesContext);
 
-  const currentUser = users.find((user) => user.id === '1');
+  const currentUser = users.find((user) => user.id === currentUserId );
+
+  // State to manage tags dynamically
+  const [tags, setTags] = useState(['ios', 'android', 'web', 'ui', 'ux']);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -125,7 +127,6 @@ const MainUserAccountScreen = ({ navigation }) => {
                     img={place.img}
                     name={place.name}
                     description={place.description}
-                   
                   />
                 ))}
               </ScrollView>

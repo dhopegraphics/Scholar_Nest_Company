@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { StatusBar } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignInScreen from "../screens/Auth/SignIn";
@@ -22,7 +22,7 @@ import EventScreen from "../screens/EventsScreen/EventScreen";
 import { EventProvider } from "../../contexts/EventContext";
 import UpcomingEventsScreen from "../screens/EventsScreen/UpcomingEventsScreen";
 import EventSettingsScreen from "../screens/EventsScreen/EventSettingsScreen";
-import { SettingsProvider } from "../../contexts/SettingsContext"; // Import the SettingsProvider
+import { SettingsProvider } from "../../contexts/SettingsContext";
 import AnouncementsDetails from "../screens/Annoucement/AnnouncementsDetails";
 import AboutScreen from "../screens/AppSettingsScreen/AboutScreen";
 import GeneralScreen from "../screens/AppSettingsScreen/GeneralScreen";
@@ -56,6 +56,11 @@ import { QuestionProvider } from "../../contexts/QuestionContext";
 import OnBoardingScreen from "../screens/Onboarding/Onboarding";
 import WelcomeIntroScreen from "../screens/Welcome/WelcomeIntro";
 import MainUserAccountScreen from "../screens/UserAccount/MainUserAccountScreen";
+import ExperienceDetailsScreen from "../screens/Experience/ExperienceDetailsScreen";
+import { GroupProvider } from "../../contexts/GroupContexts";
+import GroupDetailsScreen from "../screens/GroupChat/GroupDetailsScreen";
+import { useGlobalContext } from "../../contexts/GlobalProvider";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet"; // Add this import
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -104,17 +109,30 @@ export type StackParamList = {
   Onboarding: undefined;
   WelcomeIntroScreen: undefined;
   MainUserAccountScreen: undefined;
+  ExperienceDetails: undefined;
+  GroupDetailsScreen: { group: { name: string; img: string } };
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
 const MainStackScreen = () => {
+  const { isLogged, loading } = useGlobalContext();
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
+  useEffect(() => {
+    // Optionally, add any initialization logic here
+  }, []);
+
+  if (loading) {
+    // Optionally, show a loading indicator or splash screen
+    return null;
+  }
+
+
+
   return (
-    <UsersProvider>
       <Stack.Navigator
-        initialRouteName="Onboarding"
+        initialRouteName={isLogged ? "Back" : "Onboarding"} // Navigate to "Back" if logged in, else "Onboarding"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Onboarding" component={OnBoardingScreen} />
@@ -160,7 +178,7 @@ const MainStackScreen = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="GradesScreen" component={GradesScreen} />
-        <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
+        <Stack.Screen name="SwitchAccount" component={SwitchAccount}  />
         <Stack.Screen name="Reports" component={Reports} />
         <Stack.Screen
           name="EventScreen"
@@ -279,39 +297,56 @@ const MainStackScreen = () => {
           component={MainUserAccountScreen}
           options={{ headerShown: false }}
         />
+
+<Stack.Screen
+          name="ExperienceDetails"
+          component={ExperienceDetailsScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="GroupDetailsScreen"
+          component={GroupDetailsScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
-    </UsersProvider>
+
   );
 };
 
 const AppNavigator = () => (
   <>
     <StatusBar barStyle="default" backgroundColor="black" />
+    <ActionSheetProvider>
     <QuestionProvider>
-      <VisibilityProvider>
-        <SettingsProvider>
-          <UsersProvider>
-            <PlacesProvider>
-              <ExperienceProvider>
-                <MessageProvider>
-                  <TagProvider>
-                    <CourseHeaderProvider>
-                      <ParticipantProvider>
-                        <CourseProvider>
-                          <EventProvider>
-                            <MainStackScreen />
-                          </EventProvider>
-                        </CourseProvider>
-                      </ParticipantProvider>
-                    </CourseHeaderProvider>
-                  </TagProvider>
-                </MessageProvider>
-              </ExperienceProvider>
-            </PlacesProvider>
-          </UsersProvider>
-        </SettingsProvider>
-      </VisibilityProvider>
+      <GroupProvider>
+        <VisibilityProvider>
+          <SettingsProvider>
+            <UsersProvider>
+              <PlacesProvider>
+                <ExperienceProvider>
+                  <MessageProvider>
+                    <TagProvider>
+                      <CourseHeaderProvider>
+                        <ParticipantProvider>
+                          <CourseProvider>
+                            <EventProvider>
+                              
+                                <MainStackScreen />
+                           
+                            </EventProvider>
+                          </CourseProvider>
+                        </ParticipantProvider>
+                      </CourseHeaderProvider>
+                    </TagProvider>
+                  </MessageProvider>
+                </ExperienceProvider>
+              </PlacesProvider>
+            </UsersProvider>
+          </SettingsProvider>
+        </VisibilityProvider>
+      </GroupProvider>
     </QuestionProvider>
+    </ActionSheetProvider>
   </>
 );
 

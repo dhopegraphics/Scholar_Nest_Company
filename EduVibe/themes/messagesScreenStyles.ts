@@ -28,11 +28,17 @@ const messagesScreenstyles = StyleSheet.create({
     color: 'black',
   },
   profileIcon: {
-    width: 50,
-    height: 30,
-    borderRadius: 15,
-    marginLeft: 15,
+    width: 35,
+    height: 35,
+    borderRadius: 18,
+    marginLeft: 17,
     alignSelf: 'flex-end',
+    paddingBottom : 2,
+    paddingTop : 5,
+    paddingHorizontal : 5,
+    marginRight : 10,
+    marginHorizontal : 5,
+   
   },
   Icon: {
     width: 50,

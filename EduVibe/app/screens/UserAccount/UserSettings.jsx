@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  UserSettingsStylesheet,
   SafeAreaView,
   View,
   ScrollView,
@@ -11,11 +10,11 @@ import {
 } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { useUsers } from '../../../contexts/UsersContext';
-import { UserSettingsStyles } from '../../../contexts/UserSettingsStyles';
+import { UserSettingsStyles } from '../../../themes/UserSettingsStyles';
 
 const UserSettings = ({ navigation }) => {
-  const { users } = useUsers();
-  const currentUser = users.find((user) => user.id === '1');
+  const { users, currentUserId } = useUsers();
+  const currentUser = users.find((user) => user.id === currentUserId);
 
   const [form, setForm] = useState({
     emailNotifications: true,
@@ -31,14 +30,8 @@ const UserSettings = ({ navigation }) => {
       <View style={UserSettingsStyles.container}>
         <View style={UserSettingsStyles.header}>
           <View style={UserSettingsStyles.headerAction}>
-            <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}>
-              <FeatherIcon
-                color="#000"
-                name="arrow-left"
-                size={24} />
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <FeatherIcon color="#000" name="arrow-left" size={24} />
             </TouchableOpacity>
           </View>
 
@@ -46,17 +39,7 @@ const UserSettings = ({ navigation }) => {
             Settings
           </Text>
 
-          <View style={[UserSettingsStyles.headerActionRight, {  }]}>
-            <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}>
-              <FeatherIcon
-                color="#000"
-                name="more-vertical"
-                size={24} />
-            </TouchableOpacity>
-          </View>
+          <View style={UserSettingsStyles.headerActionRight} />
         </View>
 
         <ScrollView contentContainerStyle={UserSettingsStyles.content}>
@@ -66,23 +49,21 @@ const UserSettings = ({ navigation }) => {
             <View style={UserSettingsStyles.sectionBody}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Account")
+                  navigation.navigate("Account");
                 }}
                 style={UserSettingsStyles.profile}>
                 <Image
                   alt=""
                   source={{ uri: currentUser.img }}
-                  style={UserSettingsStyles.profileAvatar} />
+                  style={UserSettingsStyles.profileAvatar}
+                />
 
                 <View style={UserSettingsStyles.profileBody}>
                   <Text style={UserSettingsStyles.profileName}>{currentUser.name}</Text>
                   <Text style={UserSettingsStyles.profileHandle}>{currentUser.email}</Text>
                 </View>
 
-                <FeatherIcon
-                  color="#bcbcbc"
-                  name="chevron-right"
-                  size={22} />
+                <FeatherIcon color="#bcbcbc" name="chevron-right" size={22} />
               </TouchableOpacity>
             </View>
           </View>
@@ -92,40 +73,26 @@ const UserSettings = ({ navigation }) => {
 
             <View style={UserSettingsStyles.sectionBody}>
               <View style={[UserSettingsStyles.rowWrapper, UserSettingsStyles.rowFirst]}>
-                <TouchableOpacity
-                  onPress={() => {
-                    // handle onPress
-                  }}
-                  style={UserSettingsStyles.row}>
+                <TouchableOpacity style={UserSettingsStyles.row}>
                   <Text style={UserSettingsStyles.rowLabel}>Language</Text>
 
                   <View style={UserSettingsStyles.rowSpacer} />
 
                   <Text style={UserSettingsStyles.rowValue}>English</Text>
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
 
               <View style={UserSettingsStyles.rowWrapper}>
-                <TouchableOpacity
-                  onPress={() => {
-                    // handle onPress
-                  }}
-                  style={UserSettingsStyles.row}>
+                <TouchableOpacity style={UserSettingsStyles.row}>
                   <Text style={UserSettingsStyles.rowLabel}>Location</Text>
 
                   <View style={UserSettingsStyles.rowSpacer} />
 
                   <Text style={UserSettingsStyles.rowValue}>Los Angeles, CA</Text>
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
 
@@ -140,7 +107,8 @@ const UserSettings = ({ navigation }) => {
                       setForm({ ...form, emailNotifications })
                     }
                     style={{ transform: [{ scaleX: 0.95 }, { scaleY: 0.95 }] }}
-                    value={form.emailNotifications} />
+                    value={form.emailNotifications}
+                  />
                 </View>
               </View>
 
@@ -155,7 +123,8 @@ const UserSettings = ({ navigation }) => {
                       setForm({ ...form, pushNotifications })
                     }
                     style={{ transform: [{ scaleX: 0.95 }, { scaleY: 0.95 }] }}
-                    value={form.pushNotifications} />
+                    value={form.pushNotifications}
+                  />
                 </View>
               </View>
             </View>
@@ -166,53 +135,32 @@ const UserSettings = ({ navigation }) => {
 
             <View style={UserSettingsStyles.sectionBody}>
               <View style={[UserSettingsStyles.rowWrapper, UserSettingsStyles.rowFirst]}>
-                <TouchableOpacity
-                  onPress={() => {
-                    // handle onPress
-                  }}
-                  style={UserSettingsStyles.row}>
+                <TouchableOpacity style={UserSettingsStyles.row}>
                   <Text style={UserSettingsStyles.rowLabel}>Contact Us</Text>
 
                   <View style={UserSettingsStyles.rowSpacer} />
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
 
               <View style={UserSettingsStyles.rowWrapper}>
-                <TouchableOpacity
-                  onPress={() => {
-                    // handle onPress
-                  }}
-                  style={UserSettingsStyles.row}>
+                <TouchableOpacity style={UserSettingsStyles.row}>
                   <Text style={UserSettingsStyles.rowLabel}>Report Bug</Text>
 
                   <View style={UserSettingsStyles.rowSpacer} />
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
 
               <View style={[UserSettingsStyles.rowWrapper, UserSettingsStyles.rowLast]}>
-                <TouchableOpacity
-                  onPress={() => {
-                    // handle onPress
-                  }}
-                  style={UserSettingsStyles.row}>
+                <TouchableOpacity style={UserSettingsStyles.row}>
                   <Text style={UserSettingsStyles.rowLabel}>Terms of Service</Text>
 
                   <View style={UserSettingsStyles.rowSpacer} />
 
-                  <FeatherIcon
-                    color="#bcbcbc"
-                    name="chevron-right"
-                    size={19} />
+                  <FeatherIcon color="#bcbcbc" name="chevron-right" size={19} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -222,7 +170,5 @@ const UserSettings = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-
 
 export default UserSettings;

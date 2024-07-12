@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { getCurrentUser, getAllUsers } from '../lib/appwrite';
 
 // Define the context
 const UsersContext = createContext();
@@ -7,89 +8,86 @@ const UsersContext = createContext();
 export const UsersProvider = ({ children }) => {
   // Define the state for the users data
   const [users, setUsers] = useState([]);
-
-  const stats = {
-    '1': [
-      { label: 'Location', value: 'USA' },
-      { label: 'Job Type', value: 'Full Time' },
-      { label: 'Experience', value: '6 years' },
-    ],
-    '2': [
-      { label: 'Location', value: 'Ghana' },
-      { label: 'Job Type', value: 'Part Time' },
-      { label: 'Experience', value: '5 years' },
-    ],
-  };
-
-  // Define the initial tag data for each user
-  const initialTagData = {
-    '1': [
-      { id: "1", title: "Documentation", categories: ["Everywhere"] },
-      { id: "2", title: "Art", categories: ["Everywhere"] },
-      { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
-      { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
-      { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
-      { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
-      { id: "7", title: "Gardening", categories: ["Everywhere", "Default Collection"] },
-      { id: "8", title: "Healthcare", categories: ["Everywhere", "Forum Tags"] },
-      { id: "9", title: "Information Technology", categories: ["Everywhere", "Default Collection"] },
-    ],
-    '2': [
-      { id: "1", title: "Documentation", categories: ["Everywhere"] },
-      { id: "2", title: "Art", categories: ["Everywhere"] },
-      { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
-      { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
-      { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
-      { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
-      { id: "7", title: "Gardening", categories: ["Everywhere", "Default Collection"] },
-      { id: "8", title: "Healthcare", categories: ["Everywhere", "Forum Tags"] },
-      { id: "9", title: "Information Technology", categories: ["Everywhere", "Default Collection"] },
-    ]
-  };
-
-  const [tagData, setTagData] = useState(initialTagData);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [tagData, setTagData] = useState({});
 
   // Fetch or set the data for users
   useEffect(() => {
-    // Fetching data or setting it statically with unique IDs
-    setUsers([
-      {
-        id: '1',
-        img: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
-        name: 'BELL BURGESS',
-        phone: '202472680',
-        NoteCount: 44,
-        duration: 10,
-        portfolio: 'UI/UX Designer',
-        bio:
-          'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.',
-        email: 'bell.burgess@example.com',
-        username: 'bellburgess',
-        birthday: '02/07/2012',
-        password: ' ',
-        country: 'Ghana',
-        tags: tagData['1'],
-      },
-      {
-        id: '2',
-        img: 'https://placekitten.com/200/200',
-        name: 'Papaa',
-        phone: '597959032',
-        NoteCount: 20,
-        duration: 20,
-        portfolio: 'Graphics Designer',
-        bio:
-          'Skilled in design, prototyping, and collaborating with cross-functional teams.',
-        email: 'papaa@example.com',
-        username: 'papaa_designs',
-        birthday: '07/03/2007',
-        password: ' ',
-        country: 'Ghana',
-        tags: tagData['2'],
-      },
-      // Add more users with unique IDs and additional information
-    ]);
-  }, [tagData]); // Ensure useEffect depends on tagData for updates
+    const fetchUserData = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        setCurrentUserId(currentUser.userId); // Store the current user ID
+
+        const allUsers = await getAllUsers();
+        const allUsersData = allUsers.map(user => ({
+          id: user.userId,
+          img: user.avatar,
+          name: user.username,
+          email: user.email,
+          username: user.username,
+          tags: tagData[user.userId] || [], // Provide default empty array if no tags found
+          phone: user.phone || 'N/A', // Replace with actual data if available
+          NoteCount: user.NoteCount || 0, // Replace with actual data if available
+          duration: user.duration || 0, // Replace with actual data if available
+          portfolio: user.portfolio || 'N/A', // Replace with actual data if available
+          bio: user.bio || 'N/A', // Replace with actual data if available
+          birthday: user.birthday || 'N/A', // Replace with actual data if available
+          password: user.password || ' ', // Replace with actual data if available
+          country: user.country || 'N/A', // Replace with actual data if available
+          lastseen: user.lastseen || 0, // Replace with actual data if available
+        }));
+
+        // Define the initial tag data for each user
+        const initialTagData = {
+          [currentUser.userId]: [
+            { id: "1", title: "Documentation", categories: ["Everywhere"] },
+            { id: "2", title: "Art", categories: ["Everywhere"] },
+            { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
+            { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
+            { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
+            { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
+          ],
+        };
+
+        // Define stats object with the current user ID
+        const stats = {
+          [currentUser.userId]: [
+            { label: 'Location', value: 'USA' },
+            { label: 'Job Type', value: 'Full Time' },
+            { label: 'Experience', value: '6 years' },
+          ],
+        };
+
+        setTagData(initialTagData);
+
+        // Combine the current user data and all users data
+        setUsers([
+          {
+            id: currentUser.userId,
+            img: currentUser.avatar,
+            name: currentUser.username,
+            email: currentUser.email,
+            username: currentUser.username,
+            tags: initialTagData[currentUser.userId],
+            phone: '0202472680', // Placeholder data, update as needed
+            NoteCount: 44,      // Placeholder data, update as needed
+            duration: 10,       // Placeholder data, update as needed
+            portfolio: 'UI/UX Designer', // Placeholder data, update as needed
+            bio: 'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.', // Placeholder data, update as needed
+            birthday: '02/07/2012', // Placeholder data, update as needed
+            password: ' ', // Placeholder data, update as needed
+            country: 'Ghana', // Placeholder data, update as needed
+            lastseen: 20, // Placeholder data, update as needed
+          },
+          ...allUsersData,
+        ]);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []); // Ensure useEffect depends on tagData for updates
 
   const updateUserTags = (userId, updatedTags) => {
     setTagData(prevTagData => ({
@@ -99,7 +97,7 @@ export const UsersProvider = ({ children }) => {
   };
 
   return (
-    <UsersContext.Provider value={{ users, updateUserTags, stats , tagData }}>
+    <UsersContext.Provider value={{ users, currentUserId, updateUserTags, tagData }}>
       {children}
     </UsersContext.Provider>
   );

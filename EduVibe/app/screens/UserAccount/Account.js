@@ -15,16 +15,24 @@ import { AccountStyling } from "../../../themes/AccountStyling";
 import { useUsers } from "../../../contexts/UsersContext";
 
 const AccountScreen = ({ navigation }) => {
-  const { users } = useUsers(); // Fetch users from context
-  const currentUser = users.find((user) => user.id === '1'); // Find the user with ID '1'
+  const { users , currentUserId } = useUsers(); // Fetch users from context
+  const currentUser = users.find((user) => user.id === currentUserId ); // Find the user with ID '1'
 
-  // Define state variables and set their initial values from the context
-  const [username, setUsername] = useState(currentUser ? currentUser.username : " ");
-  const [name, setName] = useState(currentUser ? currentUser.name : " ");
-  const [phone, setPhone] = useState(currentUser ? currentUser.phone : " ");
-  const [birthday, setBirthday] = useState(currentUser ? currentUser.birthday : " ");
-  const [country, setCountry] = useState(currentUser ? currentUser.country : " ");
-  const [email, setEmail] = useState(currentUser ? currentUser.email : "");
+  // Default parameter values
+  const defaultUsername = currentUser ? currentUser.username : " ";
+  const defaultName = currentUser ? currentUser.name : " ";
+  const defaultPhone = currentUser ? currentUser.phone : " ";
+  const defaultBirthday = currentUser ? currentUser.birthday : " ";
+  const defaultCountry = currentUser ? currentUser.country : " ";
+  const defaultEmail = currentUser ? currentUser.email : "";
+
+  // State variables
+  const [username, setUsername] = useState(defaultUsername);
+  const [name, setName] = useState(defaultName);
+  const [phone, setPhone] = useState(defaultPhone);
+  const [birthday, setBirthday] = useState(defaultBirthday);
+  const [country, setCountry] = useState(defaultCountry);
+  const [email, setEmail] = useState(defaultEmail);
 
   const [countryCode, setCountryCode] = useState("GH"); // Default country code
 

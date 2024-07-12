@@ -35,23 +35,12 @@ const UserAccount = ({ navigation, route }) => {
           </View>
 
           <View style={UserAccountStyling.search}>
-            <View style={UserAccountStyling.searchIcon}>
-              <FeatherIcon color="#778599" name="search" size={17} />
-            </View>
-
-            <TextInput
-              autoCapitalize="words"
-              autoComplete="name"
-              placeholder="Search..."
-              placeholderTextColor="#778599"
-              style={UserAccountStyling.searchControl}
-            />
+    
+            <Text style={UserAccountStyling.profileTitle}>{currentUser.name}</Text>
           </View>
 
           <View style={[UserAccountStyling.headerAction, { alignItems: 'flex-end' }]}>
-            <TouchableOpacity onPress={() => { /* handle onPress */ }}>
-              <FeatherIcon name="more-vertical" size={24} />
-            </TouchableOpacity>
+           
           </View>
         </View>
 

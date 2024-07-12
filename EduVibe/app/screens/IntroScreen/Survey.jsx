@@ -60,7 +60,7 @@ const SurveyScreen = () => {
       });
     } else {
       setLoading(true); // Show loading indicator before navigating to "Back"
-      navigateToBackScreen();
+      navigation.navigate("Back");
     }
   };
 
@@ -137,11 +137,11 @@ const SurveyScreen = () => {
       navigation.navigate("Back");
       
     } else {
-      console.log('Your Hobby');
       navigation.navigate("Back");
-      setButtonVisible(false); 
       setCourseButtonVisible (false);
       setAppSettingsVisible (true);
+      setButtonVisible(false); 
+      setLoading(true);
       setAnswer(!null);
     }
 

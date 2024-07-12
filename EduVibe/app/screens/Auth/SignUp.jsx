@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react';
 import {
   View,
   Image,
@@ -9,35 +9,23 @@ import {
   Keyboard,
   SafeAreaView,
   ScrollView,
-} from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import imageExport from "../../../assets/images/imageExport";
-import { CommonStyle } from "../../../themes/styles_index";
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
+import imageExport from '../../../assets/images/imageExport';
+import { CommonStyle } from '../../../themes/styles_index';
+import { createUser } from '../../../lib/appwrite'; // Adjusted import statement
 
-type StackParamList = {
-  SignInScreen: undefined;
-  Survey: undefined;
-};
-
-type SignUpScreenNavigationProp = StackNavigationProp<
-  StackParamList,
-  "SignInScreen"
->;
-
-interface SignUpScreenProps {
-  navigation: SignUpScreenNavigationProp;
-}
-
-
-
-
-
-const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
-  const [isUsernameFocused, setUsernameFocused] = useState<boolean>(false);
-  const [isPasswordFocused, setPasswordFocused] = useState<boolean>(false);
-  const [isConfirmPasswordFocused, setConfirmPasswordFocused] =
-    useState<boolean>(false);
-  const [isEmailFocused, setEmailFocused] = useState<boolean>(false);
+const SignUpScreen = ({ navigation }) => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [buttonSpinner, setButtonSpinner] = useState(false);
+  const [isUsernameFocused, setUsernameFocused] = useState(false);
+  const [isPasswordFocused, setPasswordFocused] = useState(false);
+  const [isConfirmPasswordFocused, setConfirmPasswordFocused] = useState(false);
+  const [isEmailFocused, setEmailFocused] = useState(false);
 
   const handleUsernameFocus = () => {
     setUsernameFocused(true);
@@ -52,6 +40,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
     setConfirmPasswordFocused(false);
     setEmailFocused(true);
   };
+
   const handlePasswordFocus = () => {
     setUsernameFocused(false);
     setPasswordFocused(true);
@@ -66,10 +55,10 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
     setEmailFocused(false);
   };
 
-  const usernameRef = useRef<TextInput>(null);
-  const emailRef = useRef<TextInput>(null);
-  const passwordRef = useRef<TextInput>(null);
-  const confirmPasswordRef = useRef<TextInput>(null);
+  const usernameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
 
   const handleScreenTap = () => {
     if (usernameRef.current) {
@@ -91,14 +80,32 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
     Keyboard.dismiss();
   };
 
-  return (
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
 
-      <SafeAreaView style={CommonStyle.safeArea}>
-        <ScrollView
-          contentContainerStyle={CommonStyle.scrollViewContent}
-          showsVerticalScrollIndicator={false}
-        >
-              <TouchableWithoutFeedback onPress={handleScreenTap}>
+    try {
+      setButtonSpinner(true);
+      await createUser( email, password, username, );
+      setButtonSpinner(false);
+      Alert.alert('Success', 'User registered successfully!');
+      navigation.navigate('Survey'); // Navigate to SignInScreen after successful registration
+    } catch (error) {
+      setButtonSpinner(false);
+      Alert.alert('Error', error.message);
+      console.log(error);
+    }
+  };
+
+  return (
+    <SafeAreaView style={CommonStyle.safeArea}>
+      <ScrollView
+        contentContainerStyle={CommonStyle.scrollViewContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <TouchableWithoutFeedback onPress={handleScreenTap}>
           <View style={CommonStyle.container}>
             <Image source={imageExport.logo} style={CommonStyle.logo} />
             <Text style={CommonStyle.loginText}>Sign up</Text>
@@ -109,6 +116,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
                 isUsernameFocused && CommonStyle.focusedInput,
               ]}
               placeholder="Username"
+              value={username}
+              onChangeText={setUsername}
               onFocus={handleUsernameFocus}
             />
             <TextInput
@@ -118,6 +127,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
                 isEmailFocused && CommonStyle.focusedInput,
               ]}
               placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
               onFocus={handleEmailFocus}
             />
             <TextInput
@@ -128,6 +139,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
               ]}
               placeholder="Password"
               secureTextEntry={true}
+              value={password}
+              onChangeText={setPassword}
               onFocus={handlePasswordFocus}
             />
             <TextInput
@@ -138,13 +151,19 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
               ]}
               placeholder="Confirm Password"
               secureTextEntry={true}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
               onFocus={handleConfirmPasswordFocus}
             />
             <TouchableOpacity
               style={CommonStyle.loginButton}
-              onPress={() => navigation.navigate("Survey")}
+              onPress={handleSignUp}
             >
-              <Text style={CommonStyle.loginButtonText}>Sign up</Text>
+              {buttonSpinner ? (
+                <ActivityIndicator size="small" color={'white'} />
+              ) : (
+                <Text style={CommonStyle.loginButtonText}>Sign up</Text>
+              )}
             </TouchableOpacity>
             <View style={CommonStyle.buttonContainer}>
               <TouchableOpacity style={CommonStyle.googleButton}>
@@ -162,22 +181,20 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
                 <Text style={CommonStyle.buttonText}>Microsoft</Text>
               </TouchableOpacity>
             </View>
-            {/* Divider Line */}
             <View style={CommonStyle.divider} />
             <Text style={CommonStyle.firstText}>Already have an account?</Text>
             <View style={CommonStyle.guestSection}>
               <TouchableOpacity
                 style={CommonStyle.createAccountButton}
-                onPress={() => navigation.navigate("SignInScreen")}
+                onPress={() => navigation.navigate('SignInScreen')}
               >
                 <Text style={CommonStyle.createAccountButtonText}>Login</Text>
               </TouchableOpacity>
             </View>
           </View>
-          </TouchableWithoutFeedback>
-        </ScrollView>
-      </SafeAreaView>
-
+        </TouchableWithoutFeedback>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

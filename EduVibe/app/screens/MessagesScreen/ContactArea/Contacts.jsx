@@ -92,7 +92,7 @@ const ContactsScreen = ({ searchText }) => {
           <TouchableOpacity onPress={() => Alert.alert(`You Have Starred ${selectedContact.name}`)}>
             <Text style={styles.modalItem}>Starred</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Alert.alert(`${selectedContact.name} moved to Private`)}>
+          <TouchableOpacity onPress={() => Alert.alert(`${selectedContact.name} has been moved to Private`)}>
             <Text style={styles.modalItem}>Private</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => Alert.alert(`${selectedContact.name} has been deleted`)}>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     padding: 22,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 4,
+    borderRadius: 30,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   modalTitle: {
@@ -180,8 +180,14 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   modalItem: {
+
     fontSize: 16,
     marginVertical: 10,
+    alignSelf : "flex-start",
+    alignContent : "flex-start",
+    alignItems : "flex-start",
+    textAlign : "justify"
+
   },
 });
 

@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import imageExport from "../../assets/images/imageExport";
 import messagesScreenstyles from "../../themes/messagesScreenStyles";
 import ContactsCard from "../../components/ContactsCard"; // Import the ContactsCard component
+import GroupCard from "../../components/GroupCard"; // Import the GroupCard component
 import { useUsers } from "../../contexts/UsersContext";
+import { useGroup } from "../../contexts/GroupContexts";
+import { getCurrentUser } from "../../lib/appwrite";
 
 const MessagesScreen = ({ navigation }) => {
   const { users } = useUsers(); // Access users data from UsersContext
+  const { group } = useGroup(); // Access group data from GroupContext
+  const [currentUser, setCurrentUser] = useState(null); // State to store the current user
+
+  useEffect(() => {
+    // Fetch the current user when the component mounts
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Failed to fetch current user:", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
 
   const [searchText, setSearchText] = useState("");
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -58,14 +76,14 @@ const MessagesScreen = ({ navigation }) => {
               onBlur={() => setShowSearchBar(false)}
             />
           )}
-        
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Image source={imageExport.logo} style={messagesScreenstyles.profileIcon} />
-          </TouchableOpacity>
+          {currentUser && (
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Image source={{ uri: currentUser.avatar }} style={messagesScreenstyles.profileIcon} />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       
-      {/* Wrap your content inside ScrollView */}
       <ScrollView>
         <View>
           <TouchableOpacity
@@ -88,7 +106,6 @@ const MessagesScreen = ({ navigation }) => {
           </TouchableOpacity>
           {dropdown1Open && (
             <View style={messagesScreenstyles.dropdownContent}>
-            
               {users.map((user, index) => (
                 <ContactsCard
                   key={index}
@@ -113,7 +130,16 @@ const MessagesScreen = ({ navigation }) => {
           </TouchableOpacity>
           {dropdown2Open && (
             <View style={messagesScreenstyles.dropdownContent}>
-              <Text>Dropdown 2 content here</Text>
+              {group.map((grp, index) => (
+                <GroupCard
+                  key={index}
+                  name={grp.name}
+                  img={grp.img}
+                  onPress={() => {
+                    navigation.navigate("GroupDetailsScreen", { group: grp }); // Pass group object to GroupDetailsScreen
+                  }}
+                />
+              ))}
             </View>
           )}
 
@@ -128,7 +154,13 @@ const MessagesScreen = ({ navigation }) => {
           </TouchableOpacity>
           {dropdown3Open && (
             <View style={messagesScreenstyles.dropdownContent}>
-              <Text>Dropdown 3 content here</Text>
+              <GroupCard
+                name="Gangsters Group"
+                img="https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80"
+                onPress={() => {
+                  navigation.navigate("GroupDetailsScreen", { group: { name: "Gangsters Group", img: "https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80" } });
+                }}
+              />
             </View>
           )}
         </View>
