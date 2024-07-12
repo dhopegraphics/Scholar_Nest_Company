@@ -1,4 +1,4 @@
-import React, { useState, useRef ,useContext } from "react";
+import React, { useState, useRef, useContext, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,11 +8,15 @@ import {
   Animated,
   TouchableWithoutFeedback,
   Keyboard,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import { useCourseContext } from "../../../contexts/useCourseContext";
 import { ParticipantContext } from "../../../contexts/ParticipantContext";
+import { CourseCard } from "../../../components";
 
 const AvailableCourses = () => {
   const navigation = useNavigation(); // Initialize navigation object
@@ -22,6 +26,17 @@ const AvailableCourses = () => {
   const searchIconTranslateX = useRef(new Animated.Value(15)).current; // Initial position for search icon
   const menuButtonRef = useRef(null); // Ref for menu button
   const menuAnim = useRef(new Animated.Value(0)).current; // Animation for menu
+  const { setCourse } = useCourseContext();
+  const participantContext = useContext(ParticipantContext);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handlePress = (course) => {
+    setCourse(course);
+    if (participantContext) {
+      participantContext.setParticipants(course.participants);
+    }
+    navigation.navigate('Course_Information');
+  };
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -72,105 +87,141 @@ const AvailableCourses = () => {
     Keyboard.dismiss();
   };
 
-  return (
-    <TouchableWithoutFeedback onPress={handleScreenTap}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.iconButton} onPress={navigateBack}>
-            <Icon name="arrow-back" size={24} color="#333" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Available Courses</Text>
-          <TouchableOpacity
-            style={styles.iconButton}
-            ref={menuButtonRef}
-            onPress={toggleMenu}
-          >
-            <Icon name="menu" size={24} color="#333" />
-          </TouchableOpacity>
-        </View>
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // Simulate a network request
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
-        <View style={styles.content}>
-          {isMenuOpen && (
-            <TouchableWithoutFeedback>
-              <Animated.View
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <TouchableWithoutFeedback onPress={handleScreenTap}>
+        <View style={styles.container}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            contentContainerStyle={styles.scrollViewContent}
+          >
+            <View style={styles.header}>
+              <TouchableOpacity style={styles.iconButton} onPress={navigateBack}>
+                <Icon name="arrow-back" size={24} color="#333" />
+              </TouchableOpacity>
+              <Text style={styles.headerTitle}>Available Courses</Text>
+              <TouchableOpacity
+                style={styles.iconButton}
+                ref={menuButtonRef}
+                onPress={toggleMenu}
+              >
+                <Icon name="menu" size={24} color="#333" />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.content}>
+              {isMenuOpen && (
+                <TouchableWithoutFeedback>
+                  <Animated.View
+                    style={[
+                      styles.dropdownMenu,
+                      {
+                        opacity: menuAnim,
+                        transform: [
+                          {
+                            translateY: menuAnim.interpolate({
+                              inputRange: [0, 1],
+                              outputRange: [-16, 0],
+                            }),
+                          },
+                          {
+                            scale: menuAnim.interpolate({
+                              inputRange: [0, 1],
+                              outputRange: [0.8, 1],
+                            }),
+                          },
+                        ],
+                      },
+                    ]}
+                  >
+                    <TouchableOpacity style={styles.menuItem}>
+                      <Text style={styles.menuText}>Option 1</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.menuItem}>
+                      <Text style={styles.menuText}>Option 2</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.menuItem}>
+                      <Text style={styles.menuText}>Option 3</Text>
+                    </TouchableOpacity>
+                  </Animated.View>
+                </TouchableWithoutFeedback>
+              )}
+
+              <View
                 style={[
-                  styles.dropdownMenu,
-                  {
-                    opacity: menuAnim,
-                    transform: [
-                      {
-                        translateY: menuAnim.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [-16, 0],
-                        }),
-                      },
-                      {
-                        scale: menuAnim.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [0.8, 1],
-                        }),
-                      },
-                    ],
-                  },
+                  styles.searchContainer,
+                  isFocused
+                    ? styles.searchContainerFocused
+                    : styles.searchContainerDefault,
                 ]}
               >
-                <TouchableOpacity style={styles.menuItem}>
-                  <Text style={styles.menuText}>Option 1</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.menuItem}>
-                  <Text style={styles.menuText}>Option 2</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.menuItem}>
-                  <Text style={styles.menuText}>Option 3</Text>
-                </TouchableOpacity>
-              </Animated.View>
-            </TouchableWithoutFeedback>
-          )}
+                <TextInput
+                  placeholder="Search"
+                  value={searchText}
+                  onChangeText={setSearchText}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  style={styles.input}
+                />
+                <Animated.View
+                  style={[styles.searchIcon, { right: searchIconTranslateX }]}
+                >
+                  <Icon name="search" size={22} color="#333" />
+                </Animated.View>
+                {isFocused && (
+                  <TouchableOpacity
+                    style={styles.clearIcon}
+                    onPress={() => setSearchText("")}
+                  >
+                    <Icon name="close" size={26} color="#333" />
+                  </TouchableOpacity>
+                )}
 
-          <View
-            style={[
-              styles.searchContainer,
-              isFocused
-                ? styles.searchContainerFocused
-                : styles.searchContainerDefault,
-            ]}
-          >
-            <TextInput
-              placeholder="Search"
-              value={searchText}
-              onChangeText={setSearchText}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              style={styles.input}
-            />
-            <Animated.View
-              style={[styles.searchIcon, { right: searchIconTranslateX }]}
-            >
-              <Icon name="search" size={22} color="#333" />
-            </Animated.View>
-            {isFocused && (
-              <TouchableOpacity
-                style={styles.clearIcon}
-                onPress={() => setSearchText("")}
-              >
-                <Icon name="close" size={26} color="#333" />
-              </TouchableOpacity>
-            )}
-          </View>
+              </View>
 
-          {searchText === "" && (
-            <View style={styles.centeredContainer}>
-              <Icon name="search" size={64} color="#888" />
-              <Text style={styles.noResultsText}>No results</Text>
+              <View style = {styles.courseContainer} >
+                {participantContext?.courses.map((course, index) => (
+                <CourseCard
+                  key={index}
+                  title={course.title}
+                  creator={course.creator}
+                  participantsCount={course.participants.length}
+                  onPress={() => handlePress(course)}
+                  imageSource={{ uri: course.image }} // Pass the image source dynamically
+                />
+              ))}
+             </View>
+
+              {searchText === "" && (
+                <View style={styles.centeredContainer}>
+                  <Icon name="search" size={64} color="#888" />
+                  <Text style={styles.noResultsText}>No results</Text>
+                </View>
+              )}
+
+
             </View>
-          )}
+          </ScrollView>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#f8f8f8",
+  },
   container: {
     flex: 1,
     backgroundColor: "#f8f8f8",
@@ -233,6 +284,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    minHeight: 200, // Ensure a minimum height so it's scrollable
   },
   noResultsText: {
     marginTop: 8,
@@ -269,6 +321,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  courseContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    alignSelf : "center",
+  },
+
 });
 
 export default AvailableCourses;
