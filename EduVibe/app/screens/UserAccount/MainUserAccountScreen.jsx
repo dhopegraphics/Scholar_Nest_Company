@@ -96,24 +96,24 @@ const MainUserAccountScreen = ({ navigation }) => {
             </View>
 
             <View style={UserAccountStyling.stats}>
-              {stats['1'] &&
-                stats['1'].map((stat, index) => (
-                  <View
-                    key={index}
-                    style={[
-                      UserAccountStyling.statsItem,
-                      index === 0 && { borderLeftWidth: 0 },
-                    ]}
-                  >
-                    <Text style={UserAccountStyling.statsItemText}>
-                      {stat.label}
-                    </Text>
-                    <Text style={UserAccountStyling.statsItemValue}>
-                      {stat.value}
-                    </Text>
-                  </View>
-                ))}
-            </View>
+                {stats[currentUser.id] &&
+                  stats[currentUser.id].map((stat, index) => (
+                    <View
+                      key={index}
+                      style={[
+                        UserAccountStyling.statsItem,
+                        index === 0 && { borderLeftWidth: 0 },
+                      ]}
+                    >
+                      <Text style={UserAccountStyling.statsItemText}>
+                        {stat.label}
+                      </Text>
+                      <Text style={UserAccountStyling.statsItemValue}>
+                        {stat.value}
+                      </Text>
+                    </View>
+                  ))}
+              </View>
             <ExperienceCard navigation={navigation} />
 
             {/* Worked Places Section */}

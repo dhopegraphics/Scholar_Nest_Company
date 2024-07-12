@@ -290,3 +290,62 @@ export async function getEmailByUsername(username) {
     }
   }
   
+
+export async function updateAvatar(userId, newAvatarUrl) {
+    try {
+        // Update avatar in user document
+        const updatedUser = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            userId,
+            {
+                avatar: newAvatarUrl,
+            }
+        );
+
+        return updatedUser;
+    } catch (error) {
+        throw new Error(`Failed to update avatar: ${error.message}`);
+    }
+}
+
+export async function createCourse(courseData) {
+    try {
+        const courseId = ID.unique(); // Generate a unique ID for the course
+
+        await databases.createDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.videoCollectionId,
+            courseId,
+            {
+                title: courseData.title,
+                description: courseData.description,
+                videos: courseData.videos,
+                resources: courseData.resources,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                courseAvatar: courseData.courseAvatar,
+                videoHeader: courseData.videoHeader,
+                userId: courseData.userId, // Add userId to the course data
+            }
+        );
+
+        return {
+            title: courseData.title,
+            courseAvatar: courseData.courseAvatar,
+            userId: courseData.userId,
+        };
+    } catch (error) {
+        throw new Error(`Failed to create course: ${error.message}`);
+    }
+}
+
+
+export async function getUser(userId) {
+    try {
+      const user = await account.get(userId);
+      return user;
+    } catch (error) {
+      throw new Error(`Failed to fetch user details: ${error.message}`);
+    }
+}
