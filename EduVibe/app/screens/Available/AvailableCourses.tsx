@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
+import { ParticipantContext } from "../../../contexts/ParticipantContext";
+import { useCourseContext } from "../../../contexts/useCourseContext";
 
 const AvailableCourses: React.FC = () => {
   const navigation = useNavigation(); // Initialize navigation object
