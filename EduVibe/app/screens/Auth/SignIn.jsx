@@ -35,39 +35,6 @@ const SignInScreen = ({ navigation }) => {
     password: "",
   });
 
-  const handlePasswordValidation = (value) => {
-    const password = value;
-    const passwordSpecialCharacter = /(?=.[!@#$&])/;
-    const passwordOneNumber = /(?=.*[0-9])/;
-    const passwordSixValue = /(?=.{6,})/;
-
-    if (!passwordSpecialCharacter.test(password)) {
-      setError({
-        ...error,
-        password: "Write at least one special character",
-      });
-      setUserInfo({ ...userInfo, password: "" });
-    } else if (!passwordOneNumber.test(password)) {
-      setError({
-        ...error,
-        password: "Write at least one number",
-      });
-      setUserInfo({ ...userInfo, password: "" });
-    } else if (!passwordSixValue.test(password)) {
-      setError({
-        ...error,
-        password: "Write at least 6 characters",
-      });
-      setUserInfo({ ...userInfo, password: "" });
-    } else {
-      setError({
-        ...error,
-        password: "",
-      });
-      setUserInfo({ ...userInfo, password: value });
-    }
-  };
-
   const handleUsernameFocus = () => {
     setUsernameFocused(true);
     setPasswordFocused(false);
@@ -125,9 +92,6 @@ const SignInScreen = ({ navigation }) => {
                 ]}
                 placeholder="Username"
                 onFocus={handleUsernameFocus}
-                onChangeText={(value) =>
-                  setUserInfo({ ...userInfo, username: value })
-                }
               />
               <Fontisto
                 style={{ position: "absolute", left: 26, top: 17.8 }}
@@ -135,11 +99,7 @@ const SignInScreen = ({ navigation }) => {
                 size={20}
                 color={"#A1A1A1"}
               />
-              {error.password && (
-                <View style={CommonStyle.errorContainer}>
-                  <Entypo name="cross" size={18} color={"red"} />
-                </View>
-              )}
+
               <View>
                 <TextInput
                   ref={passwordRef}
@@ -151,7 +111,6 @@ const SignInScreen = ({ navigation }) => {
                   onFocus={handlePasswordFocus}
                   secureTextEntry={!isPasswordVisible}
                   defaultValue=""
-                  onChangeText={handlePasswordValidation}
                 />
                 <TouchableOpacity
                   style={CommonStyle.visibleIcon}
