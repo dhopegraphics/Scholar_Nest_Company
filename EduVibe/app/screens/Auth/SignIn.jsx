@@ -18,8 +18,7 @@ import {
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { signIn } from "../../../lib/appwrite";
+import { signIn, getEmailByUsername } from "../../../lib/appwrite"; // Import the new function
 import imageExport from "../../../assets/images/imageExport";
 import { CommonStyle } from "../../../themes/styles_index";
 
@@ -29,7 +28,7 @@ const SignInScreen = ({ navigation }) => {
   const [isUsernameFocused, setUsernameFocused] = useState(false);
   const [isPasswordFocused, setPasswordFocused] = useState(false);
   const [userInfo, setUserInfo] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const [error, setError] = useState({
@@ -38,7 +37,7 @@ const SignInScreen = ({ navigation }) => {
 
   const handlePasswordValidation = (value) => {
     const password = value;
-    const passwordSpecialCharacter = /(?=.*[!@#$&*])/;
+    const passwordSpecialCharacter = /(?=.[!@#$&])/;
     const passwordOneNumber = /(?=.*[0-9])/;
     const passwordSixValue = /(?=.{6,})/;
 
@@ -97,8 +96,8 @@ const SignInScreen = ({ navigation }) => {
   const handleLogin = async () => {
     try {
       setButtonSpinner(true);
-      // Perform client-side validation if needed before calling signIn
-      await signIn(userInfo.email, userInfo.password);
+      const email = await getEmailByUsername(userInfo.username);
+      await signIn(email, userInfo.password);
       setButtonSpinner(false);
       navigation.navigate("Back");
     } catch (error) {
@@ -124,10 +123,10 @@ const SignInScreen = ({ navigation }) => {
                   CommonStyle.input1,
                   isUsernameFocused && CommonStyle.focusedInput,
                 ]}
-                placeholder="Email"
+                placeholder="Username"
                 onFocus={handleUsernameFocus}
                 onChangeText={(value) =>
-                  setUserInfo({ ...userInfo, email: value })
+                  setUserInfo({ ...userInfo, username: value })
                 }
               />
               <Fontisto
