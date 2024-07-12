@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { createCourse, getCurrentUser } from '../../../lib/appwrite';
+import { ParticipantContext } from '../../../contexts/ParticipantContext';
 
 const CourseUploadsScreen = () => {
   const [title, setTitle] = useState('');
@@ -9,6 +10,7 @@ const CourseUploadsScreen = () => {
   const [resources, setResources] = useState('');
   const [courseAvatar, setCourseAvatar] = useState('');
   const [userId, setUserId] = useState(null);
+  const { addCourse } = useContext(ParticipantContext);
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -57,6 +59,10 @@ const CourseUploadsScreen = () => {
 
       const newCourse = await createCourse(courseData);
       console.log('Course created successfully:', newCourse);
+
+      // Add the new course to the context
+      await addCourse(newCourse);
+
     } catch (error) {
       console.error('Failed to create course:', error.message);
     }

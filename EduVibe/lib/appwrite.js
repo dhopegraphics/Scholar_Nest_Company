@@ -313,7 +313,7 @@ export async function createCourse(courseData) {
     try {
         const courseId = ID.unique(); // Generate a unique ID for the course
 
-        const newCourse = await databases.createDocument(
+        await databases.createDocument(
             appwriteConfig.databaseId,
             appwriteConfig.videoCollectionId,
             courseId,
@@ -330,8 +330,22 @@ export async function createCourse(courseData) {
             }
         );
 
-        return newCourse;
+        return {
+            title: courseData.title,
+            courseAvatar: courseData.courseAvatar,
+            userId: courseData.userId,
+        };
     } catch (error) {
         throw new Error(`Failed to create course: ${error.message}`);
+    }
+}
+
+
+export async function getUser(userId) {
+    try {
+      const user = await account.get(userId);
+      return user;
+    } catch (error) {
+      throw new Error(`Failed to fetch user details: ${error.message}`);
     }
 }
