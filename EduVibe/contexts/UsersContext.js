@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { getCurrentUser } from '../lib/appwrite';
 
 // Define the context
 const UsersContext = createContext();
@@ -7,6 +8,7 @@ const UsersContext = createContext();
 export const UsersProvider = ({ children }) => {
   // Define the state for the users data
   const [users, setUsers] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   const stats = {
     '1': [
@@ -14,7 +16,6 @@ export const UsersProvider = ({ children }) => {
       { label: 'Job Type', value: 'Full Time' },
       { label: 'Experience', value: '6 years' },
     ],
-
   };
 
   // Define the initial tag data for each user
@@ -27,34 +28,41 @@ export const UsersProvider = ({ children }) => {
       { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
       { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
     ],
-   
   };
 
   const [tagData, setTagData] = useState(initialTagData);
 
   // Fetch or set the data for users
   useEffect(() => {
-    // Fetching data or setting it statically with unique IDs
-    setUsers([
-      {
-        id: '1',
-        img: 'https://images.unsplash.com/photo-1616803689943-5601631c7fec?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
-        name: 'BELL BURGESS',
-        phone: '202472680',
-        NoteCount: 44,
-        duration: 10,
-        portfolio: 'UI/UX Designer',
-        bio: 'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.',
-        email: 'bell.burgess@example.com',
-        username: 'bellburgess',
-        birthday: '02/07/2012',
-        password: ' ',
-        country: 'Ghana',
-        tags: tagData['1'],
-        lastseen : 20 ,
-      },
-     
-    ]);
+    const fetchUserData = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        setCurrentUserId(currentUser.userId); // Store the current user ID
+        setUsers([
+          {
+            id: currentUser.userId,
+            img: currentUser.avatar,
+            name: currentUser.username,
+            email: currentUser.email,
+            username: currentUser.username,
+            tags: tagData[currentUser.userId],
+            phone: '0202472680', // Placeholder data, update as needed
+            NoteCount: 44,      // Placeholder data, update as needed
+            duration: 10,       // Placeholder data, update as needed
+            portfolio: 'UI/UX Designer', // Placeholder data, update as needed
+            bio: 'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.', // Placeholder data, update as needed
+            birthday: '02/07/2012', // Placeholder data, update as needed
+            password: ' ', // Placeholder data, update as needed
+            country: 'Ghana', // Placeholder data, update as needed
+            lastseen: 20, // Placeholder data, update as needed
+          },
+        ]);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+
+    fetchUserData();
   }, [tagData]); // Ensure useEffect depends on tagData for updates
 
   const updateUserTags = (userId, updatedTags) => {
@@ -65,7 +73,7 @@ export const UsersProvider = ({ children }) => {
   };
 
   return (
-    <UsersContext.Provider value={{ users, updateUserTags, stats , tagData }}>
+    <UsersContext.Provider value={{ users, currentUserId, updateUserTags, stats, tagData }}>
       {children}
     </UsersContext.Provider>
   );

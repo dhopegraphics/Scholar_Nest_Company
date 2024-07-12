@@ -15,8 +15,8 @@ import { AccountStyling } from "../../../themes/AccountStyling";
 import { useUsers } from "../../../contexts/UsersContext";
 
 const AccountScreen = ({ navigation }) => {
-  const { users } = useUsers(); // Fetch users from context
-  const currentUser = users.find((user) => user.id === '1'); // Find the user with ID '1'
+  const { users , currentUserId } = useUsers(); // Fetch users from context
+  const currentUser = users.find((user) => user.id === currentUserId ); // Find the user with ID '1'
 
   // Default parameter values
   const defaultUsername = currentUser ? currentUser.username : " ";
