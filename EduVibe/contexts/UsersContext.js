@@ -9,28 +9,7 @@ export const UsersProvider = ({ children }) => {
   // Define the state for the users data
   const [users, setUsers] = useState([]);
   const [currentUserId, setCurrentUserId] = useState(null);
-
-  const stats = {
-    '1': [
-      { label: 'Location', value: 'USA' },
-      { label: 'Job Type', value: 'Full Time' },
-      { label: 'Experience', value: '6 years' },
-    ],
-  };
-
-  // Define the initial tag data for each user
-  const initialTagData = {
-    '1': [
-      { id: "1", title: "Documentation", categories: ["Everywhere"] },
-      { id: "2", title: "Art", categories: ["Everywhere"] },
-      { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
-      { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
-      { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
-      { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
-    ],
-  };
-
-  const [tagData, setTagData] = useState(initialTagData);
+  const [tagData, setTagData] = useState({});
 
   // Fetch or set the data for users
   useEffect(() => {
@@ -58,6 +37,29 @@ export const UsersProvider = ({ children }) => {
           lastseen: user.lastseen || 0, // Replace with actual data if available
         }));
 
+        // Define the initial tag data for each user
+        const initialTagData = {
+          [currentUser.userId]: [
+            { id: "1", title: "Documentation", categories: ["Everywhere"] },
+            { id: "2", title: "Art", categories: ["Everywhere"] },
+            { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
+            { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
+            { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
+            { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
+          ],
+        };
+
+        // Define stats object with the current user ID
+        const stats = {
+          [currentUser.userId]: [
+            { label: 'Location', value: 'USA' },
+            { label: 'Job Type', value: 'Full Time' },
+            { label: 'Experience', value: '6 years' },
+          ],
+        };
+
+        setTagData(initialTagData);
+
         // Combine the current user data and all users data
         setUsers([
           {
@@ -66,7 +68,7 @@ export const UsersProvider = ({ children }) => {
             name: currentUser.username,
             email: currentUser.email,
             username: currentUser.username,
-            tags: tagData[currentUser.userId],
+            tags: initialTagData[currentUser.userId],
             phone: '0202472680', // Placeholder data, update as needed
             NoteCount: 44,      // Placeholder data, update as needed
             duration: 10,       // Placeholder data, update as needed
@@ -85,7 +87,7 @@ export const UsersProvider = ({ children }) => {
     };
 
     fetchUserData();
-  }, [tagData]); // Ensure useEffect depends on tagData for updates
+  }, []); // Ensure useEffect depends on tagData for updates
 
   const updateUserTags = (userId, updatedTags) => {
     setTagData(prevTagData => ({
@@ -95,7 +97,7 @@ export const UsersProvider = ({ children }) => {
   };
 
   return (
-    <UsersContext.Provider value={{ users, currentUserId, updateUserTags, stats, tagData }}>
+    <UsersContext.Provider value={{ users, currentUserId, updateUserTags, tagData }}>
       {children}
     </UsersContext.Provider>
   );

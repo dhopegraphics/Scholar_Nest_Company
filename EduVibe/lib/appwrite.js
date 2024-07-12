@@ -111,21 +111,6 @@ export async function getCurrentUser() {
     }
 }
 
-export async function updateUser(userId, updateData) {
-    try {
-        const updatedUser = await databases.updateDocument(
-            appwriteConfig.databaseId,
-            appwriteConfig.userCollectionId,
-            userId,
-            updateData
-        );
-
-        return updatedUser;
-    } catch (error) {
-        throw new Error(error);
-    }
-}
-
 export async function signOut() {
     try {
         const session = await account.deleteSession("current");
@@ -267,15 +252,41 @@ export async function getLatestPosts() {
 
 export async function getAllUsers() {
     try {
+        // Fetch the current user's account information
+        const currentUser = await getCurrentUser();
+        const currentUserId = currentUser.userId;
+
+        // Fetch all users
         const response = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId
         );
 
-        // Exclude current user from the list
-        const currentUserId = (await getAccount()).$id;
-        return response.documents.filter(user => user.userId !== currentUserId);
+        // Filter out the current user from the list
+        const users = response.documents.filter(user => user.userId !== currentUserId);
+
+        return users;
     } catch (error) {
         throw new Error(`Failed to fetch all users: ${error.message}`);
     }
 }
+
+
+export async function getEmailByUsername(username) {
+    try {
+        const userDocuments = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal("username", username)]
+        );
+  
+        if (userDocuments.documents.length === 0) {
+            throw new Error("No user found with this username");
+        }
+  
+        return userDocuments.documents[0].email;
+    } catch (error) {
+        throw new Error(`Failed to fetch email: ${error.message}`);
+    }
+  }
+  
