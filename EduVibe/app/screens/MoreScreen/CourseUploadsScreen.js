@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-import { createCourse } from '../../../lib/appwrite';
+import { createCourse, getCurrentUser } from '../../../lib/appwrite';
 
 const CourseUploadsScreen = () => {
   const [title, setTitle] = useState('');
@@ -8,6 +8,20 @@ const CourseUploadsScreen = () => {
   const [videos, setVideos] = useState([{ title: '', url: '' }]); // Start with one empty video object
   const [resources, setResources] = useState('');
   const [courseAvatar, setCourseAvatar] = useState('');
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const user = await getCurrentUser();
+        setUserId(user.$id); // Store the user ID in state
+      } catch (error) {
+        console.error('Failed to fetch user ID:', error.message);
+      }
+    };
+
+    fetchUserId();
+  }, []);
 
   const handleAddVideo = () => {
     setVideos([...videos, { title: '', url: '' }]);
@@ -27,13 +41,18 @@ const CourseUploadsScreen = () => {
 
   const handleCreateCourse = async () => {
     try {
+      if (!userId) {
+        throw new Error('User ID is not available');
+      }
+
       const courseData = {
         title,
         description,
-        videos: videos.map(video => video.url), // Extract only URLs for videos
+        videos: videos.map(video => video.url), // Ensure videos is an array of URLs
         resources,
         courseAvatar,
         videoHeader: videos.map(video => video.title), // Extract video headers from videos array
+        userId, // Add the user ID to the course data
       };
 
       const newCourse = await createCourse(courseData);

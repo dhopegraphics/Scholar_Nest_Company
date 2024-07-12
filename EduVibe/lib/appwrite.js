@@ -325,7 +325,8 @@ export async function createCourse(courseData) {
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
                 courseAvatar: courseData.courseAvatar,
-                videoHeader : courseData.videoHeader,
+                videoHeader: courseData.videoHeader,
+                userId: courseData.userId, // Add userId to the course data
             }
         );
 
