@@ -106,13 +106,13 @@ export async function getCurrentUser() {
     throw new Error(error);
   }
 }
-
 export async function signOut() {
   try {
     const session = await account.deleteSession("current");
     return session;
   } catch (error) {
-    throw new Error(error);
+    console.error("Error signing out:", error);
+    throw new Error("Failed to sign out. Please try again."); // Customize error message based on the specific scenario
   }
 }
 

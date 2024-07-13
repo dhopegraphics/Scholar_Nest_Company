@@ -8,12 +8,23 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useUsers } from "../../../contexts/UsersContext"; // Update the path accordingly
+import { signOut } from "../../../lib/appwrite";
 
 const LogOutAlertScreen = ({ navigation }) => {
-  const { users } = useUsers();
+  const { users, currentUserId } = useUsers();
 
   // Assuming you want to display data for user with id '1'
-  const currentUser = users.find((user) => user.id === '1');
+  const currentUser = users.find((user) => user.id === currentUserId);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(); // Call signOut function to delete session
+      navigation.navigate("SignInScreen"); // Navigate to SignInScreen after logout
+    } catch (error) {
+      console.error("Failed to log out:", error.message);
+      // Handle error accordingly
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -37,11 +48,7 @@ const LogOutAlertScreen = ({ navigation }) => {
               need your password to log back in.
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("SignInScreen");
-            }}
-          >
+          <TouchableOpacity onPress={handleLogout}>
             <View style={styles.btn}>
               <Text style={styles.btnText}>Yes, log me out</Text>
             </View>

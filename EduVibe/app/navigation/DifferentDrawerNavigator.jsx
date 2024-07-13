@@ -4,10 +4,14 @@ import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } fr
 import { Ionicons } from '@expo/vector-icons'; // Assuming you're using Expo vector icons
 import Dashboard from '../tabs/Dashboard';
 import announcements from '../screens/Annoucement/announcementsData';
+import TeacherDashboard from '../screens/Educator/TeacherDashboard';
+import { useVisibility } from '../../contexts/VisibilityContext';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = ({ navigation }) => {
+
+
   const navigateToAnnouncementDetails = (announcementId) => {
     navigation.navigate('AnnouncementDetails', { announcementId });
   };
@@ -88,9 +92,14 @@ const styles = StyleSheet.create({
 });
 
 const DifferentDrawerNavigator = () => {
+  const {isCourseButtonVisible} = useVisibility();
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} drawerPosition="left">
-      <Drawer.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false, drawerPosition: "right" }} />
+      {isCourseButtonVisible ? (
+         <Drawer.Screen name="TeacherDashboard" component={TeacherDashboard} options={{ headerShown: false, drawerPosition: "right" }} />
+      ) : (
+        <Drawer.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false, drawerPosition: "right" }} />
+      )}
     </Drawer.Navigator>
   );
 };

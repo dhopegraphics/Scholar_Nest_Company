@@ -7,6 +7,7 @@ import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { useCourseContext } from '../../contexts/useCourseContext';
 import { ParticipantContext } from '../../contexts/ParticipantContext';
 
+
 const Dashboard = () => {
   const navigation = useNavigation();
   const { setCourse } = useCourseContext();

@@ -141,7 +141,6 @@ const SurveyScreen = () => {
       setCourseButtonVisible (false);
       setAppSettingsVisible (true);
       setButtonVisible(false); 
-      setLoading(true);
       setAnswer(!null);
     }
 
