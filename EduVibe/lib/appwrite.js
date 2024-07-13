@@ -110,15 +110,16 @@ export async function getCurrentUser() {
         throw new Error(error);
     }
 }
-
 export async function signOut() {
     try {
         const session = await account.deleteSession("current");
         return session;
     } catch (error) {
-        throw new Error(error);
+        console.error("Error signing out:", error);
+        throw new Error("Failed to sign out. Please try again."); // Customize error message based on the specific scenario
     }
 }
+
 
 export async function uploadFile(file, type) {
     if (!file) return;
@@ -378,20 +379,22 @@ export async function sendMessage(senderId, receiverId, content) {
 
 export async function getMessages(senderId, receiverId) {
     try {
-      const messages = await databases.listDocuments(
-        appwriteConfig.databaseId,
-        appwriteConfig.messagesCollectionId,
-        [
-          Query.or(
-            Query.and(Query.equal("senderId", senderId), Query.equal("receiverId", receiverId)),
-            Query.and(Query.equal("senderId", receiverId), Query.equal("receiverId", senderId))
-          ),
-          Query.sort("createdAt", "asc")
-        ]
-      );
-  
-      return messages.documents;
+        const messages = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.messagesCollectionId,
+            [
+                Query.or(
+                    Query.and(Query.equal("senderId", senderId), Query.equal("receiverId", receiverId)),
+                    Query.and(Query.equal("senderId", receiverId), Query.equal("receiverId", senderId))
+                ),
+                Query.orderAsc("createdAt")
+            ]
+        );
+
+        return messages.documents;
     } catch (error) {
-      throw new Error(`Failed to fetch messages: ${error.message}`);
+        throw new Error(`Failed to fetch messages: ${error.message}`);
     }
-  }
+}
+
+

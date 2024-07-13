@@ -64,6 +64,11 @@ const SignInScreen = ({ navigation }) => {
     try {
       setButtonSpinner(true);
       const email = await getEmailByUsername(userInfo.username);
+      
+      if (!email) {
+        throw new Error("User not found. Please check your username.");
+      }
+      
       await signIn(email, userInfo.password);
       setButtonSpinner(false);
       navigation.navigate("Back");
@@ -72,6 +77,7 @@ const SignInScreen = ({ navigation }) => {
       Alert.alert("Login Failed", error.message);
     }
   };
+  
 
   return (
     <SafeAreaView style={CommonStyle.safeArea}>

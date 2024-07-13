@@ -31,13 +31,10 @@ const CustomDrawerContent = (props) => {
     fetchCurrentUser();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(); // Sign out the user
+  const handleLogout =  () => {
+    
       navigation.navigate("LogOutScreen"); // Navigate to LogOutScreen
-    } catch (error) {
-      console.error("Failed to log out:", error);
-    }
+   
   };
 
   const DrawerItem = ({
