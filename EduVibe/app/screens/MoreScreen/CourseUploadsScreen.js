@@ -1,14 +1,27 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-import { createCourse, getCurrentUser } from '../../../lib/appwrite';
-import { ParticipantContext } from '../../../contexts/ParticipantContext';
+import React, { useState, useEffect, useContext } from "react";
+import {
+  View,
+  TextInput,
+  Button,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ImageBackground,
+} from "react-native";
+import { createCourse, getCurrentUser } from "../../../lib/appwrite";
+import { ParticipantContext } from "../../../contexts/ParticipantContext";
+import { Appbar } from "react-native-paper";
+import imageExport from "../../../assets/images/imageExport";
 
-const CourseUploadsScreen = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [videos, setVideos] = useState([{ title: '', url: '' }]); // Start with one empty video object
-  const [resources, setResources] = useState('');
-  const [courseAvatar, setCourseAvatar] = useState('');
+const CourseUploadsScreen = ({ navigation }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [videos, setVideos] = useState([{ title: "", url: "" }]); // Start with one empty video object
+  const [resources, setResources] = useState("");
+  const [courseAvatar, setCourseAvatar] = useState("");
   const [userId, setUserId] = useState(null);
   const { addCourse } = useContext(ParticipantContext);
 
@@ -18,7 +31,7 @@ const CourseUploadsScreen = () => {
         const user = await getCurrentUser();
         setUserId(user.$id); // Store the user ID in state
       } catch (error) {
-        console.error('Failed to fetch user ID:', error.message);
+        console.error("Failed to fetch user ID:", error.message);
       }
     };
 
@@ -26,7 +39,7 @@ const CourseUploadsScreen = () => {
   }, []);
 
   const handleAddVideo = () => {
-    setVideos([...videos, { title: '', url: '' }]);
+    setVideos([...videos, { title: "", url: "" }]);
   };
 
   const handleRemoveVideo = (index) => {
@@ -44,38 +57,44 @@ const CourseUploadsScreen = () => {
   const handleCreateCourse = async () => {
     try {
       if (!userId) {
-        throw new Error('User ID is not available');
+        throw new Error("User ID is not available");
       }
 
       const courseData = {
         title,
         description,
-        videos: videos.map(video => video.url), // Ensure videos is an array of URLs
+        videos: videos.map((video) => video.url), // Ensure videos is an array of URLs
         resources,
         courseAvatar,
-        videoHeader: videos.map(video => video.title), // Extract video headers from videos array
+        videoHeader: videos.map((video) => video.title), // Extract video headers from videos array
         userId, // Add the user ID to the course data
       };
 
       const newCourse = await createCourse(courseData);
-      console.log('Course created successfully:', newCourse);
+      console.log("Course created successfully:", newCourse);
 
       // Add the new course to the context
       await addCourse(newCourse);
-
     } catch (error) {
-      console.error('Failed to create course:', error.message);
+      console.error("Failed to create course:", error.message);
     }
   };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 50}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 50}
     >
       <View style={styles.fullview}>
         <ScrollView contentContainerStyle={styles.container}>
+          <View style={styles.headerContainer}>
+            <Appbar.Header style={styles.header}>
+              <Appbar.BackAction onPress={() => navigation.goBack()} />
+              <Appbar.Content title="Course Upload" />
+            </Appbar.Header>
+          </View>
+
           <Text style={styles.label}>Title</Text>
           <TextInput
             style={styles.input}
@@ -98,21 +117,28 @@ const CourseUploadsScreen = () => {
               <TextInput
                 style={styles.input}
                 value={video.title}
-                onChangeText={(text) => handleVideoChange(text, index, 'title')}
+                onChangeText={(text) => handleVideoChange(text, index, "title")}
                 placeholder={`Enter video title ${index + 1}`}
               />
               <TextInput
                 style={styles.input}
                 value={video.url}
-                onChangeText={(text) => handleVideoChange(text, index, 'url')}
+                onChangeText={(text) => handleVideoChange(text, index, "url")}
                 placeholder={`Enter video URL ${index + 1}`}
               />
-              <TouchableOpacity onPress={() => handleRemoveVideo(index)} style={styles.removeButton}>
+              <TouchableOpacity
+                onPress={() => handleRemoveVideo(index)}
+                style={styles.removeButton}
+              >
                 <Text style={styles.removeButtonText}>Remove</Text>
               </TouchableOpacity>
             </View>
           ))}
-          <Button title="Add Another Video" onPress={handleAddVideo} />
+          <Button
+            style={styles.addButton}
+            title="Add Another Video"
+            onPress={handleAddVideo}
+          />
 
           <Text style={styles.label}>Resources</Text>
           <TextInput
@@ -140,19 +166,33 @@ const CourseUploadsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: 'white',
-    color: 'white',
+    backgroundColor: "white",
+    color: "white",
     flexGrow: 1,
+  },
+  backGroundImage: { flex: 1 },
+  header: {
+    height: 56,
+    paddingHorizontal: 0,
+  },
+  headerText: {
+    fontSize: 20,
+    color: "black",
+    fontWeight: "bold",
+  },
+  headerContainer: {
+    marginTop: -65,
+    backgroundColor: "white",
   },
   label: {
     fontSize: 16,
-    marginVertical: 30,
+    marginVertical: 15,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     marginBottom: 20,
   },
   videoInputContainer: {
@@ -160,18 +200,22 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     marginLeft: 20,
-    backgroundColor: 'red',
+    backgroundColor: "red",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     marginBottom: 20,
     marginTop: 10,
   },
   removeButtonText: {
-    color: '#fff',
-    textAlign: 'center',
+    color: "#fff",
+    textAlign: "center",
+  },
+  addButton: {
+    backgroundColor: "blue",
+    alignSelf: "center",
   },
   fullview: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
 });
 
