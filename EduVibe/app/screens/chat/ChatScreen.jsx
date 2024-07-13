@@ -16,7 +16,6 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ActionSheet from "react-native-actionsheet";
-import { sendMessage ,getMessages } from "../../../lib/appwrite";
 
 const ChatScreen = ({ contact }) => {
   const [messages, setMessages] = useState([]);
@@ -28,9 +27,12 @@ const ChatScreen = ({ contact }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        // Fetch messages using Appwrite
-        const fetchedMessages = await getMessages("currentUserId", contact.id); // Replace "currentUserId" with actual user ID
-        setMessages(fetchedMessages || []);
+        const storedMessages = await AsyncStorage.getItem(
+          `messages_${contact.id}`
+        );
+        if (storedMessages) {
+          setMessages(JSON.parse(storedMessages));
+        }
       } catch (error) {
         console.error("Error fetching messages:", error.message);
       }
@@ -41,32 +43,28 @@ const ChatScreen = ({ contact }) => {
 
   const saveMessage = async () => {
     if (inputText.trim().length > 0) {
+      const newMessage = {
+        id: (messages.length + 1).toString(),
+        text: inputText,
+        sender: "me",
+        time: new Date().toLocaleTimeString(),
+      };
+
+      const updatedMessages = [newMessage, ...messages];
+      setMessages(updatedMessages);
+      setInputText("");
+
       try {
-        // Send message using Appwrite
-        await sendMessage("currentUserId", contact.id, inputText); // Replace "currentUserId" with actual user ID
-
-        const newMessage = {
-          id: (messages.length + 1).toString(),
-          text: inputText,
-          sender: "me",
-          time: new Date().toLocaleTimeString(),
-        };
-
-        const updatedMessages = [newMessage, ...messages];
-        setMessages(updatedMessages);
-        setInputText("");
-
-        // Save updated messages to AsyncStorage
         await AsyncStorage.setItem(
           `messages_${contact.id}`,
           JSON.stringify(updatedMessages)
         );
-
-        // Scroll to the end of the list after adding a new message
-        flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
       } catch (error) {
-        console.error("Error sending message:", error.message);
+        console.error("Error saving message:", error.message);
       }
+
+      // Scroll to the end of the list after adding a new message
+      flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
     }
   };
 
