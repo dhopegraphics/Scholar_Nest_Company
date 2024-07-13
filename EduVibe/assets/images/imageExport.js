@@ -16,6 +16,7 @@ import banner2 from "../banner/2.webp";
 import banner3 from "../banner/3.webp";
 import banner4 from "../banner/4.webp";
 import Logout from "../images/logout-1.png";
+import UploadBackground from "../images/UploadScreenBackground.jpg";
 
 const imageExport = {
   logo,
@@ -35,7 +36,8 @@ const imageExport = {
   banner2,
   banner3,
   banner4,
-  Logout
+  Logout,
+  UploadBackground,
 };
 
 export default imageExport;

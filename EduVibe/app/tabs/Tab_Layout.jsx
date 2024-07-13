@@ -1,4 +1,3 @@
-
 import CourseBrowseNestDrawer from "../navigation/CourseBrowseNestDrawer";
 import MessagesNestDrawer from "../navigation/MessagesNestDrawer";
 import More from "./More";
@@ -9,7 +8,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 import DifferentDrawerNavigator from "../navigation/DifferentDrawerNavigator";
 import { useQuestionContext } from "../../contexts/QuestionContext";
-
 
 const Tab = createBottomTabNavigator(); // Temporary workaround with type assertion
 
@@ -43,22 +41,24 @@ const Tab_Layout = () => {
             tabBarInactiveTintColor: "black",
           })}
         >
-        {answer &&   <Tab.Screen
-            name="DifferentDrawerNavigator"
-            component={DifferentDrawerNavigator}
-            options={{
-              tabBarLabel: () => null,
-              headerShown: false, // Hide header for Dashboard
-            }}
-          /> }
-         <Tab.Screen
+          {answer && (
+            <Tab.Screen
+              name="DifferentDrawerNavigator"
+              component={DifferentDrawerNavigator}
+              options={{
+                tabBarLabel: () => null,
+                headerShown: false, // Hide header for Dashboard
+              }}
+            />
+          )}
+          <Tab.Screen
             name="Courses"
             component={CourseBrowseNestDrawer}
             options={{
               tabBarLabel: () => null,
               headerShown: false, // Hide header for Courses
             }}
-          /> 
+          />
           <Tab.Screen
             name="Messages"
             component={MessagesNestDrawer}
@@ -68,14 +68,16 @@ const Tab_Layout = () => {
             }}
           />
 
-{answer &&       <Tab.Screen
-            name="Notifications"
-            component={Notifications}
-            options={{
-              tabBarLabel: () => null,
-              headerShown: false, // Hide header for Notifications
-            }}
-          />}
+          {answer && (
+            <Tab.Screen
+              name="Notifications"
+              component={Notifications}
+              options={{
+                tabBarLabel: () => null,
+                headerShown: false, // Hide header for Notifications
+              }}
+            />
+          )}
           <Tab.Screen
             name="More"
             component={More}
