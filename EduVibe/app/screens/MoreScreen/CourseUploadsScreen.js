@@ -172,6 +172,8 @@ const styles = StyleSheet.create({
   },
   backGroundImage: { flex: 1 },
   header: {
+    fontSize: 25,
+    fontWeight: "bold",
     height: 56,
     paddingHorizontal: 0,
   },
@@ -185,8 +187,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   label: {
-    fontSize: 16,
+    fontSize: 18,
     marginVertical: 15,
+    fontStyle: "italic",
+    fontWeight: "bold",
   },
   input: {
     borderWidth: 1,
@@ -199,11 +203,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   removeButton: {
-    marginLeft: 20,
+    marginLeft: 15,
+    marginRight: 15,
     backgroundColor: "red",
     padding: 10,
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 15,
     marginTop: 10,
   },
   removeButtonText: {
