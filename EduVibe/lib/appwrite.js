@@ -413,4 +413,32 @@ export async function getMessages(senderId, receiverId) {
     }
 }
 
+export async function fetchAllTagCollectionDocuments() {
+  try {
+      const documents = await databases.listDocuments(
+          appwriteConfig.databaseId,
+          appwriteConfig.tagsCollectionId
+      );
+      return documents.documents;
+  } catch (error) {
+      throw new Error(`Failed to fetch tag collection documents: ${error.message}`);
+  }
+}
+
+
+
+export async function updateTagCollectionDocument(id, updatedData) {
+  try {
+      const updatedDocument = await databases.updateDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.tagsCollectionId,
+          id,
+          updatedData
+      );
+      return updatedDocument;
+  } catch (error) {
+      throw new Error(`Failed to update tag collection document: ${error.message}`);
+  }
+}
+
 

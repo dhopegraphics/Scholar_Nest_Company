@@ -1,5 +1,12 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getCurrentUser, getAllUsers, databases, updateAvatar } from '../lib/appwrite'; // Adjust imports as per your setup
+import { 
+    getCurrentUser, 
+    getAllUsers, 
+    databases, 
+    updateAvatar, 
+    fetchAllTagCollectionDocuments, 
+    updateTagCollectionDocument 
+} from '../lib/appwrite'; // Adjust imports as per your setup
 
 // Define the context
 const UsersContext = createContext();
@@ -38,17 +45,15 @@ export const UsersProvider = ({ children }) => {
           lastseen: user.lastseen || 0, // Replace with actual data if available
         }));
 
-        // Define the initial tag data for each user
-        const initialTagData = {
-          [currentUser.userId]: [
-            { id: "1", title: "Documentation", categories: ["Everywhere"] },
-            { id: "2", title: "Art", categories: ["Everywhere"] },
-            { id: "3", title: "Books", categories: ["Everywhere", "Default Collection"] },
-            { id: "4", title: "Digital Marketing", categories: ["Everywhere", "Forum Tags"] },
-            { id: "5", title: "Engineering", categories: ["Everywhere", "Default Collection"] },
-            { id: "6", title: "Fashion Design", categories: ["Everywhere", "Forum Tags"] },
-          ],
-        };
+        // Fetch the tags from TagsCollections
+        const fetchedTags = await fetchAllTagCollectionDocuments();
+        const tagDataMap = {};
+        fetchedTags.forEach(tag => {
+          if (!tagDataMap[tag.userId]) {
+            tagDataMap[tag.userId] = [];
+          }
+          tagDataMap[tag.userId].push(tag);
+        });
 
         // Define stats object with the current user ID
         const userStats = {
@@ -60,8 +65,7 @@ export const UsersProvider = ({ children }) => {
         };
 
         setStats(userStats); // Set the stats state
-
-        setTagData(initialTagData);
+        setTagData(tagDataMap);
 
         // Combine the current user data and all users data
         setUsers([
@@ -71,7 +75,7 @@ export const UsersProvider = ({ children }) => {
             name: currentUser.username,
             email: currentUser.email,
             username: currentUser.username,
-            tags: initialTagData[currentUser.userId],
+            tags: tagDataMap[currentUser.userId] || [],
             phone: '0202472680', // Placeholder data, update as needed
             NoteCount: 44,      // Placeholder data, update as needed
             duration: 10,       // Placeholder data, update as needed
@@ -90,8 +94,7 @@ export const UsersProvider = ({ children }) => {
     };
 
     fetchUserData();
-  }, [tagData]); // Ensure useEffect depends on tagData for updates
-
+  }, []); // Ensure useEffect runs only once when the component mounts
 
   const updateAvatar = async (userId, avatarUrl) => {
     setUsers(prevUsers =>
@@ -115,11 +118,17 @@ export const UsersProvider = ({ children }) => {
     }
   };
 
-  const updateUserTags = (userId, updatedTags) => {
+  const updateUserTags = async (userId, updatedTags) => {
     setTagData(prevTagData => ({
       ...prevTagData,
       [userId]: updatedTags,
     }));
+
+    try {
+      await updateTagCollectionDocument(userId, { tags: updatedTags });
+    } catch (error) {
+      console.error('Failed to update user tags:', error);
+    }
   };
 
   return (
