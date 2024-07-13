@@ -74,7 +74,7 @@ const DocumentUploader = () => {
           <View style={styles.pickContainer}>
             <FeatherIcon
               name="upload-cloud"
-              color="#2b64e3"
+              color="white"
               size={100}
               style={{ alignSelf: "center" }}
             />
@@ -85,8 +85,8 @@ const DocumentUploader = () => {
               <Text style={styles.pickButtonText}>Pick a Document</Text>
             </TouchableOpacity>
           </View>
-          <Button title="Upload Document" onPress={handleFileUpload} />
-          {uploadStatus !== "" && <Text>{uploadStatus}</Text>}
+          <Button title="Upload Document" onPress={handleFileUpload}  style= {styles.Upload}/>
+          {uploadStatus !== "" && <Text  style= {styles.Upload} >{uploadStatus}</Text>}
         </ImageBackground>
       </View>
     </>
@@ -130,7 +130,12 @@ const styles = StyleSheet.create({
   },
   pickButtonText: {
     color: "white",
+    fontWeight : "600",
   },
+  Upload: {
+    color : "white",
+ fontWeight : "600",
+  }
 });
 
 export default DocumentUploader;
