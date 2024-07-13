@@ -176,7 +176,7 @@ const Tags = ({ navigation }) => {
         ) : (
           <FlatList
             data={searchResults}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id} // Ensure item.id is unique
             renderItem={renderSearchResultItem}
             ListEmptyComponent={<Text style={TagStyles.noResultsText}>No Results Found</Text>}
             refreshControl={
