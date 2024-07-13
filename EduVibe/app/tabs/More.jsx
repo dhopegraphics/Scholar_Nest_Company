@@ -14,18 +14,20 @@ import { useVisibility } from "../../contexts/VisibilityContext"; // import useV
 
 const MoreScreen = ({ navigation }) => {
   const { isButtonVisible } = useVisibility(); // use the visibility state
-  const {isCourseButtonVisible} = useVisibility();
-  const {isAppSettingsVisible} = useVisibility();
+  const { isCourseButtonVisible } = useVisibility();
+  const { isAppSettingsVisible } = useVisibility();
   const { users } = useUsers();
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const handleResultPress = (item) => {
-    const isUserSelected = selectedUsers.some(user => user.id === item.id);
+    const isUserSelected = selectedUsers.some((user) => user.id === item.id);
 
     if (!isUserSelected) {
       const updatedSelectedUsers = [...selectedUsers, item];
       setSelectedUsers(updatedSelectedUsers);
-      navigation.navigate('WardsScreen', { selectedUsers: updatedSelectedUsers });
+      navigation.navigate("WardsScreen", {
+        selectedUsers: updatedSelectedUsers,
+      });
     }
   };
 
@@ -77,7 +79,6 @@ const MoreScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
-      
             <TouchableOpacity
               style={ButtonsTextStyle.button}
               onPress={() => navigation.navigate("Tags")}
@@ -96,33 +97,55 @@ const MoreScreen = ({ navigation }) => {
                 color="gray"
               />
             </TouchableOpacity>
-             
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
-          {isCourseButtonVisible && (
-            <TouchableOpacity
-              style={ButtonsTextStyle.button}
-              onPress={() => navigation.navigate("Uploads")}
-            >
-              <Icon
-                style={ButtonsTextStyle.icon}
-                name="cloud-upload"
-                size={30}
-                color="#ffffff"
-              />
-              <Text style={ButtonsTextStyle.text}>Upload Courses Here</Text>
-              <Icon
-                style={ButtonsTextStyle.rightIcon}
-                name="chevron-right"
-                size={30}
-                color="gray"
-              />
-            </TouchableOpacity>
-                )}
+            {isCourseButtonVisible && (
+              <TouchableOpacity
+                style={ButtonsTextStyle.button}
+                onPress={() => navigation.navigate("Uploads")}
+              >
+                <Icon
+                  style={ButtonsTextStyle.icon}
+                  name="cloud-upload"
+                  size={30}
+                  color="#ffffff"
+                />
+                <Text style={ButtonsTextStyle.text}>Upload Courses Here</Text>
+                <Icon
+                  style={ButtonsTextStyle.rightIcon}
+                  name="chevron-right"
+                  size={30}
+                  color="gray"
+                />
+              </TouchableOpacity>
+            )}
+
+            {isCourseButtonVisible && (
+              <TouchableOpacity
+                style={ButtonsTextStyle.button}
+                onPress={() => navigation.navigate("DocumentUploader")}
+              >
+                <Icon
+                  style={ButtonsTextStyle.icon}
+                  name="cloud-upload"
+                  size={30}
+                  color="#ffffff"
+                />
+                <Text style={ButtonsTextStyle.text}>Upload Documents Here</Text>
+                <Icon
+                  style={ButtonsTextStyle.rightIcon}
+                  name="chevron-right"
+                  size={30}
+                  color="gray"
+                />
+              </TouchableOpacity>
+            )}
             {isButtonVisible && (
               <TouchableOpacity
                 style={ButtonsTextStyle.button}
-                onPress={() => navigation.navigate("WardsScreen", { selectedUsers })}
+                onPress={() =>
+                  navigation.navigate("WardsScreen", { selectedUsers })
+                }
               >
                 <Icon
                   style={ButtonsTextStyle.icon}
@@ -143,25 +166,25 @@ const MoreScreen = ({ navigation }) => {
         </View>
       </ScrollView>
       <View style={ButtonsTextStyle.SettingsContainer}>
-      {isAppSettingsVisible && (
-        <TouchableOpacity
-          style={ButtonsTextStyle.MoreSettingsButton}
-          onPress={() => navigation.navigate("AppSettings")}
-        >
-          <Icon
-            style={ButtonsTextStyle.icon}
-            name="settings"
-            size={30}
-            color="#ffffff"
-          />
-          <Text style={ButtonsTextStyle.text}>App Settings</Text>
-          <Icon
-            style={ButtonsTextStyle.rightIcon}
-            name="chevron-right"
-            size={30}
-            color="gray"
-          />
-        </TouchableOpacity>
+        {isAppSettingsVisible && (
+          <TouchableOpacity
+            style={ButtonsTextStyle.MoreSettingsButton}
+            onPress={() => navigation.navigate("AppSettings")}
+          >
+            <Icon
+              style={ButtonsTextStyle.icon}
+              name="settings"
+              size={30}
+              color="#ffffff"
+            />
+            <Text style={ButtonsTextStyle.text}>App Settings</Text>
+            <Icon
+              style={ButtonsTextStyle.rightIcon}
+              name="chevron-right"
+              size={30}
+              color="gray"
+            />
+          </TouchableOpacity>
         )}
       </View>
     </SafeAreaView>
