@@ -14,7 +14,6 @@ import {
 import { createCourse, getCurrentUser } from "../../../lib/appwrite";
 import { ParticipantContext } from "../../../contexts/ParticipantContext";
 import { Appbar } from "react-native-paper";
-import imageExport from "../../../assets/images/imageExport";
 
 const CourseUploadsScreen = ({ navigation }) => {
   const [title, setTitle] = useState("");
