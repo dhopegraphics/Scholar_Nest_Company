@@ -127,7 +127,7 @@ const MoreScreen = ({ navigation }) => {
               >
                 <Icon
                   style={ButtonsTextStyle.icon}
-                  name="cloud-upload"
+                  name="assignment-add"
                   size={30}
                   color="#ffffff"
                 />
@@ -170,7 +170,7 @@ const MoreScreen = ({ navigation }) => {
               >
                 <Icon
                   style={ButtonsTextStyle.icon}
-                  name="supervised-user-circle"
+                  name="add-shopping-cart"
                   size={30}
                   color="#ffffff"
                 />

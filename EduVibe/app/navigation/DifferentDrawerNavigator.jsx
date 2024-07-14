@@ -36,6 +36,7 @@ const CustomDrawerContent = ({ navigation }) => {
             </View>
           </TouchableWithoutFeedback>
         ))}
+
       </View>
     </DrawerContentScrollView>
   );
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 5,
   },
+
 });
 
 const DifferentDrawerNavigator = () => {

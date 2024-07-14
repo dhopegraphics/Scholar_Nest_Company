@@ -2,13 +2,16 @@ import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Appbar } from "react-native-paper";
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import SetUpScreen from "../../MyGrades/screens/SetUpScreen";
+import GradingSystemScreen from "../../MyGrades/screens/GradingSystemScreen";
+import ExamWeightScreen from "../../MyGrades/screens/ExamWeightScreen";
+import { useVisibility } from "../../../contexts/VisibilityContext";
 
-type GradesScreenProps = {
-  navigation: NavigationProp<ParamListBase>;
-};
 
-const GradesScreen: React.FC<GradesScreenProps> = ({ navigation }) => {
+
+const GradesScreen = ({ navigation }) => {
+  const { isButtonVisible } = useVisibility();
+  const { isCourseButtonVisible } = useVisibility();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -17,11 +20,15 @@ const GradesScreen: React.FC<GradesScreenProps> = ({ navigation }) => {
           <Appbar.Content title="Grades" />
         </Appbar.Header>
       </View>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.iconContainer}>
-          <Icon name="assessment" size={100} style={styles.gradesIcon} />
-        </View>
-      </ScrollView>
+
+    
+
+     {isCourseButtonVisible ? (  <GradingSystemScreen/> 
+     ) : (
+     <ExamWeightScreen/> 
+
+    )}
+
     </SafeAreaView>
   );
 };

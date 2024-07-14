@@ -65,8 +65,18 @@ import DocumentUploader from "../screens/MoreScreen/DocumentUploadScreen";
 import VideoPlayerScreen from "../screens/CourseBrowseScreen/VideoPlayerScreen";
 import { BookDetail } from "../bookstore/screens";
 import BookShopHome from "../bookstore/screens/Home";
+import GradingSystemScreen from "../MyGrades/screens/GradingSystemScreen";
+import HomeScreen from "../MyGrades/screens/HomeScreen";
+import ExamWeightScreen from "../MyGrades/screens/ExamWeightScreen";
+import SetUpScreen from "../MyGrades/screens/SetUpScreen";
+
 
 export type StackParamList = {
+  GradeSubject :undefined;
+  GradeSetUp :undefined;
+  ExamWeight:undefined;
+  GradeHome:undefined;
+  GradingSystem : undefined
   SignInScreen: undefined;
   SignUpScreen: undefined;
   Survey: undefined;
@@ -328,6 +338,29 @@ const MainStackScreen = () => {
         component={BookDetail}
         options={{ headerShown: false }}
       />
+
+<Stack.Screen
+        name="GradingSystem"
+        component={GradingSystemScreen}
+        options={{ headerShown: false }}
+      />
+      
+      <Stack.Screen
+        name="GradeHome"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+            <Stack.Screen
+        name="ExamWeight"
+        component={ExamWeightScreen}
+        options={{ headerShown: false }}
+      />
+                  <Stack.Screen
+        name="GradeSetUp"
+        component={SetUpScreen}
+        options={{ headerShown: false }}
+      />
+
     </Stack.Navigator>
   );
 };

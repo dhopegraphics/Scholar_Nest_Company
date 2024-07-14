@@ -130,7 +130,7 @@ const BookShopHome = ({ navigation }) => {
     function renderHeader(profile) {
         return (
             <View style={{ flex: 1, flexDirection: 'row', paddingHorizontal: SIZES.padding, alignItems: 'center' }}>
-                {/* Greetings */}
+            
                 <View style={{ flex: 1 }}>
                     <View style={{ marginRight: SIZES.padding }}>
                         <Text style={{ ...FONTS.h3, color: COLORS.white }}>Good Morning</Text>
@@ -138,7 +138,7 @@ const BookShopHome = ({ navigation }) => {
                     </View>
                 </View>
 
-                {/* Points */}
+            
                 <TouchableOpacity
                     style={{
                         backgroundColor: COLORS.primary,
@@ -172,7 +172,7 @@ const BookShopHome = ({ navigation }) => {
         return (
             <View style={{ flex: 1, justifyContent: 'center', padding: SIZES.padding }}>
                 <View style={{ flexDirection: 'row', height: 70, backgroundColor: COLORS.secondary, borderRadius: SIZES.radius }}>
-                    {/* Claim */}
+             
                     <TouchableOpacity
                         style={{ flex: 1 }}
                         onPress={() => console.log("Claim")}
@@ -190,10 +190,9 @@ const BookShopHome = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
 
-                    {/* Divider */}
                     <LineDivider />
 
-                    {/* Get Point */}
+             
                     <TouchableOpacity
                         style={{ flex: 1 }}
                         onPress={() => console.log("Get Point")}
@@ -218,10 +217,9 @@ const BookShopHome = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
 
-                    {/* Divider */}
+               
                     <LineDivider />
 
-                    {/* My Card */}
                     <TouchableOpacity
                         style={{ flex: 1 }}
                         onPress={() => console.log("My Card")}
@@ -264,7 +262,7 @@ const BookShopHome = ({ navigation }) => {
                         book: item
                     })}
                 >
-                    {/* Book Cover */}
+           
                     <Image
                         source={item.bookCover}
                         resizeMode="cover"
@@ -275,7 +273,7 @@ const BookShopHome = ({ navigation }) => {
                         }}
                     />
 
-                    {/* Book Info */}
+                 
                     <View style={{ marginTop: SIZES.radius, flexDirection: 'row', alignItems: 'center' }}>
                         <Image
                             source={icons.clock_icon}
@@ -304,7 +302,7 @@ const BookShopHome = ({ navigation }) => {
 
         return (
             <View style={{ flex: 1 }}>
-                {/* Header */}
+           
                 <View style={{ paddingHorizontal: SIZES.padding, flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={{ ...FONTS.h2, color: COLORS.white }}>My Book</Text>
 
@@ -315,7 +313,7 @@ const BookShopHome = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                {/* Books */}
+            
                 <View style={{ flex: 1, marginTop: SIZES.padding }}>
                     <FlatList
                         data={myBooks}
@@ -380,7 +378,7 @@ const BookShopHome = ({ navigation }) => {
                             book: item
                         })}
                     >
-                        {/* Book Cover */}
+                      
                         <Image
                             source={item.bookCover}
                             resizeMode="cover"
@@ -388,13 +386,13 @@ const BookShopHome = ({ navigation }) => {
                         />
 
                         <View style={{ flex: 1, marginLeft: SIZES.radius }}>
-                            {/* Book name and author */}
+                        
                             <View>
                                 <Text style={{ paddingRight: SIZES.padding, ...FONTS.h2, color: COLORS.white }}>{item.bookName}</Text>
                                 <Text style={{ ...FONTS.h3, color: COLORS.lightGray }}>{item.author}</Text>
                             </View>
 
-                            {/* Book Info */}
+                     
                             <View style={{ flexDirection: 'row', marginTop: SIZES.radius }}>
                                 <Image
                                     source={icons.page_filled_icon}
@@ -443,7 +441,7 @@ const BookShopHome = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
 
-                    {/* Bookmark Button */}
+             
                     <TouchableOpacity
                         style={{ position: 'absolute', top: 5, right: 15 }}
                         onPress={() => console.log("Bookmark")}
@@ -476,20 +474,19 @@ const BookShopHome = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.black }}>
-            {/* Header Section */}
+    
             <View style={{ height: 200 }}>
                 {renderHeader(profile)}
                 {renderButtonSection()}
             </View>
 
-            {/* Body Section */}
             <ScrollView style={{ marginTop: SIZES.radius }}>
-                {/* Books Section */}
+          
                 <View>
                     {renderMyBookSection(myBooks)}
                 </View>
 
-                {/* Categories Section */}
+       
                 <View style={{ marginTop: SIZES.padding }}>
                     <View>
                         {renderCategoryHeader()}

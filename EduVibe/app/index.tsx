@@ -7,7 +7,6 @@ Animated.addWhitelistedNativeProps({ text: true });
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import GlobalProvider from '../contexts/GlobalProvider';
 import { useFonts } from 'expo-font';
-import BookStoreTabs from './bookstore/navigation/BookStoreTabs';
 
 
 
