@@ -140,7 +140,7 @@ const MoreScreen = ({ navigation }) => {
                 />
               </TouchableOpacity>
             )}
-            {isButtonVisible && (
+            {isButtonVisible ? (
               <TouchableOpacity
                 style={ButtonsTextStyle.button}
                 onPress={() =>
@@ -161,7 +161,29 @@ const MoreScreen = ({ navigation }) => {
                   color="gray"
                 />
               </TouchableOpacity>
-            )}
+              ) : (
+                <TouchableOpacity
+                style={ButtonsTextStyle.button}
+                onPress={() =>
+                  navigation.navigate("BookShopHome")
+                }
+              >
+                <Icon
+                  style={ButtonsTextStyle.icon}
+                  name="supervised-user-circle"
+                  size={30}
+                  color="#ffffff"
+                />
+                <Text style={ButtonsTextStyle.text}>Book Shop</Text>
+                <Icon
+                  style={ButtonsTextStyle.rightIcon}
+                  name="chevron-right"
+                  size={30}
+                  color="gray"
+                />
+              </TouchableOpacity>
+
+            )} 
           </View>
         </View>
       </ScrollView>

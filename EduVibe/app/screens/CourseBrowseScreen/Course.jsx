@@ -33,20 +33,7 @@ const Course = () => {
     <>
       <Animated.View style={[styles.header]}>
       </Animated.View>
-      <Animated.ScrollView
-        contentContainerStyle={{ minHeight: screenHeight }} // Ensure minHeight to fill screen
-        style={styles.scrollView}
-        scrollEventThrottle={16} // Adjust scroll event throttle for smoother animation
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: true }
-        )}
-      >
-        {/* Render CourseField with minHeight to fill screen */}
-        <View style={{ minHeight: screenHeight }}>
           <CourseField />
-        </View>
-      </Animated.ScrollView>
       <TouchableOpacity style={styles.roundedButton} onPress={handleButtonPress}>
         <Ionicons name="chevron-back-circle" size={24} color="white" />
       </TouchableOpacity>

@@ -63,6 +63,8 @@ import { useGlobalContext } from "../../contexts/GlobalProvider";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"; // Add this import
 import DocumentUploader from "../screens/MoreScreen/DocumentUploadScreen";
 import VideoPlayerScreen from "../screens/CourseBrowseScreen/VideoPlayerScreen";
+import { BookDetail } from "../bookstore/screens";
+import BookShopHome from "../bookstore/screens/Home";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -115,6 +117,8 @@ export type StackParamList = {
   GroupDetailsScreen: { group: { name: string; img: string } };
   DocumentUploader: undefined;
   VideoPlayerScreen: undefined;
+  BookShopHome : undefined ;
+  BookDetail : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -312,6 +316,16 @@ const MainStackScreen = () => {
       <Stack.Screen
         name="VideoPlayerScreen"
         component={VideoPlayerScreen}
+        options={{ headerShown: false }}
+      />
+            <Stack.Screen
+        name="BookShopHome"
+        component={BookShopHome}
+        options={{ headerShown: false }}
+      />
+                  <Stack.Screen
+        name="BookDetail"
+        component={BookDetail}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

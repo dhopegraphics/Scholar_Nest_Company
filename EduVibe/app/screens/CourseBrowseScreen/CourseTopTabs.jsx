@@ -20,17 +20,12 @@ const CourseTopTabs = ({ navigation, route }) => {
     });
   }, [activeTab]);
 
-  const headerHeight = scrollY.interpolate({
-    inputRange: [0, 50],
-    outputRange: [1, 0],
-    extrapolate: 'clamp',
-  });
-
+  
   return (
     <View style={styles.container}>
-      <Animated.View style={{ opacity: headerHeight }}>
+    
         <CourseCustomHeader {...headerProps} />
-      </Animated.View>
+ 
       <Tab.Navigator
         initialRouteName="Course"
         screenOptions={{

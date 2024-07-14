@@ -19,7 +19,7 @@ const LineDivider = () => {
     )
 }
 
-const Home = ({ navigation }) => {
+const BookShopHome = ({ navigation }) => {
 
     const profileData = {
         name: 'Username',
@@ -503,4 +503,4 @@ const Home = ({ navigation }) => {
     )
 }
 
-export default Home;
+export default BookShopHome;

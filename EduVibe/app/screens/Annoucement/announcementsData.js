@@ -2,40 +2,35 @@
 const announcements = [
     {
       id: 1,
-      title: "Important Announcement 1",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      title: "Your Grade For Math",
+      content: "Have Reviewed Your Exam and graded it Check it Out",
       date: "July 4, 2024",
       time: "10:00 AM",
       author: "John Doe"
     },
     {
       id: 2,
-      title: "Important Announcement 2",
-      content: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      title: "Impromtu Quiz",
+      content: "Will be having quiz on 20 july , prepare",
       date: "July 5, 2024",
       time: "11:00 AM",
       author: "Jane Smith"
     },
+
     {
       id: 3,
-      title: "Important Announcement 3",
-      content: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      date: "July 6, 2024",
-      time: "12:00 PM",
-      author: "James Johnson"
+      title: "Special Notice",
+      content: "Attention Students and Staff, " +
+    + " We regret to inform you that there has been a critical issue detected with our school's" +
+ "internal network systems. Immediate action is required to prevent any potential data loss or security breaches. ",
+      date: "July 7, 2024",
+      time: "1:00 PM",
+      author: "Emily Brown - Vice Chancellor"
     },
     {
       id: 4,
-      title: "Special Notice",
-      content: "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      date: "July 7, 2024",
-      time: "1:00 PM",
-      author: "Emily Brown"
-    },
-    {
-      id: 5,
       title: "Urgent Update",
-      content: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      content: "Your result for the next semester has been uploaded",
       date: "July 8, 2024",
       time: "2:00 PM",
       author: "Michael Wilson"
