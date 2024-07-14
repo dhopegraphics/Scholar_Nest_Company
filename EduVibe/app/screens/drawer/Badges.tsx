@@ -3,6 +3,7 @@ import React from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Appbar } from "react-native-paper";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import Component from "../../Badges/BadgesComponent";
 
 type BadgesScreenProps = {
   navigation: NavigationProp<ParamListBase>;
@@ -17,11 +18,7 @@ const Badges: React.FC<BadgesScreenProps> = ({ navigation }) => {
           <Appbar.Content title="Badges" />
         </Appbar.Header>
       </View>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.iconContainer}>
-          <Icon name="stars" size={100} style={styles.gradesIcon} />
-        </View>
-      </ScrollView>
+<Component/>
     </SafeAreaView>
   );
 };
