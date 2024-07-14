@@ -69,9 +69,15 @@ import GradingSystemScreen from "../MyGrades/screens/GradingSystemScreen";
 import HomeScreen from "../MyGrades/screens/HomeScreen";
 import ExamWeightScreen from "../MyGrades/screens/ExamWeightScreen";
 import SetUpScreen from "../MyGrades/screens/SetUpScreen";
+import JobSearch from "../react_native_jobs/app/search/[id]";
+import JobDetails from "../react_native_jobs/app/job-details/[id]";
+import Layout from "../react_native_jobs/app/_layout";
 
 
 export type StackParamList = {
+  Layout : undefined;
+  JobDetails : undefined;
+  JobSearch : undefined;
   GradeSubject :undefined;
   GradeSetUp :undefined;
   ExamWeight:undefined;
@@ -358,6 +364,23 @@ const MainStackScreen = () => {
                   <Stack.Screen
         name="GradeSetUp"
         component={SetUpScreen}
+        options={{ headerShown: false }}
+      />
+
+<Stack.Screen
+        name="JobSearch"
+        component={JobSearch}
+        options={{ headerShown: false }}
+      />
+
+<Stack.Screen
+        name="JobDetails"
+        component={JobDetails}
+        options={{ headerShown: false }}
+      />
+<Stack.Screen
+        name="Layout"
+        component={Layout}
         options={{ headerShown: false }}
       />
 
