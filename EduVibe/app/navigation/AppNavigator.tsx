@@ -62,6 +62,7 @@ import GroupDetailsScreen from "../screens/GroupChat/GroupDetailsScreen";
 import { useGlobalContext } from "../../contexts/GlobalProvider";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"; // Add this import
 import DocumentUploader from "../screens/MoreScreen/DocumentUploadScreen";
+import VideoPlayerScreen from "../screens/CourseBrowseScreen/VideoPlayerScreen";
 
 export type StackParamList = {
   SignInScreen: undefined;
@@ -113,6 +114,7 @@ export type StackParamList = {
   ExperienceDetails: undefined;
   GroupDetailsScreen: { group: { name: string; img: string } };
   DocumentUploader: undefined;
+  VideoPlayerScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -305,6 +307,11 @@ const MainStackScreen = () => {
       <Stack.Screen
         name="DocumentUploader"
         component={DocumentUploader}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="VideoPlayerScreen"
+        component={VideoPlayerScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

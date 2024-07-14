@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -24,6 +24,24 @@ const UserAccount = ({ navigation, route }) => {
 
   const currentUser = users.find((user) => user.id === userId);
 
+  // State for follow status
+  const [isFollowed, setIsFollowed] = useState(false);
+
+  // State for chat request status
+  const [isChatRequested, setIsChatRequested] = useState(false);
+
+  // Function to toggle follow status
+  const toggleFollow = () => {
+    setIsFollowed(prevState => !prevState);
+    // You can add additional logic here, such as API calls to update follow status
+  };
+
+  // Function to toggle chat request status
+  const toggleChatRequest = () => {
+    setIsChatRequested(prevState => !prevState);
+    // You can add additional logic here, such as API calls to handle chat request
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={UserAccountStyling.container}>
@@ -35,12 +53,11 @@ const UserAccount = ({ navigation, route }) => {
           </View>
 
           <View style={UserAccountStyling.search}>
-    
             <Text style={UserAccountStyling.profileTitle}>{currentUser.name}</Text>
           </View>
 
           <View style={[UserAccountStyling.headerAction, { alignItems: 'flex-end' }]}>
-           
+            {/* Additional header actions */}
           </View>
         </View>
 
@@ -54,13 +71,11 @@ const UserAccount = ({ navigation, route }) => {
                     source={{ uri: currentUser.img }}
                     style={UserAccountStyling.avatarImg}
                   />
-
                   <View style={UserAccountStyling.avatarNotification} />
                 </View>
 
                 <View style={UserAccountStyling.profileBody}>
                   <Text style={UserAccountStyling.profileTitle}>{currentUser.name}</Text>
-
                   <Text style={UserAccountStyling.profileSubtitle}>
                     {currentUser.portfolio} {' · '}
                     <Text style={{ color: '#266EF1' }}>
@@ -104,15 +119,19 @@ const UserAccount = ({ navigation, route }) => {
             </View>
 
             <View style={UserAccountStyling.contentActions}>
-              <TouchableOpacity onPress={() => { /* handle onPress */ }} style={{ flex: 1, paddingHorizontal: 6 }}>
+              <TouchableOpacity onPress={toggleFollow} style={{ flex: 1, paddingHorizontal: 6 }}>
                 <View style={UserAccountStyling.btn}>
-                  <Text style={UserAccountStyling.btnText}>Follow</Text>
+                  <Text style={UserAccountStyling.btnText}>
+                    {isFollowed ? 'Followed' : 'Follow'}
+                  </Text>
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => { /* handle onPress */ }} style={{ flex: 1, paddingHorizontal: 6 }}>
+              <TouchableOpacity onPress={toggleChatRequest} style={{ flex: 1, paddingHorizontal: 6 }}>
                 <View style={UserAccountStyling.btnPrimary}>
-                  <Text style={[UserAccountStyling.btnText, { color: '#fff' }]}>Hire Me</Text>
+                  <Text style={[UserAccountStyling.btnText, { color: '#fff' }]}>
+                    {isChatRequested ? 'Requested' : 'Request To Chat'}
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>

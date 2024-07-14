@@ -6,6 +6,7 @@ import {
   ID,
   Query,
   Storage,
+  AppwriteException,
 } from "react-native-appwrite";
 
 export const appwriteConfig = {
@@ -37,6 +38,17 @@ export const storage = new Storage(client);
 const avatars = new Avatars(client);
 export const databases = new Databases(client);
 
+// Function to get the current session
+export async function getSession() {
+  try {
+    const response = await account.get();
+    return response;
+  } catch (e) {
+    return null;
+  }
+}
+
+
 export async function createUser(email, password, username) {
   try {
     const userId = ID.unique(); // Generate a unique ID for the user
@@ -67,6 +79,7 @@ export async function createUser(email, password, username) {
   }
 }
 
+
 export async function signIn(email, password) {
   try {
     const session = await account.createEmailPasswordSession(email, password);
@@ -87,6 +100,9 @@ export async function getAccount() {
 
 export async function getCurrentUser() {
   try {
+    const session = await getSession();
+    if (!session) throw new Error("No active session");
+
     const currentAccount = await getAccount();
     if (!currentAccount) throw new Error("No current account");
 
@@ -106,6 +122,7 @@ export async function getCurrentUser() {
     throw new Error(error);
   }
 }
+
 export async function signOut() {
   try {
     const session = await account.deleteSession("current");
@@ -335,6 +352,19 @@ export async function createCourse(courseData) {
     throw new Error(`Failed to create course: ${error.message}`);
   }
 }
+
+export async function getCourses() {
+  try {
+    const response = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.videoCollectionId
+    );
+    return response.documents;
+  } catch (error) {
+    throw new Error(`Failed to fetch courses: ${error.message}`);
+  }
+}
+
 
 export async function getUser(userId) {
   try {

@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } fr
 import { Ionicons } from '@expo/vector-icons'; // Assuming you're using Expo vector icons
 import { useNavigation } from '@react-navigation/native';
 import ActivityData from '../screens/Annoucement/ActivityData';
-import CourseDetails from '../screens/CourseBrowseScreen/CourseDetails';
+import CourseTopTabs from '../screens/CourseBrowseScreen/CourseTopTabs';
 
 const Drawer = createDrawerNavigator();
 
@@ -97,8 +97,8 @@ const CourseDetailsDrawerNav = () => {
       drawerPosition="left"
     >
       <Drawer.Screen 
-        name="CourseDetails" 
-        component={CourseDetails}
+        name="CourseTopTabs" 
+        component={CourseTopTabs}
         options={{ 
           headerShown: true,
           headerTitle : "",

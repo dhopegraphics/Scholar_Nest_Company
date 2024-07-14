@@ -25,7 +25,7 @@ export const UsersProvider = ({ children }) => {
       try {
         const currentUser = await getCurrentUser();
         setCurrentUserId(currentUser.userId); // Store the current user ID
-
+  
         const allUsers = await getAllUsers();
         const allUsersData = allUsers.map(user => ({
           id: user.userId,
@@ -44,7 +44,7 @@ export const UsersProvider = ({ children }) => {
           country: user.country || 'N/A', // Replace with actual data if available
           lastseen: user.lastseen || 0, // Replace with actual data if available
         }));
-
+  
         // Fetch the tags from TagsCollections
         const fetchedTags = await fetchAllTagCollectionDocuments();
         const tagDataMap = {};
@@ -54,7 +54,7 @@ export const UsersProvider = ({ children }) => {
           }
           tagDataMap[tag.userId].push(tag);
         });
-
+  
         // Define stats object with the current user ID
         const userStats = {
           [currentUser.userId]: [
@@ -63,11 +63,14 @@ export const UsersProvider = ({ children }) => {
             { label: 'Experience', value: '6 years' },
           ],
         };
-
+  
         setStats(userStats); // Set the stats state
         setTagData(tagDataMap);
-
-        // Combine the current user data and all users data
+  
+        // Exclude the current user from the users data
+        const otherUsersData = allUsersData.filter(user => user.id !== currentUser.userId);
+  
+        // Combine the current user data and all other users data
         setUsers([
           {
             id: currentUser.userId,
@@ -86,13 +89,13 @@ export const UsersProvider = ({ children }) => {
             country: 'Ghana', // Placeholder data, update as needed
             lastseen: 20, // Placeholder data, update as needed
           },
-          ...allUsersData,
+          ...otherUsersData,
         ]);
       } catch (error) {
         console.error('Failed to fetch user data:', error);
       }
     };
-
+  
     fetchUserData();
   }, []); // Ensure useEffect runs only once when the component mounts
 

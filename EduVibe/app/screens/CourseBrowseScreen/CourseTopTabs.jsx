@@ -9,7 +9,7 @@ import { useCourseHeader } from '../../../contexts/CourseHeaderContext';
 
 const Tab = createMaterialTopTabNavigator();
 
-const CourseDetails = ({ navigation, route }) => {
+const CourseTopTabs = ({ navigation, route }) => {
   const { headerProps, setHeaderProps, scrollY } = useCourseHeader();
   const activeTab = getFocusedRouteNameFromRoute(route) ?? 'Participants';
 
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CourseDetails;
+export default CourseTopTabs;

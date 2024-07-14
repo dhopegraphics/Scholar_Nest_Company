@@ -6,19 +6,32 @@ import Animated from 'react-native-reanimated';
 Animated.addWhitelistedNativeProps({ text: true });
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import GlobalProvider from '../contexts/GlobalProvider';
+import { useFonts } from 'expo-font';
+import BookStoreTabs from './bookstore/navigation/BookStoreTabs';
+
+
+
 
 const App: React.FC = () => {
+  const [loaded] = useFonts({
+    "Roboto-Black" : require('../assets/fonts/Roboto-Black.ttf'),
+    "Roboto-Bold" : require('../assets/fonts/Roboto-Bold.ttf'),
+    "Roboto-Regular" : require('../assets/fonts/Roboto-Regular.ttf'),
+})
+
+if(!loaded){
+return null;
+}
   return (
     <>
  
-
-    
      <GestureHandlerRootView>
       <StatusBar barStyle="default" backgroundColor="black" />
       <GlobalProvider>
       <AppNavigator />
       </GlobalProvider>
       </GestureHandlerRootView>
+
     </>
   );
 };

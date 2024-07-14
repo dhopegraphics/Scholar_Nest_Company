@@ -18,7 +18,7 @@ import {
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import { signIn, getEmailByUsername } from "../../../lib/appwrite"; // Import the new function
+import { signIn, getEmailByUsername } from "../../../lib/appwrite";
 import imageExport from "../../../assets/images/imageExport";
 import { CommonStyle } from "../../../themes/styles_index";
 
@@ -34,16 +34,6 @@ const SignInScreen = ({ navigation }) => {
   const [error, setError] = useState({
     password: "",
   });
-
-  const handleUsernameFocus = () => {
-    setUsernameFocused(true);
-    setPasswordFocused(false);
-  };
-
-  const handlePasswordFocus = () => {
-    setUsernameFocused(false);
-    setPasswordFocused(true);
-  };
 
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
@@ -77,7 +67,6 @@ const SignInScreen = ({ navigation }) => {
       Alert.alert("Login Failed", error.message);
     }
   };
-  
 
   return (
     <SafeAreaView style={CommonStyle.safeArea}>
@@ -97,7 +86,13 @@ const SignInScreen = ({ navigation }) => {
                   isUsernameFocused && CommonStyle.focusedInput,
                 ]}
                 placeholder="Username"
-                onFocus={handleUsernameFocus}
+                onFocus={() => {
+                  setUsernameFocused(true);
+                  setPasswordFocused(false);
+                }}
+                onChangeText={(text) =>
+                  setUserInfo({ ...userInfo, username: text })
+                }
               />
               <Fontisto
                 style={{ position: "absolute", left: 26, top: 17.8 }}
@@ -105,7 +100,6 @@ const SignInScreen = ({ navigation }) => {
                 size={20}
                 color={"#A1A1A1"}
               />
-
               <View>
                 <TextInput
                   ref={passwordRef}
@@ -114,9 +108,14 @@ const SignInScreen = ({ navigation }) => {
                     isPasswordFocused && CommonStyle.focusedInput,
                   ]}
                   placeholder="Password"
-                  onFocus={handlePasswordFocus}
+                  onFocus={() => {
+                    setUsernameFocused(false);
+                    setPasswordFocused(true);
+                  }}
                   secureTextEntry={!isPasswordVisible}
-                  defaultValue=""
+                  onChangeText={(text) =>
+                    setUserInfo({ ...userInfo, password: text })
+                  }
                 />
                 <TouchableOpacity
                   style={CommonStyle.visibleIcon}
