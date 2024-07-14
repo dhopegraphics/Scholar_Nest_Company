@@ -1,75 +1,32 @@
-import React, { useCallback, useState, useContext } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
-import CourseCard from '../../components/CourseCard';
-import { Ionicons } from '@expo/vector-icons';
-import DashboardStyles from '../../themes/DashboardStyles';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { useCourseContext } from '../../contexts/useCourseContext';
-import { ParticipantContext } from '../../contexts/ParticipantContext';
+import React from "react";
+import { Text , StyleSheet } from "react-native";
+import LearningSection from "../screens/StudentsDashboard/LearningSection";
+import JobSearchSection from "../screens/StudentsDashboard/JobSearchSection";
+import DashboardStyles from "../../themes/DashboardStyles";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-
+const Tab = createMaterialTopTabNavigator();
 const Dashboard = () => {
-  const navigation = useNavigation();
-  const { setCourse } = useCourseContext();
-  const participantContext = useContext(ParticipantContext);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const handlePress = (course) => {
-    setCourse(course);
-    if (participantContext) {
-      participantContext.setParticipants(course.participants);
-    }
-    //@ts-ignore
-    navigation.navigate('Course_Information');
-  };
-
-  const handleButtonPress = () => {
-    navigation.dispatch(DrawerActions.openDrawer());
-  };
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    // Simulate a network request
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
-
   return (
-    <SafeAreaView style={DashboardStyles.safeArea}>
-      <View style={DashboardStyles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={DashboardStyles.scrollViewContent}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        >
-          <Text style={DashboardStyles.title}>Dashboard</Text>
-
-          <View style={DashboardStyles.scrollContainerWrapper}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={DashboardStyles.scrollContainer}
-            >
-              {participantContext?.courses.map((course, index) => (
-                <CourseCard
-                  key={index}
-                  title={course.title}
-                  creator={course.creator}
-                  participantsCount={course.participants.length}
-                  onPress={() => handlePress(course)}
-                  imageSource={{ uri: course.image }} // Pass the image source dynamically
-                />
-              ))}
-            </ScrollView>
-          </View>
-        </ScrollView>
-        <TouchableOpacity style={DashboardStyles.roundedButton} onPress={handleButtonPress}>
-          <Ionicons name="chevron-back-circle" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <>
+      <Text style={styles.container}>Dashboard</Text>
+      <Tab.Navigator>
+        <Tab.Screen name="Learning" component={LearningSection} />
+        <Tab.Screen name="JobSearch" component={JobSearchSection} />
+      </Tab.Navigator>
+    </>
   );
 };
+
+
+
+const styles = StyleSheet.create({
+  container: {
+ padding : 20,
+ backgroundColor : "white",
+ fontSize : 20,
+ fontWeight : "600",
+  },
+});
 
 export default Dashboard;
