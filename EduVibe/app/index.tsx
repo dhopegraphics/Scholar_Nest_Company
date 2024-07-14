@@ -16,6 +16,9 @@ const App: React.FC = () => {
     "Roboto-Black" : require('../assets/fonts/Roboto-Black.ttf'),
     "Roboto-Bold" : require('../assets/fonts/Roboto-Bold.ttf'),
     "Roboto-Regular" : require('../assets/fonts/Roboto-Regular.ttf'),
+    DMBold: require("../assets/fonts/DMSans-Bold.ttf"),
+    DMMedium: require("../assets/fonts/DMSans-Medium.ttf"),
+    DMRegular: require("../assets/fonts/DMSans-Regular.ttf"),
 })
 
 if(!loaded){
