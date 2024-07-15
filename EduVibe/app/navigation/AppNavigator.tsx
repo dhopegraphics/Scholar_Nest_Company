@@ -76,14 +76,14 @@ import ParentBadgesView from "../Badges/ParentBadgesView";
 import Wardsreport from "../screens/ParentWards/Wardsreport";
 
 export type StackParamList = {
-  Layout : undefined;
-  JobDetails : undefined;
-  JobSearch : undefined;
-  GradeSubject :undefined;
-  GradeSetUp :undefined;
-  ExamWeight:undefined;
-  GradeHome:undefined;
-  GradingSystem : undefined
+  Layout: undefined;
+  JobDetails: undefined;
+  JobSearch: undefined;
+  GradeSubject: undefined;
+  GradeSetUp: undefined;
+  ExamWeight: undefined;
+  GradeHome: undefined;
+  GradingSystem: undefined;
   SignInScreen: undefined;
   SignUpScreen: undefined;
   Survey: undefined;
@@ -134,10 +134,10 @@ export type StackParamList = {
   GroupDetailsScreen: { group: { name: string; img: string } };
   DocumentUploader: undefined;
   VideoPlayerScreen: undefined;
-  BookShopHome : undefined ;
-  BookDetail : undefined;
-  ParentBadgesView : undefined ;
-  Wardsreport : undefined;
+  BookShopHome: undefined;
+  BookDetail: undefined;
+  ParentBadgesView: undefined;
+  Wardsreport: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -339,56 +339,55 @@ const MainStackScreen = () => {
         component={VideoPlayerScreen}
         options={{ headerShown: false }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="BookShopHome"
         component={BookShopHome}
         options={{ headerShown: false }}
       />
-                  <Stack.Screen
+      <Stack.Screen
         name="BookDetail"
         component={BookDetail}
         options={{ headerShown: false }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="GradingSystem"
         component={GradingSystemScreen}
         options={{ headerShown: false }}
       />
-      
+
       <Stack.Screen
         name="GradeHome"
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="ExamWeight"
         component={ExamWeightScreen}
         options={{ headerShown: false }}
       />
-                  <Stack.Screen
+      <Stack.Screen
         name="GradeSetUp"
         component={SetUpScreen}
         options={{ headerShown: false }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="JobSearch"
         component={JobSearch}
         options={{ headerShown: false }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="JobDetails"
         component={JobDetails}
         options={{ headerShown: false }}
       />
-<Stack.Screen
+      <Stack.Screen
         name="Layout"
         component={Layout}
         options={{ headerShown: false }}
       />
-
     </Stack.Navigator>
   );
 };
