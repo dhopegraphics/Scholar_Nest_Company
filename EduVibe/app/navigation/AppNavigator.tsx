@@ -72,7 +72,7 @@ import SetUpScreen from "../MyGradesApp/screens/SetUpScreen";
 import JobSearch from "../react_native_jobs/app/search/[id]";
 import JobDetails from "../react_native_jobs/app/job-details/[id]";
 import Layout from "../react_native_jobs/app/_layout";
-
+import ParentBadgesView from "../Badges/ParentBadgesView";
 
 export type StackParamList = {
   Layout : undefined;
@@ -135,6 +135,7 @@ export type StackParamList = {
   VideoPlayerScreen: undefined;
   BookShopHome : undefined ;
   BookDetail : undefined;
+  ParentBadgesView : undefined ;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -188,6 +189,7 @@ const MainStackScreen = () => {
         options={{ headerShown: true }}
       />
       <Stack.Screen name="Badges" component={Badges} />
+      <Stack.Screen name="ParentBadgesView" component={ParentBadgesView} />
       <Stack.Screen
         name="Files"
         component={Files}
