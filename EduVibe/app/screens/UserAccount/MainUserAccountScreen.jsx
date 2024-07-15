@@ -17,7 +17,7 @@ import { PlacesContext } from '../../../contexts/PlacesContext';
 import { TextInput } from 'react-native-gesture-handler';
 
 const MainUserAccountScreen = ({ navigation }) => {
-  const { users, stats  , currentUserId } = useUsers();
+  const { users, stats  , currentUserId  , } = useUsers();
   const { setTag } = useTagContext();
   const { places } = useContext(PlacesContext);
 
@@ -38,7 +38,9 @@ const MainUserAccountScreen = ({ navigation }) => {
 
           <View style={UserAccountStyling.search}>
             <View style={UserAccountStyling.searchIcon}></View>
+            { currentUser &&
             <Text style={UserAccountStyling.profileTitle}>{currentUser.name}</Text>
+                 }
           </View>
 
           <View style={[UserAccountStyling.headerAction, { alignItems: 'flex-end' }]}>

@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity , FlatList} from "react-native";
 import React, { useState, useEffect } from 'react';
-import Icon from "react-native-vector-icons/MaterialIcons";
 import { Appbar } from "react-native-paper";
 import ContactsCard from "../../../components/ContactsCard";
 import { useUsers } from "../../../contexts/UsersContext";
@@ -8,34 +7,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Wardsreport = ({ navigation }) => {
   const { users } = useUsers();
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const [availableUsers, setAvailableUsers] = useState([]);
 
-  useEffect(() => {
-    const loadSelectedUsers = async () => {
-      try {
-        const storedUsers = await AsyncStorage.getItem('selectedUsers');
-        if (storedUsers !== null) {
-          const parsedUsers = JSON.parse(storedUsers);
-          setSelectedUsers(parsedUsers);
-          setAvailableUsers(users.filter(user => !parsedUsers.some(selectedUser => selectedUser.id === user.id)));
-        } else {
-          setSelectedUsers([]);
-          setAvailableUsers(users);
-        }
-      } catch (error) {
-        console.error('Error loading selected users from AsyncStorage:', error);
-      }
-    };
-
-    loadSelectedUsers();
-  }, [users]);
-
-  const handlePress = (userId) => {
-    // Handle user press
+  const handleResultPress = (item) => {
+    console.log("Item clicked:", item);
+    navigation.navigate('ThierReports', { userId: item.id }); // Navigate to UserAccount with userId as a parameter
   };
 
   return (
+
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <Appbar.Header style={styles.header}>
@@ -47,15 +26,23 @@ const Wardsreport = ({ navigation }) => {
         {/* <View style={styles.iconContainer}>
           <Icon name="bar-chart" size={100} style={styles.gradesIcon} />
         </View> */}
-        {availableUsers.map((item) => (
-          <TouchableOpacity key={item.id.toString()} onPress={() => handlePress(item.id)}>
-            <ContactsCard
-              name={item.name}
-              img={item.img}
-            />
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+              </ScrollView>
+              <View style = {{  paddingBottom : 460,}}>
+          <FlatList
+            data={users}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handleResultPress(item)}>
+                <ContactsCard 
+                  name={item.name} 
+                  img={item.img} 
+                  onPress={() => handleResultPress(item)}
+                />
+              </TouchableOpacity>
+            )}
+          />
+
+</View>
     </SafeAreaView>
   );
 };
