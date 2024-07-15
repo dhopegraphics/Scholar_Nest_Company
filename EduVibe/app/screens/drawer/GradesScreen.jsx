@@ -2,9 +2,8 @@ import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Appbar } from "react-native-paper";
-import SetUpScreen from "../../MyGrades/screens/SetUpScreen";
-import GradingSystemScreen from "../../MyGrades/screens/GradingSystemScreen";
-import ExamWeightScreen from "../../MyGrades/screens/ExamWeightScreen";
+import GradingSystemScreen from "../../MyGradesApp/screens/GradingSystemScreen";
+import ExamWeightScreen from "../../MyGradesApp/screens/ExamWeightScreen";
 import { useVisibility } from "../../../contexts/VisibilityContext";
 
 
