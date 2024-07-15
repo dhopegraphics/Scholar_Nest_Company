@@ -1,3 +1,7 @@
 /lib
 /node_modules
 /.expo
+/hooks
+/hook
+
+.DS_Store
