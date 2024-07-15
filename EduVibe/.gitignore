@@ -1,7 +1,7 @@
 /lib
 /node_modules
 /.expo
-/hooks
+/hooks/firebaseConfig.js
 /hook
 
 firebaseConfig.js
