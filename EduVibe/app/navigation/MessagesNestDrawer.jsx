@@ -93,12 +93,24 @@ const CustomDrawerContent = (props) => {
         iconRight="chevron-forward-outline"
       />
       )}
+
+      { answer ? (
       <DrawerItem
         label="Reports"
         destination="Reports"
         iconLeft="analytics-outline"
         iconRight="chevron-forward-outline"
       />
+      ) : (
+
+        <DrawerItem
+        label="Your Wards Reports"
+        destination="Wardsreport"
+        iconLeft="analytics-outline"
+        iconRight="chevron-forward-outline"
+      />
+      )}
+      
       {answer ? (
       <DrawerItem
         label="Badges"

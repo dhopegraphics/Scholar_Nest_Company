@@ -73,6 +73,7 @@ import JobSearch from "../react_native_jobs/app/search/[id]";
 import JobDetails from "../react_native_jobs/app/job-details/[id]";
 import Layout from "../react_native_jobs/app/_layout";
 import ParentBadgesView from "../Badges/ParentBadgesView";
+import Wardsreport from "../screens/ParentWards/Wardsreport";
 
 export type StackParamList = {
   Layout : undefined;
@@ -136,6 +137,7 @@ export type StackParamList = {
   BookShopHome : undefined ;
   BookDetail : undefined;
   ParentBadgesView : undefined ;
+  Wardsreport : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -198,6 +200,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="GradesScreen" component={GradesScreen} />
       <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
       <Stack.Screen name="Reports" component={Reports} />
+      <Stack.Screen name="Wardsreport" component={Wardsreport} />
       <Stack.Screen
         name="EventScreen"
         component={EventScreen}
