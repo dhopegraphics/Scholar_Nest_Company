@@ -4,4 +4,5 @@
 /hooks
 /hook
 
+firebaseConfig.js
 .DS_Store
