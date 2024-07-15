@@ -1,7 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView, Platform, Keyboard, Animated } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  Animated,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GroupChatScreen = ({ group }) => {
   const [messages, setMessages] = useState([]);
@@ -11,12 +24,14 @@ const GroupChatScreen = ({ group }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const storedMessages = await AsyncStorage.getItem(`messages_${group.id}`);
+        const storedMessages = await AsyncStorage.getItem(
+          `messages_${group.id}`
+        );
         if (storedMessages) {
           setMessages(JSON.parse(storedMessages));
         }
       } catch (error) {
-        console.error('Error fetching messages:', error.message);
+        console.error("Error fetching messages:", error.message);
       }
     };
 
@@ -37,9 +52,12 @@ const GroupChatScreen = ({ group }) => {
       setInputText("");
 
       try {
-        await AsyncStorage.setItem(`messages_${group.id}`, JSON.stringify(updatedMessages));
+        await AsyncStorage.setItem(
+          `messages_${group.id}`,
+          JSON.stringify(updatedMessages)
+        );
       } catch (error) {
-        console.error('Error saving message:', error.message);
+        console.error("Error saving message:", error.message);
       }
 
       // Scroll to the end of the list after adding a new message
@@ -54,11 +72,19 @@ const GroupChatScreen = ({ group }) => {
         item.sender === "me" ? styles.myMessage : styles.theirMessage,
       ]}
     >
-      <Text style={item.sender === "me" ? styles.myMessageText : styles.theirMessageText}>
+      <Text
+        style={
+          item.sender === "me" ? styles.myMessageText : styles.theirMessageText
+        }
+      >
         {item.text}
       </Text>
       {item.time && (
-        <Text style={item.sender === "me" ? styles.myTimeText : styles.theirTimeText}>
+        <Text
+          style={
+            item.sender === "me" ? styles.myTimeText : styles.theirTimeText
+          }
+        >
           {item.time}
         </Text>
       )}
@@ -74,9 +100,9 @@ const GroupChatScreen = ({ group }) => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1  }}
+      style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -93,7 +119,7 @@ const GroupChatScreen = ({ group }) => {
           style={styles.messageList}
           contentContainerStyle={{ paddingVertical: 10 }}
           inverted
-          getItemLayout={getItemLayout} 
+          getItemLayout={getItemLayout}
         />
         <View style={styles.inputContainer}>
           <TextInput
@@ -200,4 +226,3 @@ const styles = StyleSheet.create({
 });
 
 export default GroupChatScreen;
-
