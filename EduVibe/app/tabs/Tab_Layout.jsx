@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 import DifferentDrawerNavigator from "../navigation/DifferentDrawerNavigator";
 import { useQuestionContext } from "../../contexts/QuestionContext";
+import ParentDashboard from "../screens/ParentWards/ParentDashboard";
 
 const Tab = createBottomTabNavigator(); // Temporary workaround with type assertion
 
@@ -33,7 +34,9 @@ const Tab_Layout = () => {
               } else if (route.name === "More") {
                 iconName = focused ? "align-center" : "align-justify";
               }
-
+           else if (route.name === "ParentDashboard") {
+              iconName = focused ? "dashboard" : "dashboard";
+            }
               // You can return any component that you like here!
               return <FontAwesome name={iconName} size={24} color={color} />;
             },
@@ -41,7 +44,7 @@ const Tab_Layout = () => {
             tabBarInactiveTintColor: "black",
           })}
         >
-          {answer && (
+          {answer ? (
             <Tab.Screen
               name="DifferentDrawerNavigator"
               component={DifferentDrawerNavigator}
@@ -50,7 +53,17 @@ const Tab_Layout = () => {
                 headerShown: false, // Hide header for Dashboard
               }}
             />
+          ) : (
+            <Tab.Screen
+              name="ParentDashboard"
+              component={ParentDashboard}
+              options={{
+                tabBarLabel: () => null,
+                headerShown: false, // Hide header for Dashboard
+              }}
+            />
           )}
+ {answer &&  (
           <Tab.Screen
             name="Courses"
             component={CourseBrowseNestDrawer}
@@ -59,6 +72,7 @@ const Tab_Layout = () => {
               headerShown: false, // Hide header for Courses
             }}
           />
+  )}
           <Tab.Screen
             name="Messages"
             component={MessagesNestDrawer}

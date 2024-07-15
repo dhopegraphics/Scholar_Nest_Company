@@ -10,10 +10,13 @@ import { drawerStyles } from "../../themes/drawerStyles";
 import ContactsCard from "../../components/ContactsCard";
 import MessagesScreen from "../tabs/Messages";
 import { signOut, getCurrentUser } from "../../lib/appwrite";
+import { useQuestionContext } from "../../contexts/QuestionContext";
+
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
+  const { answer } = useQuestionContext();
   const { navigation } = props;
   const [currentUser, setCurrentUser] = useState(null); // State to store the current user
 
@@ -74,31 +77,55 @@ const CustomDrawerContent = (props) => {
           onPress={() => navigation.navigate("MainUserAccountScreen")}
         />
       )}
-
+{answer && (
       <DrawerItem
         label="Grades"
         destination="GradesScreen"
         iconLeft="school-outline"
         iconRight="chevron-forward-outline"
       />
+)}
+      { answer && (
       <DrawerItem
         label="Files"
         destination="Files"
         iconLeft="document-outline"
         iconRight="chevron-forward-outline"
       />
+      )}
+
+      { answer ? (
       <DrawerItem
         label="Reports"
         destination="Reports"
         iconLeft="analytics-outline"
         iconRight="chevron-forward-outline"
       />
+      ) : (
+
+        <DrawerItem
+        label="Your Wards Reports"
+        destination="Wardsreport"
+        iconLeft="analytics-outline"
+        iconRight="chevron-forward-outline"
+      />
+      )}
+      
+      {answer ? (
       <DrawerItem
         label="Badges"
         destination="Badges"
         iconLeft="medal-outline"
         iconRight="chevron-forward-outline"
       />
+      ) : (
+         <DrawerItem
+        label="Your Ward Badges"
+        destination="ParentBadgesView"
+        iconLeft="medal-outline"
+        iconRight="chevron-forward-outline"
+      />
+      )}
       <DrawerItem
         label="SwitchAccount"
         destination="SwitchAccount"
