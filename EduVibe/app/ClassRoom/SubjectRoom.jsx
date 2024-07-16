@@ -1,39 +1,63 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ClassCard from './components/ClassCard';
-import AnnouncementCard from './components/AnnouncementCard';
-import AssignmentCard from './components/AssignmentCard';
-import NewMaterialCard from './components/NewMaterialCard';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import StreamRoom from './StreamRoom';
+import PeopleParticipating from './PeopleParticipating';
+import ClassWork from './ClassWork';
+import { FontAwesome } from "@expo/vector-icons";
 
-export default function SubjectRoom({route}) {
-  const { item } = route.params;
+const Tab = createBottomTabNavigator();
+
+export default function SubjectRoom({ route }) {
+  const { item } = route.params; // Properly destructure item from route.params
+
   return (
-    <View style={styles.container}>
-      <Header />
-      <ScrollView >
- 
-        <ClassCard 
-        CourseTitle = {item.title}  
-         Description = {item.description}  
-         Lecturer = {item.instructor} />
+    <Tab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
 
-        <AnnouncementCard />
-        <AssignmentCard title="Assignment 2" date="6 Nov" attachment="+ 1 attachment" />
-        <NewMaterialCard title="New material available" date="6 Nov" />
-      </ScrollView>
-      <Footer />
+        if (route.name === "StreamRoom") {
+          iconName = focused ? "stack-overflow" : "stack-overflow";
+        } else if (route.name === "ClassWork") {
+          iconName = focused ? "street-view" : "street-view";
+        } else if (route.name === "People") {
+          iconName = focused ? "address-book" : "address-book-o";
+        } 
+        // You can return any component that you like here!
+        return <FontAwesome name={iconName} size={24} color={color} />;
+      },
+      tabBarActiveTintColor: "#6200EE",
+      tabBarInactiveTintColor: "black",
+    })}
+    >
+      <Tab.Screen 
+        name="StreamRoom" 
+        component={StreamRoom} 
+        initialParams={{ item }} // Pass item to StreamRoom
+        options={{
+          headerShown: false, // Hide header 
+        }}
 
-    
-    </View>
+       
+      />
+      <Tab.Screen 
+        name="ClassWork" 
+        component={ClassWork} 
+        initialParams={{ item }} // Pass item to ClassWork if needed
+        options={{
+         
+          headerShown: false, // Hide header 
+        }}
+      />
+      <Tab.Screen 
+        name="People" 
+        component={PeopleParticipating} 
+        initialParams={{ item }} // Pass item to PeopleParticipating if needed
+        options={{
+         
+          headerShown: false, // Hide header 
+        }}
+      />
+    </Tab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-
-});
