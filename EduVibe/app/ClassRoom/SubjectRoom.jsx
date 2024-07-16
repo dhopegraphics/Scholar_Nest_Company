@@ -18,6 +18,8 @@ export default function SubjectRoom() {
         <NewMaterialCard title="New material available" date="6 Nov" />
       </ScrollView>
       <Footer />
+
+    
     </View>
   );
 }

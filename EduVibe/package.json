@@ -71,6 +71,7 @@
     "react-native-elements": "^3.4.3",
     "react-native-feather": "^1.1.2",
     "react-native-file-viewer": "^2.1.5",
+    "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^17.1.0",
@@ -92,7 +93,9 @@
     "react-native-video": "^6.4.1",
     "react-native-vision-camera": "^4.4.1",
     "react-native-web": "~0.19.10",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "expo-file-system": "~17.0.1",
+    "expo-sharing": "~12.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
