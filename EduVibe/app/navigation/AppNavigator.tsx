@@ -76,6 +76,7 @@ import ParentBadgesView from "../Badges/ParentBadgesView";
 import Wardsreport from "../screens/ParentWards/Wardsreport";
 import ThierReports from "../screens/ParentWards/ThierReports";
 import ClassRoomHome from "../ClassRoom/classroom";
+import SubjectRoom from "../ClassRoom/SubjectRoom";
 
 export type StackParamList = {
   Layout: undefined;
@@ -142,6 +143,7 @@ export type StackParamList = {
   Wardsreport: undefined;
   ThierReports : undefined;
   ClassRoomHome : undefined;
+  SubjectRoom : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -397,6 +399,11 @@ const MainStackScreen = () => {
 <Stack.Screen
         name="ClassRoomHome"
         component={ClassRoomHome}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SubjectRoom"
+        component={SubjectRoom}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

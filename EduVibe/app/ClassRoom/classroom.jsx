@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const data = [
   {
@@ -67,9 +68,11 @@ const Card = ({ title, description, instructor, bgColor, onPress }) => (
 );
 
 const ClassRoomHome = () => {
-  const handleCardPress = (id) => {
-    console.log(`Card with id ${id} pressed`);
-    // Implement navigation or other functionality here
+  const navigation = useNavigation();
+
+  const handleCardPress = (item) => {
+  
+   navigation.navigate("SubjectRoom" , {item})
   };
 
   return (
@@ -87,7 +90,7 @@ const ClassRoomHome = () => {
             description={item.description}
             instructor={item.instructor}
             bgColor={item.bgColor}
-            onPress={() => handleCardPress(item.id)}
+            onPress={() => handleCardPress(item)}
           />
         ))}
       </ScrollView>

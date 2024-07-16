@@ -25,14 +25,14 @@ return null;
 }
   return (
     <>
-{/*  
+ 
      <GestureHandlerRootView>
       <StatusBar barStyle="default" backgroundColor="black" />
       <GlobalProvider>
       <AppNavigator />
       </GlobalProvider>
-      </GestureHandlerRootView> */}
-<SubjectRoom/>
+      </GestureHandlerRootView>
+
     </>
   );
 };

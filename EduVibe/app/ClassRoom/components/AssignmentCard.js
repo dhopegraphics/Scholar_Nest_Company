@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, Avatar, Button } from 'react-native-elements';
+import FileDownloadComponent from './  FileDownloadComponent';
 
 export default function AssignmentCard({ title, date, attachment }) {
   return (
@@ -18,6 +19,11 @@ export default function AssignmentCard({ title, date, attachment }) {
       </View>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.attachment}>{attachment}</Text>
+      
+      <FileDownloadComponent
+        fileUrl="https://morth.nic.in/sites/default/files/dd12-13_0.pdf"
+        fileName="file.pdf"
+      />
       <Button type="clear" title="Add class comment" />
     </Card>
   );
