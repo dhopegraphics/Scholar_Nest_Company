@@ -12,7 +12,7 @@ export default function StreamRoom ({route}) {
   const { item } = route.params;
   return (
     <View style={styles.container}>
-      <Header />
+      <Header HeaderTitle = {item.title} />
       <ScrollView > 
  
         <ClassCard 
