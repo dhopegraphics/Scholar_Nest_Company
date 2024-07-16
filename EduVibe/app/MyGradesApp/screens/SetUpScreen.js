@@ -47,39 +47,38 @@ function SetUpScreen(props) {
 
   return (
     <Screen>
-     
-        <View style={styles.form}>
-          <AppForm
-            initialValues={{ class: "", gradeSystem: null, subjects: null }}
-            onSubmit={(values) => console.log(values)}
-            validationSchema={validationSchema}
-          >
-            <AppText>Enter your class.</AppText>
-            <AppFormField
-              placeholder="Class"
-              keyBoardType="numeric"
-              name="class"
-              width={150}
-              autoCorrect={false}
-            />
-            <AppText>Select your grade system.</AppText>
-            <AppFormPicker
-              title="Grade System"
-              name="gradeSystem"
-              data={grades}
-              setData={setGrades}
-            />
-            <AppText>Choose your subjects.</AppText>
-            <SubjectFormPicker
-              title="Subjects"
-              name="subjects"
-              data={subjects}
-              setData={setSubjects}
-              selectedItems={selectedItems}
-            />
-          </AppForm>
-        </View>
-    
+      <View style={styles.form}>
+        <AppForm
+          initialValues={{ class: "", gradeSystem: null, subjects: null }}
+          onSubmit={(values) => console.log(values)}
+          validationSchema={validationSchema}
+        >
+          <AppText style={styles.text}>Enter your class.</AppText>
+          <AppFormField
+            placeholder="Class"
+            keyBoardType="numeric"
+            name="class"
+            width={150}
+            autoCorrect={false}
+          />
+          <AppText style={styles.text}>Select your grade system.</AppText>
+          <AppFormPicker
+            title="Grade System"
+            name="gradeSystem"
+            data={grades}
+            setData={setGrades}
+          />
+          <AppText style={styles.text}>Choose your subjects.</AppText>
+          <SubjectFormPicker
+            title="Subjects"
+            name="subjects"
+            data={subjects}
+            setData={setSubjects}
+            selectedItems={selectedItems}
+          />
+        </AppForm>
+      </View>
+
       <View style={styles.button}>
         <Button buttonText="Next" />
       </View>
@@ -91,6 +90,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 45,
     color: "#FFD700",
+  },
+  text: {
+    fontWeight: "700",
+    fontSize: 18,
+    color: "#000",
   },
   button: {
     marginVertical: 70,

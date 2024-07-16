@@ -16,17 +16,26 @@ export default function ExamWeightScreen() {
 
   return (
     <Screen>
-        <Text style={styles.title}>Grading System</Text>
-        <View style={styles.selector}>
-            <AppText style={styles.subTitle}>Exam Types</AppText>
-            <ActiveButton icon="share-all" size={40}  onPress={() => navigation.navigate("GradeHome")}/>
-          </View>
-      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator = {false}>
-      
+      <Text style={styles.title}>Grading System</Text>
+      <View style={styles.selector}>
+        <AppText style={styles.subTitle}>Exam Types</AppText>
+        <ActiveButton
+          icon="share-all"
+          size={40}
+          onPress={() => navigation.navigate("GradeHome")}
+        />
+      </View>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
         <View>
-         
           <SettingsContainer>
-            <WeightItem title="Midsem Exam" weightNumber="1" percentage="30.00%" />
+            <WeightItem
+              title="Midsem Exam"
+              weightNumber="1"
+              percentage="30.00%"
+            />
             <SettingsItem
               title="Attendance"
               fontSize={16}
@@ -64,7 +73,11 @@ export default function ExamWeightScreen() {
             />
           </SettingsContainer>
           <SettingsContainer>
-            <WeightItem title="Minor Exam" weightNumber="1" percentage="50.00%" />
+            <WeightItem
+              title="Minor Exam"
+              weightNumber="1"
+              percentage="50.00%"
+            />
           </SettingsContainer>
         </View>
         <SettingsContainer>
@@ -80,7 +93,8 @@ export default function ExamWeightScreen() {
                   Average per Subject:
                 </Text>
                 <Text style={[defaultStyles.text, styles.description]}>
-                  This is the description of how the average per subject is calculated.
+                  This is the description of how the average per subject is
+                  calculated.
                 </Text>
               </View>
               <View>
@@ -88,7 +102,8 @@ export default function ExamWeightScreen() {
                   Overall Average:
                 </Text>
                 <Text style={[defaultStyles.text]}>
-                  This is the description of how the overall average is calculated.
+                  This is the description of how the overall average is
+                  calculated.
                 </Text>
               </View>
             </View>
@@ -114,7 +129,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
-    color: "black",
+    color: "#F5B227",
     fontWeight: "700",
     fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
   },
@@ -124,12 +139,12 @@ const styles = StyleSheet.create({
   subTitle: {
     marginVertical: 10,
     fontWeight: 700,
-    color : "black"
+    color: "black",
   },
   HeadTitle: {
     marginVertical: 10,
     fontWeight: 700,
-    color : "#FFD700"
+    color: "#FFD700",
   },
   description: {
     marginBottom: 10,
