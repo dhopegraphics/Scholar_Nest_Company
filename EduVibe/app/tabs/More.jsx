@@ -33,10 +33,11 @@ const MoreScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={ButtonsTextStyle.safeArea}>
+        <Text style={ButtonsTextStyle.moreText}>More</Text>
       <ScrollView contentContainerStyle={ButtonsTextStyle.scrollViewContent}>
         <View style={[ButtonsTextStyle.container, { marginBottom: 30 }]}>
           <View style={ButtonsTextStyle.more}>
-            <Text style={ButtonsTextStyle.moreText}>More</Text>
+          
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity

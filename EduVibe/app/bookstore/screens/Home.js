@@ -474,16 +474,19 @@ const BookShopHome = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.black }}>
+    
             <View style={{ height: 200 }}>
                 {renderHeader(profile)}
                 {renderButtonSection()}
             </View>
-    
-            <View style={{ flex: 1 }}>
-                <View style={{ marginTop: SIZES.radius }}>
+
+            <ScrollView style={{ marginTop: SIZES.radius }}>
+          
+                <View>
                     {renderMyBookSection(myBooks)}
                 </View>
-    
+
+       
                 <View style={{ marginTop: SIZES.padding }}>
                     <View>
                         {renderCategoryHeader()}
@@ -492,10 +495,9 @@ const BookShopHome = ({ navigation }) => {
                         {renderCategoryData()}
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         </SafeAreaView>
-    );
-    
+    )
 }
 
 export default BookShopHome;

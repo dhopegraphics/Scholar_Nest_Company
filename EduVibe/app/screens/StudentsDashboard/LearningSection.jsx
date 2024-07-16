@@ -1,12 +1,20 @@
-import React, { useCallback, useState, useContext } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
-import { CourseCard } from '../../../components';
-import { Ionicons } from '@expo/vector-icons';
-import DashboardStyles from '../../../themes/DashboardStyles';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { useCourseContext } from '../../../contexts/useCourseContext';
-import { ParticipantContext } from '../../../contexts/ParticipantContext';
-
+import React, { useCallback, useState, useContext } from "react";
+import {
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  RefreshControl,
+  SafeAreaView,
+} from "react-native";
+import { CourseCard } from "../../../components";
+import { Ionicons } from "@expo/vector-icons";
+import DashboardStyles from "../../../themes/DashboardStyles";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { useCourseContext } from "../../../contexts/useCourseContext";
+import { ParticipantContext } from "../../../contexts/ParticipantContext";
+import ClassRoomCard from "../../../components/ClassRoomCard";
+import styles from "../../MyGradesApp/config/styles";
 
 const LearningSection = () => {
   const navigation = useNavigation();
@@ -20,11 +28,15 @@ const LearningSection = () => {
       participantContext.setParticipants(course.participants);
     }
     //@ts-ignore
-    navigation.navigate('Course_Information');
+    navigation.navigate("Course_Information");
   };
 
   const handleButtonPress = () => {
     navigation.dispatch(DrawerActions.openDrawer());
+  };
+
+  const handleClassPress = () => {
+    navigation.navigate("ClassRoomHome");
   };
 
   const onRefresh = useCallback(() => {
@@ -37,14 +49,14 @@ const LearningSection = () => {
 
   return (
     <SafeAreaView style={DashboardStyles.safeArea}>
-      <View style={DashboardStyles.container}>
+      <View style={DashboardStyles.container }>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={DashboardStyles.scrollViewContent}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}  />
+          }
         >
-       
-
           <View style={DashboardStyles.scrollContainerWrapper}>
             <ScrollView
               horizontal
@@ -63,8 +75,21 @@ const LearningSection = () => {
               ))}
             </ScrollView>
           </View>
+
+          <View style = {{padding : 10,}}>
+            <ClassRoomCard
+              title={"ClassRoom"}
+              onPress={handleClassPress}
+              imageSource={{
+                uri: "https://img.freepik.com/free-vector/empty-classroom-interior-with-chalkboard_1308-61229.jpg",
+              }} // Pass the image source dynamically
+            />
+          </View>
         </ScrollView>
-        <TouchableOpacity style={DashboardStyles.roundedButton} onPress={handleButtonPress}>
+        <TouchableOpacity
+          style={DashboardStyles.roundedButton}
+          onPress={handleButtonPress}
+        >
           <Ionicons name="chevron-back-circle" size={24} color="white" />
         </TouchableOpacity>
       </View>

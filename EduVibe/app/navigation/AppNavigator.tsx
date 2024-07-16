@@ -74,6 +74,10 @@ import JobDetails from "../react_native_jobs/app/job-details/[id]";
 import Layout from "../react_native_jobs/app/_layout";
 import ParentBadgesView from "../Badges/ParentBadgesView";
 import Wardsreport from "../screens/ParentWards/Wardsreport";
+import ThierReports from "../screens/ParentWards/ThierReports";
+import ClassRoomHome from "../ClassRoom/classroom";
+import SubjectRoom from "../ClassRoom/SubjectRoom";
+import StreamRoom from "../ClassRoom/StreamRoom";
 
 export type StackParamList = {
   Layout: undefined;
@@ -138,6 +142,10 @@ export type StackParamList = {
   BookDetail: undefined;
   ParentBadgesView: undefined;
   Wardsreport: undefined;
+  ThierReports : undefined;
+  ClassRoomHome : undefined;
+  SubjectRoom : undefined;
+  StreamRoom : undefined ;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -201,6 +209,7 @@ const MainStackScreen = () => {
       <Stack.Screen name="SwitchAccount" component={SwitchAccount} />
       <Stack.Screen name="Reports" component={Reports} />
       <Stack.Screen name="Wardsreport" component={Wardsreport} />
+      <Stack.Screen name="ThierReports" component={ThierReports} />
       <Stack.Screen
         name="EventScreen"
         component={EventScreen}
@@ -386,6 +395,22 @@ const MainStackScreen = () => {
       <Stack.Screen
         name="Layout"
         component={Layout}
+        options={{ headerShown: false }}
+      />
+
+<Stack.Screen
+        name="ClassRoomHome"
+        component={ClassRoomHome}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SubjectRoom"
+        component={SubjectRoom}
+        options={{ headerShown: false }}
+      />
+            <Stack.Screen
+        name="StreamRoom"
+        component={StreamRoom}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

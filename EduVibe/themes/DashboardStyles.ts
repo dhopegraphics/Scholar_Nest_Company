@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 const DashboardStyles = StyleSheet.create({
   safeArea: {
     flex: 1,
+   
     backgroundColor: "#fff",
   },
   scrollViewContent: {
@@ -10,7 +11,8 @@ const DashboardStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 16,
+    padding: 14,
+   
     backgroundColor: "#fff",
   },
   title: {
