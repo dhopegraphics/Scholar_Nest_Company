@@ -7,8 +7,7 @@ Animated.addWhitelistedNativeProps({ text: true });
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import GlobalProvider from '../contexts/GlobalProvider';
 import { useFonts } from 'expo-font';
-
-
+import SubjectRoom from './ClassRoom/SubjectRoom';
 
 
 const App: React.FC = () => {
@@ -26,14 +25,14 @@ return null;
 }
   return (
     <>
- 
+{/*  
      <GestureHandlerRootView>
       <StatusBar barStyle="default" backgroundColor="black" />
       <GlobalProvider>
       <AppNavigator />
       </GlobalProvider>
-      </GestureHandlerRootView>
-
+      </GestureHandlerRootView> */}
+<SubjectRoom/>
     </>
   );
 };

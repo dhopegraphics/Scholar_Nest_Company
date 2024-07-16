@@ -75,6 +75,7 @@ import Layout from "../react_native_jobs/app/_layout";
 import ParentBadgesView from "../Badges/ParentBadgesView";
 import Wardsreport from "../screens/ParentWards/Wardsreport";
 import ThierReports from "../screens/ParentWards/ThierReports";
+import ClassRoomHome from "../ClassRoom/classroom";
 
 export type StackParamList = {
   Layout: undefined;
@@ -140,6 +141,7 @@ export type StackParamList = {
   ParentBadgesView: undefined;
   Wardsreport: undefined;
   ThierReports : undefined;
+  ClassRoomHome : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -389,6 +391,12 @@ const MainStackScreen = () => {
       <Stack.Screen
         name="Layout"
         component={Layout}
+        options={{ headerShown: false }}
+      />
+
+<Stack.Screen
+        name="ClassRoomHome"
+        component={ClassRoomHome}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

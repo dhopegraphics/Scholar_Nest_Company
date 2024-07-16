@@ -1,0 +1,55 @@
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Card, Avatar, Button } from 'react-native-elements';
+
+export default function AssignmentCard({ title, date, attachment }) {
+  return (
+    <Card containerStyle={styles.card}>
+      <View style={styles.cardContent}>
+        <Avatar
+          rounded
+          source={{ uri: 'https://via.placeholder.com/80' }}
+          size="medium"
+        />
+        <View style={styles.textContainer}>
+          <Text style={styles.name}>Dr. Naeem Ullah</Text>
+          <Text style={styles.date}>{date}</Text>
+        </View>
+      </View>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.attachment}>{attachment}</Text>
+      <Button type="clear" title="Add class comment" />
+    </Card>
+  );
+}
+
+const styles = StyleSheet.create({
+  card: {
+    borderRadius: 8,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textContainer: {
+    marginLeft: 16,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  date: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 8,
+  },
+  attachment: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginTop: 4,
+  },
+});
