@@ -8,7 +8,7 @@
     "icon": "./assets/images/Eduvibe.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/Eduvibe.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,10 +16,15 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.paapacobbold.eduvibesetup",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,6 +35,14 @@
       "expo-image-picker",
       "expo-document-picker",
       "expo-video"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b1519b7d-9e65-40a4-8f31-7de8b6e1e9c7"
+      }
+    }
   }
 }
