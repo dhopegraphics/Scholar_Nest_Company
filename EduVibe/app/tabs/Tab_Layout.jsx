@@ -16,7 +16,7 @@ const Tab_Layout = () => {
   const { answer } = useQuestionContext();
   return (
     <>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, marginBottom: -25 }}>
         <StatusBar barStyle="dark-content" backgroundColor="white" />
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -33,14 +33,13 @@ const Tab_Layout = () => {
                 iconName = focused ? "bell" : "bell-o";
               } else if (route.name === "More") {
                 iconName = focused ? "align-center" : "align-justify";
+              } else if (route.name === "ParentDashboard") {
+                iconName = focused ? "dashboard" : "dashboard";
               }
-           else if (route.name === "ParentDashboard") {
-              iconName = focused ? "dashboard" : "dashboard";
-            }
               // You can return any component that you like here!
               return <FontAwesome name={iconName} size={24} color={color} />;
             },
-            tabBarActiveTintColor: "#6200EE",
+            tabBarActiveTintColor: "#1C9C9D",
             tabBarInactiveTintColor: "black",
           })}
         >
@@ -63,16 +62,16 @@ const Tab_Layout = () => {
               }}
             />
           )}
- {answer &&  (
-          <Tab.Screen
-            name="Courses"
-            component={CourseBrowseNestDrawer}
-            options={{
-              tabBarLabel: () => null,
-              headerShown: false, // Hide header for Courses
-            }}
-          />
-  )}
+          {answer && (
+            <Tab.Screen
+              name="Courses"
+              component={CourseBrowseNestDrawer}
+              options={{
+                tabBarLabel: () => null,
+                headerShown: false, // Hide header for Courses
+              }}
+            />
+          )}
           <Tab.Screen
             name="Messages"
             component={MessagesNestDrawer}

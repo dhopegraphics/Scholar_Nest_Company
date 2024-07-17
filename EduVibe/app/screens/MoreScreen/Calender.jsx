@@ -1,32 +1,69 @@
 import React, { useState, useLayoutEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Modal, ScrollView, RefreshControl , SafeAreaView , Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Modal,
+  ScrollView,
+  RefreshControl,
+  SafeAreaView,
+  Pressable,
+} from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { useEventContext } from "../../../contexts/EventContext";
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {  DrawerActions } from "@react-navigation/native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { DrawerActions } from "@react-navigation/native";
+import FeatherIcon from "react-native-vector-icons/Feather";
 
 // Configure the calendar locale
 LocaleConfig.locales["en"] = {
   monthNames: [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ],
   monthNamesShort: [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ],
   dayNames: [
-    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   ],
-  dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 };
 LocaleConfig.defaultLocale = "en";
 
 const CalendarComponent = () => {
-
   const handleButtonPress = () => {
     navigation.dispatch(DrawerActions.openDrawer());
-  }; 
+  };
 
   const { events } = useEventContext();
   const [selectedDate, setSelectedDate] = useState("");
@@ -37,12 +74,22 @@ const CalendarComponent = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={handleButtonPress}  style={styles.headerButton} >
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            onPress={handleButtonPress}
+            style={styles.headerButton}
+          >
             <Ionicons name="funnel-outline" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowSettingsModal(true)} style={styles.headerButton}>
-            <Ionicons name="ellipsis-vertical-outline" size={24} color="black" />
+          <TouchableOpacity
+            onPress={() => setShowSettingsModal(true)}
+            style={styles.headerButton}
+          >
+            <Ionicons
+              name="ellipsis-vertical-outline"
+              size={24}
+              color="black"
+            />
           </TouchableOpacity>
         </View>
       ),
@@ -52,16 +99,19 @@ const CalendarComponent = () => {
   const onDayPress = (day) => {
     const dateString = day.dateString;
     setSelectedDate(dateString);
-  
+
     if (events[dateString] && events[dateString].length > 0) {
-      navigation.navigate('EventScreen', { selectedDate: dateString, existingEvents: events[dateString] });
+      navigation.navigate("EventScreen", {
+        selectedDate: dateString,
+        existingEvents: events[dateString],
+      });
     } else {
-      navigation.navigate('EventScreen', { selectedDate: dateString });
+      navigation.navigate("EventScreen", { selectedDate: dateString });
     }
   };
 
   const markedDates = Object.keys(events).reduce((acc, date) => {
-    acc[date] = { marked: true, dotColor: 'blue' };
+    acc[date] = { marked: true, dotColor: "blue" };
     return acc;
   }, {});
 
@@ -91,10 +141,10 @@ const CalendarComponent = () => {
             onDayPress={onDayPress}
             markedDates={markedDates}
             theme={{
-              selectedDayBackgroundColor: "blue",
+              selectedDayBackgroundColor: "#1C9C9D",
               todayTextColor: "red",
-              arrowColor: "blue",
-              monthTextColor: "blue",
+              arrowColor: "#1C9C9D",
+              monthTextColor: "#1C9C9D",
               textMonthFontWeight: "bold",
               textDayHeaderFontWeight: "bold",
               textDayFontWeight: "500",
@@ -130,10 +180,16 @@ const CalendarComponent = () => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <FeatherIcon
+              name="calendar"
+              color="#1C9C9D"
+              size={48}
+              style={{ alignSelf: "center" }}
+            />
             <TouchableOpacity
               style={styles.modalButton}
               onPress={() => {
-                navigation.navigate('UpcomingEvents');
+                navigation.navigate("UpcomingEvents");
                 setShowSettingsModal(false);
               }}
             >
@@ -142,13 +198,16 @@ const CalendarComponent = () => {
             <TouchableOpacity
               style={styles.modalButton}
               onPress={() => {
-                navigation.navigate('EventSettings');
+                navigation.navigate("EventSettings");
                 setShowSettingsModal(false);
               }}
             >
               <Text style={styles.modalText}>Event Settings</Text>
             </TouchableOpacity>
-            <Pressable style={styles.closeButton} onPress={() => setShowSettingsModal(false)}>
+            <Pressable
+              style={styles.closeButton}
+              onPress={() => setShowSettingsModal(false)}
+            >
               <Ionicons name="close-outline" size={24} color="black" />
             </Pressable>
           </View>
@@ -163,23 +222,23 @@ export default CalendarComponent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 16,
   },
   card: {
     borderRadius: 8,
     padding: 16,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f0f0f0",
     marginBottom: 16,
   },
   selectedDateContainer: {
     padding: 16,
     borderRadius: 8,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f0f0f0",
   },
   selectedDateText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
   },
   eventsContainer: {
@@ -187,19 +246,22 @@ const styles = StyleSheet.create({
   },
   eventText: {
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
   headerButton: {
     marginRight: 15,
   },
   centeredView: {
     flex: 1,
+
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
+    height: 350,
+    width: 350,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -207,11 +269,11 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   button: {
     borderRadius: 20,
@@ -223,23 +285,24 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
     borderRadius: 10,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#1C9C9D",
   },
   textStyle: {
     color: "black",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   modalButton: {
     marginBottom: 10,
+    marginTop: 15,
     padding: 15,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#1C9C9D",
     borderRadius: 10,
-    width: '100%',
+    width: "100%",
     alignItems: "center",
-  }
+  },
 });
