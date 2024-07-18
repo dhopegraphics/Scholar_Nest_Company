@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useCallback } from "react";
+import React, { useState, useRef, useContext, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,10 +13,9 @@ import {
   RefreshControl,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
-import { useCourseContext } from "../../../contexts/useCourseContext";
-import { ParticipantContext } from "../../../contexts/ParticipantContext";
-import { CourseCard } from "../../../components";
+import { useNavigation } from "@react-navigation/native";
+import TeacherCourseCard from "../../../components/TeacherCourseCard";
+import { getCourses } from '../../../lib/appwrite'; // Import getCourses function
 
 const AvailableCourses = () => {
   const navigation = useNavigation(); // Initialize navigation object
@@ -26,16 +25,20 @@ const AvailableCourses = () => {
   const searchIconTranslateX = useRef(new Animated.Value(15)).current; // Initial position for search icon
   const menuButtonRef = useRef(null); // Ref for menu button
   const menuAnim = useRef(new Animated.Value(0)).current; // Animation for menu
-  const { setCourse } = useCourseContext();
-  const participantContext = useContext(ParticipantContext);
   const [refreshing, setRefreshing] = useState(false);
+  const [courses, setCourses] = useState([]); // State to hold courses
 
-  const handlePress = (course) => {
-    setCourse(course);
-    if (participantContext) {
-      participantContext.setParticipants(course.participants);
+  useEffect(() => {
+    fetchCourses(); // Fetch courses when component mounts
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const coursesData = await getCourses(); // Fetch courses from API
+      setCourses(coursesData); // Set courses in state
+    } catch (error) {
+      console.error('Failed to fetch courses:', error.message);
     }
-    navigation.navigate('Course_Information');
   };
 
   const handleFocus = () => {
@@ -185,30 +188,20 @@ const AvailableCourses = () => {
                     <Icon name="close" size={26} color="#333" />
                   </TouchableOpacity>
                 )}
-
               </View>
 
-              <View style = {styles.courseContainer} >
-                {participantContext?.courses.map((course, index) => (
-                <CourseCard
-                  key={index}
-                  title={course.title}
-                  creator={course.creator}
-                  participantsCount={course.participants.length}
-                  onPress={() => handlePress(course)}
-                  imageSource={{ uri: course.image }} // Pass the image source dynamically
-                />
-              ))}
-             </View>
-
-              {searchText === "" && (
-                <View style={styles.centeredContainer}>
-                  <Icon name="search" size={64} color="#888" />
+              <View style={styles.courseContainer}>
+                {courses.length > 0 ? (
+                  courses.map((course) => (
+                    <TeacherCourseCard key={course.$id} course={course} navigation={navigation} />
+                  ))
+                ) : (
+                  <View style={styles.centeredContainer}>
+                    <Icon name="search" size={64} color="#888" />
                   <Text style={styles.noResultsText}>No results</Text>
                 </View>
               )}
-
-
+             </View>
             </View>
           </ScrollView>
         </View>

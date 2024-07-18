@@ -16,15 +16,13 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.paapacobbold.eduvibesetup",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "package": "com.dhopegraphics.eduvibesetup"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,15 +32,17 @@
       "expo-font",
       "expo-image-picker",
       "expo-document-picker",
-      "expo-video"
+      "expo-video",
+      "expo-av"
     ],
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "b1519b7d-9e65-40a4-8f31-7de8b6e1e9c7"
+        "projectId": "f0d7ad4a-9911-4446-9855-0a4e3b555490"
       }
-    }
+    },
+    "owner": "dhopegraphics"
   }
 }
