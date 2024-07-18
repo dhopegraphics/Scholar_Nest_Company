@@ -78,8 +78,12 @@ import ThierReports from "../screens/ParentWards/ThierReports";
 import ClassRoomHome from "../ClassRoom/classroom";
 import SubjectRoom from "../ClassRoom/SubjectRoom";
 import StreamRoom from "../ClassRoom/StreamRoom";
+import TeacherCourseCard from "../../components/TeacherCourseCard";
+import CourseSchema from "../screens/Educator/CourseSchema";
 
 export type StackParamList = {
+  CourseSchema : undefined;
+  TeacherCourseCard: undefined;
   Layout: undefined;
   JobDetails: undefined;
   JobSearch: undefined;
@@ -411,6 +415,12 @@ const MainStackScreen = () => {
             <Stack.Screen
         name="StreamRoom"
         component={StreamRoom}
+        options={{ headerShown: false }}
+      />
+
+                  <Stack.Screen
+        name="CourseSchema"
+        component={CourseSchema}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

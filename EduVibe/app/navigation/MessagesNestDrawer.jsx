@@ -9,7 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { drawerStyles } from "../../themes/drawerStyles";
 import ContactsCard from "../../components/ContactsCard";
 import MessagesScreen from "../tabs/Messages";
-import { signOut, getCurrentUser } from "../../lib/appwrite";
+import { signOut , getCurrentUser } from "../../lib/appwrite";
 import { useQuestionContext } from "../../contexts/QuestionContext";
 
 
