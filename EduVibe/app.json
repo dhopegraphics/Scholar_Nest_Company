@@ -19,7 +19,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.dhopegraphics.eduvibesetup"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,6 +34,15 @@
       "expo-image-picker",
       "expo-document-picker",
       "expo-video"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f0d7ad4a-9911-4446-9855-0a4e3b555490"
+      }
+    },
+    "owner": "dhopegraphics"
   }
 }
