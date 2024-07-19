@@ -1,11 +1,17 @@
-import { TouchableOpacity,  Text, View, SafeAreaView, ScrollView } from 'react-native'
-import React from 'react'
-import { ButtonsTextStyle } from '../../../themes/ButtonsWithTextContainerStyle';
-import Icon from "react-native-vector-icons/MaterialIcons"; 
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { Foundation } from '@expo/vector-icons';
+import {
+  TouchableOpacity,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import React from "react";
+import { ButtonsTextStyle } from "../../../themes/ButtonsWithTextContainerStyle";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Foundation } from "@expo/vector-icons";
 
 const AppSettings = ({ navigation }) => {
   return (
@@ -52,9 +58,7 @@ const AppSettings = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
-          <View style={ButtonsTextStyle.buttonContainer}>
-           
-          </View>
+          <View style={ButtonsTextStyle.buttonContainer}></View>
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
               style={ButtonsTextStyle.button}
@@ -86,7 +90,7 @@ const AppSettings = ({ navigation }) => {
                 size={27}
                 color="#ffffff"
               />
-              <Text style={ButtonsTextStyle.text}>AboutScreen</Text>
+              <Text style={ButtonsTextStyle.text}>About</Text>
               <Icon
                 style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
@@ -102,5 +106,3 @@ const AppSettings = ({ navigation }) => {
 };
 
 export default AppSettings;
-
-

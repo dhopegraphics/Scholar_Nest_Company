@@ -21,6 +21,8 @@ const ChatScreen = ({ contact }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingMessage, setEditingMessage] = useState(null);
   const flatListRef = useRef(null);
   const actionSheetRef = useRef(null);
 
@@ -43,21 +45,31 @@ const ChatScreen = ({ contact }) => {
 
   const saveMessage = async () => {
     if (inputText.trim().length > 0) {
-      const newMessage = {
-        id: (messages.length + 1).toString(),
-        text: inputText,
-        sender: "me",
-        time: new Date().toLocaleTimeString(),
-      };
-
-      const updatedMessages = [newMessage, ...messages];
-      setMessages(updatedMessages);
+      if (isEditing) {
+        // Edit existing message
+        const updatedMessages = messages.map((msg) =>
+          msg.id === editingMessage.id ? { ...msg, text: inputText } : msg
+        );
+        setMessages(updatedMessages);
+        setIsEditing(false);
+        setEditingMessage(null);
+      } else {
+        // Add new message
+        const newMessage = {
+          id: (messages.length + 1).toString(),
+          text: inputText,
+          sender: "me",
+          time: new Date().toLocaleTimeString(),
+        };
+        const updatedMessages = [newMessage, ...messages];
+        setMessages(updatedMessages);
+      }
       setInputText("");
 
       try {
         await AsyncStorage.setItem(
           `messages_${contact.id}`,
-          JSON.stringify(updatedMessages)
+          JSON.stringify(messages)
         );
       } catch (error) {
         console.error("Error saving message:", error.message);
@@ -81,12 +93,21 @@ const ChatScreen = ({ contact }) => {
       case 1: // Forward
         Alert.alert("Forward", `Forward message: ${selectedMessage.text}`);
         break;
-      case 2: // Delete
+      case 2: // Edit
+        handleEdit(selectedMessage);
+        break;
+      case 3: // Delete
         deleteMessage(selectedMessage.id);
         break;
       default:
         break;
     }
+  };
+
+  const handleEdit = (message) => {
+    setEditingMessage(message);
+    setInputText(message.text);
+    setIsEditing(true);
   };
 
   const deleteMessage = async (messageId) => {
@@ -174,9 +195,9 @@ const ChatScreen = ({ contact }) => {
         <ActionSheet
           ref={actionSheetRef}
           title={"Choose an action"}
-          options={["Reply", "Forward", "Delete", "Cancel"]}
-          cancelButtonIndex={3}
-          destructiveButtonIndex={2}
+          options={["Reply", "Forward", "Edit", "Delete", "Cancel"]}
+          cancelButtonIndex={4}
+          destructiveButtonIndex={3}
           onPress={(index) => handleActionSheet(index)}
         />
       </SafeAreaView>
