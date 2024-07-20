@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     maxWidth: "70%",
   },
   myMessage: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#1C9C9D",
     alignSelf: "flex-end",
   },
   theirMessage: {
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   sendButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#1C9C9D",
     borderRadius: 20,
     width: 40,
     height: 40,
