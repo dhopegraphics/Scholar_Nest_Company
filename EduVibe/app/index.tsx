@@ -11,6 +11,7 @@ import * as Font from 'expo-font';
 import { Entypo } from '@expo/vector-icons'; // Import the icon set you need
 import { CourseProvider } from '../contexts/CourseContext';
 import { CourseHeaderProvider } from '../contexts/CourseHeaderContext';
+import { AuthProvider } from '../contexts/AuthContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -61,7 +62,7 @@ const App: React.FC = () => {
   return (
     <GestureHandlerRootView onLayout={onLayoutRootView} style={{ flex: 1 }}>
       <StatusBar barStyle="default" backgroundColor="black" />
-     
+     <AuthProvider> 
       <GlobalProvider>
         <CourseProvider>
       <CourseHeaderProvider>
@@ -69,6 +70,7 @@ const App: React.FC = () => {
       </CourseHeaderProvider>
       </CourseProvider>
       </GlobalProvider>
+      </AuthProvider>
     </GestureHandlerRootView>
   );
 };

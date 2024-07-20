@@ -95,7 +95,9 @@ const CourseDetailsDrawerNav = () => {
   const { course } = route.params;
 
   return (
-    <Drawer.Navigator drawerPosition="left">
+    <Drawer.Navigator 
+    drawerContent={props => <CustomDrawerContent {...props} />} 
+    drawerPosition="left">
       <Drawer.Screen 
         name="CourseTopTabs" 
         component={CourseTopTabs}

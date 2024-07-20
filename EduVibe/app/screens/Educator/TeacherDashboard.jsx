@@ -3,18 +3,14 @@ import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView,
 import { Ionicons } from '@expo/vector-icons';
 import DashboardStyles from '../../../themes/DashboardStyles';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { ParticipantContext } from '../../../contexts/ParticipantContext';
 import { getCourses } from '../../../lib/appwrite';
 import Icon from "react-native-vector-icons/Ionicons";
 import TeacherCourseCard from '../../../components/TeacherCourseCard';
-import { useQuestionContext } from '../../../contexts/QuestionContext';
 
 
 const TeacherDashboard = () => {
-  const { educator } = useQuestionContext();
   const [courses, setCourses] = useState([]); // State to hold courses
   const navigation = useNavigation();
-  const participantContext = useContext(ParticipantContext);
   const [refreshing, setRefreshing] = useState(false);
 
 

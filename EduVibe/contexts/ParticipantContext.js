@@ -1,51 +1,38 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { getUser } from '../lib/appwrite';
+import React, { createContext, useContext } from 'react';
+import { joinCourse as apiJoinCourse, getUserJoinedCourses as apiGetUserJoinedCourses } from '../lib/appwrite'; // Import your API methods
 
-const ParticipantContext = createContext(undefined);
+const ParticipantContext = createContext();
 
-const ParticipantProvider = ({ children }) => {
-  const [participants, setParticipants] = useState([ 
-    {
-      username: ' ',
-      lastAccessed: ' ',
-      avatar: ' ',
-    }
-  ]);
-
-  const [courses, setCourses] = useState([
-    {
-      title: ' ',
-      creator: ' ',
-      participants: '',
-      image: ' ',
-    },
-    // Add more courses as needed
-  ]);
-
-  const addCourse = async (course) => {
+export const ParticipantProvider = ({ children }) => {
+  const joinCourse = async (userId, courseId) => {
     try {
-      const user = await getUser(course.userId);
-      const username = user.username;
-
-      setCourses((prevCourses) => [
-        ...prevCourses,
-        {
-          title: course.title,
-          creator: username,
-          participants: participants.slice(0, 1),
-          image: course.courseAvatar,
-        }
-      ]);
+      if (!userId || !courseId) {
+        throw new Error('Invalid userId or courseId provided');
+      }
+      await apiJoinCourse(userId, courseId);
     } catch (error) {
-      console.error('Failed to fetch user details:', error.message);
+      console.error('Failed to join course:', error.message);
+    }
+  };
+
+  const hasJoinedCourse = async (userId, courseId) => {
+    if (!userId || !courseId) {
+      throw new Error('Invalid userId or courseId provided');
+    }
+    try {
+      const joinedCourses = await apiGetUserJoinedCourses(userId);
+      return joinedCourses.some(course => course.courseId === courseId);
+    } catch (error) {
+      console.error('Failed to check joined courses:', error.message);
+      return false; // Return false on error
     }
   };
 
   return (
-    <ParticipantContext.Provider value={{ participants, setParticipants, courses, addCourse }}>
+    <ParticipantContext.Provider value={{ joinCourse, hasJoinedCourse }}>
       {children}
     </ParticipantContext.Provider>
   );
 };
 
-export { ParticipantContext, ParticipantProvider };
+export const useParticipants = () => useContext(ParticipantContext);

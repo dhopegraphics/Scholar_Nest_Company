@@ -45,12 +45,12 @@ const CourseSchema = ({ route, navigation }) => {
   }, [status]);
 
   const handleJoinCourse = () => {
-    console.log('Navigating to CourseField with course:', course);
+    console.log('Navigating to Course_Information with course:', course);
     // Add course to joined courses (you can manage this in a context or global state)
     Alert.alert('Course Joined', 'You have successfully joined this course!', [
       {
         text: 'OK',
-        onPress: () => navigation.navigate('CourseField', { course }), // Navigate to  with course data
+        onPress: () => navigation.navigate('Course_Information', { course }), // Navigate to  with course data
       },
     ]);
   };
@@ -60,7 +60,7 @@ const CourseSchema = ({ route, navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{course.title}</Text>
       <Text style={styles.description}>{course.description}</Text>
-      <Text style={styles.sectionHeader}>Videos</Text>
+      <Text style={styles.sectionHeader}>Lectures</Text>
       {course.videoHeader.map((header, index) => (
         <View key={index} style={styles.videoContainer}>
           
