@@ -208,7 +208,7 @@ const CalendarComponent = () => {
               style={styles.closeButton}
               onPress={() => setShowSettingsModal(false)}
             >
-              <Ionicons name="close-outline" size={24} color="black" />
+              <Ionicons name="close-outline" size={24} color="white" />
             </Pressable>
           </View>
         </View>
@@ -295,6 +295,7 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+    color: "white",
   },
   modalButton: {
     marginBottom: 10,
