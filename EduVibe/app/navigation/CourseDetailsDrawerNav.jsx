@@ -2,9 +2,10 @@ import React from 'react';
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Assuming you're using Expo vector icons
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import ActivityData from '../screens/Annoucement/ActivityData';
 import CourseTopTabs from '../screens/CourseBrowseScreen/CourseTopTabs';
+import { useCourse } from '../../contexts/CourseContext';
 
 const Drawer = createDrawerNavigator();
 
@@ -90,33 +91,31 @@ const styles = StyleSheet.create({
 
 const CourseDetailsDrawerNav = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { course } = route.params;
 
   return (
-    <Drawer.Navigator 
-      drawerContent={props => <CustomDrawerContent {...props} />} 
-      drawerPosition="left"
-    >
+    <Drawer.Navigator drawerPosition="left">
       <Drawer.Screen 
         name="CourseTopTabs" 
         component={CourseTopTabs}
+        initialParams={{ course }}
         options={{ 
           headerShown: true,
-          headerTitle : "",
+          headerTitle: "",
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 20 }}>
               <Ionicons name="arrow-back" size={24} color="black" />
             </TouchableOpacity>
           ),
           headerStyle: {
-            height : 30,
-
+            height: 30,
           },
-          headerLeftContainerStyle : {
-            marginBottom : -40,
-            marginTop : -120,
-
+          headerLeftContainerStyle: {
+            marginBottom: -40,
+            marginTop: -120,
           },
-          drawerPosition: "right"
+          drawerPosition: "right",
         }} 
       />
     </Drawer.Navigator>

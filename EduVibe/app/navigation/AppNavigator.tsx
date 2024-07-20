@@ -78,11 +78,11 @@ import ThierReports from "../screens/ParentWards/ThierReports";
 import ClassRoomHome from "../ClassRoom/classroom";
 import SubjectRoom from "../ClassRoom/SubjectRoom";
 import StreamRoom from "../ClassRoom/StreamRoom";
-import TeacherCourseCard from "../../components/TeacherCourseCard";
 import CourseSchema from "../screens/Educator/CourseSchema";
 
+
 export type StackParamList = {
-  CourseSchema : undefined;
+  CourseSchema: undefined;
   TeacherCourseCard: undefined;
   Layout: undefined;
   JobDetails: undefined;
@@ -146,10 +146,11 @@ export type StackParamList = {
   BookDetail: undefined;
   ParentBadgesView: undefined;
   Wardsreport: undefined;
-  ThierReports : undefined;
-  ClassRoomHome : undefined;
-  SubjectRoom : undefined;
-  StreamRoom : undefined ;
+  ThierReports: undefined;
+  ClassRoomHome: undefined;
+  SubjectRoom: undefined;
+  StreamRoom: undefined;
+  CourseCustomHeader: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -402,7 +403,7 @@ const MainStackScreen = () => {
         options={{ headerShown: false }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="ClassRoomHome"
         component={ClassRoomHome}
         options={{ headerShown: false }}
@@ -412,13 +413,13 @@ const MainStackScreen = () => {
         component={SubjectRoom}
         options={{ headerShown: false }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="StreamRoom"
         component={StreamRoom}
         options={{ headerShown: false }}
       />
 
-                  <Stack.Screen
+      <Stack.Screen
         name="CourseSchema"
         component={CourseSchema}
         options={{ headerShown: false }}
@@ -440,15 +441,15 @@ const AppNavigator = () => (
                   <ExperienceProvider>
                     <MessageProvider>
                       <TagProvider>
-                        <CourseHeaderProvider>
-                          <ParticipantProvider>
-                            <CourseProvider>
+                        <CourseProvider>
+                          <CourseHeaderProvider>
+                            <ParticipantProvider>
                               <EventProvider>
                                 <MainStackScreen />
                               </EventProvider>
-                            </CourseProvider>
-                          </ParticipantProvider>
-                        </CourseHeaderProvider>
+                            </ParticipantProvider>
+                          </CourseHeaderProvider>
+                        </CourseProvider>
                       </TagProvider>
                     </MessageProvider>
                   </ExperienceProvider>

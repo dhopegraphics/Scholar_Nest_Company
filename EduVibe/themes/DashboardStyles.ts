@@ -47,6 +47,22 @@ const DashboardStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  courseContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    alignSelf : "center",
+  },
+  centeredContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: 200, // Ensure a minimum height so it's scrollable
+  },
+  noResultsText: {
+    marginTop: 8,
+    color: "#888",
+  },
 });
 
 export default DashboardStyles;

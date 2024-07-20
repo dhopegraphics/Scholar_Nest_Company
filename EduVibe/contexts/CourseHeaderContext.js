@@ -1,5 +1,6 @@
+// contexts/CourseHeaderContext.js
 import React, { createContext, useContext, useState } from 'react';
-import { Animated } from 'react-native'; // Import Animated
+import { Animated } from 'react-native'; 
 
 const CourseHeaderContext = createContext();
 

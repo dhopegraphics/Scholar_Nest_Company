@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useUsers } from '../contexts/UsersContext'; // Adjust import path as needed
+import ActionSheet from 'react-native-actionsheet';
+import { deleteCourse } from '../lib/appwrite';
+import { useQuestionContext } from '../contexts/QuestionContext'; // Adjust import path as needed
 
 const TeacherCourseCard = ({ course }) => {
   const navigation = useNavigation();
   const { users } = useUsers(); // Access the UsersContext
+  const { educator } = useQuestionContext(); // Access the QuestionContext
   const [teacherName, setTeacherName] = useState('');
+  const actionSheetRef = useRef();
 
   useEffect(() => {
     const fetchTeacherName = () => {
@@ -23,17 +28,47 @@ const TeacherCourseCard = ({ course }) => {
     navigation.navigate('CourseSchema', { course });
   };
 
+  const showActionSheet = () => {
+    actionSheetRef.current.show();
+  };
+
+  const handleActionSheetPress = async (index) => {
+    if (index === 0) { // 'Yes' option
+      try {
+        await deleteCourse(course.$id);
+        Alert.alert('Success', 'Course deleted successfully');
+        // Add any additional logic for after course deletion, e.g., updating state
+      } catch (error) {
+        Alert.alert('Error', error.message);
+      }
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles.card} onPress={handlePress}>
-      <View style={styles.innerContainer}>
-        <Image source={{ uri: course.courseAvatar }} style={styles.avatar} />
-        <View style={styles.info}>
-          <Text style={styles.title}>{course.title}</Text>
-          <Text style={styles.userId}>Teacher: {teacherName}</Text>
-          <Text style={styles.createdAt}>Created At: {new Date(course.createdAt).toLocaleDateString()}</Text>
+    <>
+      <TouchableOpacity
+        style={styles.card}
+        onPress={handlePress}
+        {...(educator && { onLongPress: showActionSheet })}
+      >
+        <View style={styles.innerContainer}>
+          <Image source={{ uri: course.courseAvatar }} style={styles.avatar} />
+          <View style={styles.info}>
+            <Text style={styles.title}>{course.title}</Text>
+            <Text style={styles.userId}>Teacher: {teacherName}</Text>
+            <Text style={styles.createdAt}>Created At: {new Date(course.createdAt).toLocaleDateString()}</Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <ActionSheet
+        ref={actionSheetRef}
+        title={'Do you want to delete this course?'}
+        options={['Yes', 'No']}
+        cancelButtonIndex={1}
+        destructiveButtonIndex={0}
+        onPress={handleActionSheetPress}
+      />
+    </>
   );
 };
 

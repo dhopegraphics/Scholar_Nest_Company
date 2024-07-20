@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 
-const CourseCustomHeader = ({ activeTab, animateType }) => {
+const CourseCustomHeader = ({ activeTab, animateType , route }) => {
   const [marginAnim] = useState(new Animated.Value(1));
   const [opacityAnim] = useState(new Animated.Value(1));
+
 
   useEffect(() => {
     if (animateType === 'tab') {
@@ -30,7 +31,7 @@ const CourseCustomHeader = ({ activeTab, animateType }) => {
   }, [activeTab, animateType]);
 
   // Dummy data for course information (replace with actual course data)
-  const courseTitle = "Introduction to React Native";
+  const courseTitle = " books" ;
   const progressPercentage = 75; // Example percentage
 
   return (

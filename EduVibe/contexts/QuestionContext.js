@@ -4,9 +4,10 @@ const QuestionContext = createContext();
 
 export const QuestionProvider = ({ children }) => {
   const [answer, setAnswer] = useState(null);
+  const [educator , setEducator] = useState(null);
 
   return (
-    <QuestionContext.Provider value={{ answer, setAnswer }}>
+    <QuestionContext.Provider value={{ answer, setAnswer  , educator , setEducator }}>
       {children}
     </QuestionContext.Provider>
   );

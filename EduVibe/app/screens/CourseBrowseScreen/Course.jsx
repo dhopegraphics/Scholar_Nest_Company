@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions } from 'react-native';
-import { useCourseContext } from '../../../contexts/useCourseContext';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { View, TouchableOpacity, Animated, Dimensions, StyleSheet } from 'react-native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useCourseHeader } from '../../../contexts/CourseHeaderContext';
-import CourseField from './CourseField'; // Import your CourseField component
+import CourseField from './CourseField';
 
-const Course = () => {
-  const { course } = useCourseContext();
+const Course = ({ course }) => {
   const navigation = useNavigation();
-  const { setHeaderProps, scrollY } = useCourseHeader();
+  const { setHeaderProps } = useCourseHeader();
 
   useEffect(() => {
     setHeaderProps((prevProps) => ({
@@ -18,22 +16,16 @@ const Course = () => {
     }));
   }, []);
 
-  if (!course) {
-    return <Text>No course selected</Text>;
-  }
-
   const handleButtonPress = () => {
     navigation.dispatch(DrawerActions.openDrawer());
   };
 
-  // Calculate screen dimensions
   const { height: screenHeight } = Dimensions.get('window');
 
   return (
     <>
-      <Animated.View style={[styles.header]}>
-      </Animated.View>
-          <CourseField />
+      <Animated.View style={[styles.header]} />
+      <CourseField course={course} />
       <TouchableOpacity style={styles.roundedButton} onPress={handleButtonPress}>
         <Ionicons name="chevron-back-circle" size={24} color="white" />
       </TouchableOpacity>
@@ -42,22 +34,6 @@ const Course = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  creator: {
-    fontSize: 18,
-    marginTop: 8,
-  },
   roundedButton: {
     position: "absolute",
     right: 16,
@@ -68,8 +44,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderTopLeftRadius: 25,
     borderBottomLeftRadius: 25,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
     justifyContent: "center",
     alignItems: "center",
   },

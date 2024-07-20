@@ -14,6 +14,8 @@ const Tab = createBottomTabNavigator(); // Temporary workaround with type assert
 
 const Tab_Layout = () => {
   const { answer } = useQuestionContext();
+  const {educator} = useQuestionContext();
+
   return (
     <>
       <View style={{ flex: 1, marginBottom: -25 }}>
@@ -62,7 +64,7 @@ const Tab_Layout = () => {
               }}
             />
           )}
-          {answer && (
+          {educator && (
             <Tab.Screen
               name="Courses"
               component={CourseBrowseNestDrawer}

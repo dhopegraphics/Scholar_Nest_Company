@@ -1,60 +1,55 @@
-import React, { useCallback, useState, useContext } from "react";
-import {
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  RefreshControl,
-  SafeAreaView,
-} from "react-native";
-import { CourseCard } from "../../../components";
-import { Ionicons } from "@expo/vector-icons";
-import DashboardStyles from "../../../themes/DashboardStyles";
-import { useNavigation, DrawerActions } from "@react-navigation/native";
-import { useCourseContext } from "../../../contexts/useCourseContext";
-import { ParticipantContext } from "../../../contexts/ParticipantContext";
-import ClassRoomCard from "../../../components/ClassRoomCard";
-import styles from "../../MyGradesApp/config/styles";
+import React, { useCallback, useState, useContext , useEffect } from 'react';
+import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
+import { CourseCard } from '../../../components';
+import DashboardStyles from '../../../themes/DashboardStyles';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { getCourses } from '../../../lib/appwrite';
+import ClassRoomCard from '../../../components/ClassRoomCard';
+import { Ionicons } from '@expo/vector-icons';
+import Icon from "react-native-vector-icons/Ionicons";
 
 const LearningSection = () => {
   const navigation = useNavigation();
-  const { setCourse } = useCourseContext();
-  const participantContext = useContext(ParticipantContext);
+  const [courses, setCourses] = useState([]); // State to hold courses
   const [refreshing, setRefreshing] = useState(false);
-
-  const handlePress = (course) => {
-    setCourse(course);
-    if (participantContext) {
-      participantContext.setParticipants(course.participants);
-    }
-    //@ts-ignore
-    navigation.navigate("Course_Information");
-  };
+ 
 
   const handleButtonPress = () => {
     navigation.dispatch(DrawerActions.openDrawer());
   };
 
   const handleClassPress = () => {
-    navigation.navigate("ClassRoomHome");
+    navigation.navigate('ClassRoomHome');
   };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    // Simulate a network request
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   }, []);
 
+  useEffect(() => {
+    fetchCourses(); // Fetch courses when component mounts
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const coursesData = await getCourses(); // Fetch courses from API
+      setCourses(coursesData); // Set courses in state
+    } catch (error) {
+      console.error('Failed to fetch courses:', error.message);
+    }
+  };
+
   return (
     <SafeAreaView style={DashboardStyles.safeArea}>
-      <View style={DashboardStyles.container }>
+      <View style={DashboardStyles.container}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={DashboardStyles.scrollViewContent}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}  />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
           <View style={DashboardStyles.scrollContainerWrapper}>
@@ -63,26 +58,27 @@ const LearningSection = () => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={DashboardStyles.scrollContainer}
             >
-              {participantContext?.courses.map((course, index) => (
-                <CourseCard
-                  key={index}
-                  title={course.title}
-                  creator={course.creator}
-                  participantsCount={course.participants.length}
-                  onPress={() => handlePress(course)}
-                  imageSource={{ uri: course.image }} // Pass the image source dynamically
-                />
-              ))}
+              {courses.length > 0 ? (
+                courses.map((course) => (
+                  <CourseCard key={course.$id} course={course} navigation={navigation} />
+                ))
+              ) : (
+                <View style={DashboardStyles.centeredContainer}>
+                  <Icon name="search" size={64} color="#888" />
+                  <Text style={DashboardStyles.noResultsText}>No results</Text>
+                </View>
+              )}
+
             </ScrollView>
           </View>
 
-          <View style = {{padding : 10,}}>
+          <View style={{ padding: 10 }}>
             <ClassRoomCard
-              title={"ClassRoom"}
+              title={'ClassRoom'}
               onPress={handleClassPress}
               imageSource={{
-                uri: "https://img.freepik.com/free-vector/empty-classroom-interior-with-chalkboard_1308-61229.jpg",
-              }} // Pass the image source dynamically
+                uri: 'https://img.freepik.com/free-vector/empty-classroom-interior-with-chalkboard_1308-61229.jpg',
+              }}
             />
           </View>
         </ScrollView>
@@ -90,7 +86,7 @@ const LearningSection = () => {
           style={DashboardStyles.roundedButton}
           onPress={handleButtonPress}
         >
-          <Ionicons name="chevron-back-circle" size={24} color="white" />
+          <Ionicons name='chevron-back-circle' size={24} color='white' />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -34,6 +34,7 @@ const SurveyScreen = () => {
   const {setCourseButtonVisible} = useVisibility();
   const {setAppSettingsVisible} = useVisibility();
   const { setAnswer } = useQuestionContext();
+const {setEducator}  = useQuestionContext();
 
   useEffect(() => {
     setLoading(false);
@@ -89,6 +90,8 @@ const SurveyScreen = () => {
       setAppSettingsVisible (true);
       setCurrentQuestion(2);
       setAnswer(!null);
+      setEducator(!null);
+      
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Educator') {
       console.log('Educator selected');
       setCurrentQuestion(3);
@@ -96,6 +99,7 @@ const SurveyScreen = () => {
       setCourseButtonVisible (true);
       setAppSettingsVisible (true);
       setAnswer(!null);
+      setEducator(null);
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Parent') {
       console.log('Parent selected');
       setCurrentQuestion(1);
@@ -103,6 +107,8 @@ const SurveyScreen = () => {
       setCourseButtonVisible (false);
       setAppSettingsVisible (false);
       setAnswer(null);
+      setEducator(null);
+      
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected');
       setLoading(true); // Show loading indicator before navigating to "ParentWardSetUpScreen"
@@ -126,6 +132,7 @@ const SurveyScreen = () => {
       setCourseButtonVisible (true);
       setAppSettingsVisible (true);
       setAnswer(!null);
+      setEducator(null);
       navigation.navigate("Back");
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'No') {
       console.log('No selected from 3');
@@ -134,6 +141,7 @@ const SurveyScreen = () => {
       setCourseButtonVisible (true);
       setAppSettingsVisible (true);
       setAnswer(!null);
+      setEducator(null);
       navigation.navigate("Back");
       
     } else {

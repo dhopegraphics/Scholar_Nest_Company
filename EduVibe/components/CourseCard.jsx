@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useUsers } from '../contexts/UsersContext';
 
-const CourseCard = ({ title, creator, participantsCount, onPress, imageSource }) => {
+const CourseCard = ({ course }) => {
+  const navigation = useNavigation();
+  const { users } = useUsers();
+  const [teacherName, setTeacherName] = useState('');
+
+  useEffect(() => {
+    const fetchTeacherName = () => {
+      const user = users.find(user => user.id === course.userId);
+      if (user) {
+        setTeacherName(user.username);
+      }
+    };
+
+    fetchTeacherName();
+  }, [course.userId, users]);
+
+  const handlePress = () => {
+    navigation.navigate('Course_Information', { course });
+  };
+
   return (
-    <TouchableOpacity
-      style={styles.cardContainer}
-      onPress={onPress}
-      activeOpacity={0.7}
-    >
+    <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.innerContainer}>
-        <Image source={imageSource} style={styles.cardImg} />
-        <View style={styles.cardBody}>
-          <Text style={styles.cardTitle}>{title}</Text>
-          <Text style={styles.cardCreator}>{creator}</Text>
-          <Text style={styles.cardParticipants}>Participants: {participantsCount}</Text>
+        <Image source={{ uri: course.courseAvatar }} style={styles.avatar} />
+        <View style={styles.info}>
+          <Text style={styles.title}>{course.title}</Text>
+          <Text style={styles.userId}>Teacher: {teacherName}</Text>
+          <Text style={styles.createdAt}>Created At: {new Date(course.createdAt).toLocaleDateString()}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -21,7 +38,7 @@ const CourseCard = ({ title, creator, participantsCount, onPress, imageSource })
 };
 
 const styles = StyleSheet.create({
-  cardContainer: {
+  card: {
     borderRadius: 8,
     backgroundColor: '#fff',
     marginRight: 16,
@@ -35,28 +52,27 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
   },
-  cardImg: {
+  avatar: {
     width: '100%',
     height: 100,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
   },
-  cardBody: {
+  info: {
     padding: 12,
+    justifyContent: 'center',
   },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#232425',
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  cardCreator: {
+  userId: {
+    fontSize: 14,
+    color: '#555',
+  },
+  createdAt: {
     fontSize: 12,
-    color: '#333',
-  },
-  cardParticipants: {
-    marginTop: 4,
-    fontSize: 12,
-    color: '#333',
+    color: '#888',
   },
 });
 

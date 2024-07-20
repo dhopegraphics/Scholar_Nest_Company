@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
 import { useUsers } from '../../../contexts/UsersContext';
+import { useQuestionContext } from '../../../contexts/QuestionContext';
 
-const CourseSchema = ({ route }) => {
+const CourseSchema = ({ route, navigation }) => {
+  const {educator} = useQuestionContext();
   const { course } = route.params;
   const { users } = useUsers(); // Access the UsersContext
   const [teacherName, setTeacherName] = useState('');
@@ -42,6 +44,18 @@ const CourseSchema = ({ route }) => {
     console.log('Playback Status:', status); // Log playback status changes
   }, [status]);
 
+  const handleJoinCourse = () => {
+    console.log('Navigating to CourseField with course:', course);
+    // Add course to joined courses (you can manage this in a context or global state)
+    Alert.alert('Course Joined', 'You have successfully joined this course!', [
+      {
+        text: 'OK',
+        onPress: () => navigation.navigate('CourseField', { course }), // Navigate to  with course data
+      },
+    ]);
+  };
+
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{course.title}</Text>
@@ -49,6 +63,7 @@ const CourseSchema = ({ route }) => {
       <Text style={styles.sectionHeader}>Videos</Text>
       {course.videoHeader.map((header, index) => (
         <View key={index} style={styles.videoContainer}>
+          
           <TouchableOpacity onPress={() => handleVideoPress(course.videos[index])}>
             <Text style={styles.videoHeader}>{header}</Text>
           </TouchableOpacity>
@@ -80,6 +95,16 @@ const CourseSchema = ({ route }) => {
       <Text style={styles.userId}>{teacherName}</Text>
       <Text style={styles.sectionHeader}>Created At</Text>
       <Text style={styles.createdAt}>{new Date(course.createdAt).toLocaleDateString()}</Text>
+
+    
+      {educator && (
+      <TouchableOpacity onPress={handleJoinCourse} style={styles.joinButton}>
+       
+        <Text style={styles.joinButtonText}>Join this Course</Text>
+      </TouchableOpacity>
+
+       )}
+       
     </ScrollView>
   );
 };
@@ -138,6 +163,17 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     textAlign: 'center',
+    fontSize: 16,
+  },
+  joinButton: {
+    marginTop: 20,
+    backgroundColor: '#28a745',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  joinButtonText: {
+    color: '#fff',
     fontSize: 16,
   },
 });

@@ -1,26 +1,22 @@
-import React, { useCallback, useState, useContext } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
-import { CourseCard } from '../../../components';
+import React, { useCallback, useState, useContext, useEffect } from 'react';
+import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DashboardStyles from '../../../themes/DashboardStyles';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { ParticipantContext } from '../../../contexts/ParticipantContext';
-import { useCourseContext } from '../../../contexts/useCourseContext';
+import { getCourses } from '../../../lib/appwrite';
+import Icon from "react-native-vector-icons/Ionicons";
+import TeacherCourseCard from '../../../components/TeacherCourseCard';
+import { useQuestionContext } from '../../../contexts/QuestionContext';
+
 
 const TeacherDashboard = () => {
+  const { educator } = useQuestionContext();
+  const [courses, setCourses] = useState([]); // State to hold courses
   const navigation = useNavigation();
-  const { setCourse } = useCourseContext();
   const participantContext = useContext(ParticipantContext);
   const [refreshing, setRefreshing] = useState(false);
 
-  const handlePress = (course) => {
-    setCourse(course);
-    if (participantContext) {
-      participantContext.setParticipants(course.participants);
-    }
-    //@ts-ignore
-    navigation.navigate('Course_Information');
-  };
 
   const handleButtonPress = () => {
     navigation.dispatch(DrawerActions.openDrawer());
@@ -34,6 +30,19 @@ const TeacherDashboard = () => {
     }, 2000);
   }, []);
 
+  useEffect(() => {
+    fetchCourses(); // Fetch courses when component mounts
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const coursesData = await getCourses(); // Fetch courses from API
+      setCourses(coursesData); // Set courses in state
+    } catch (error) {
+      console.error('Failed to fetch courses:', error.message);
+    }
+  };
+
   return (
     <SafeAreaView style={DashboardStyles.safeArea}>
       <View style={DashboardStyles.container}>
@@ -44,19 +53,20 @@ const TeacherDashboard = () => {
         >
           <Text style={DashboardStyles.title}>Dashboard</Text>
 
-          <View style={{alignSelf : "center"}}>
-        
-              {participantContext?.courses.map((course, index) => (
-                <CourseCard
-                  key={index}
-                  title={course.title}
-                  creator={course.creator}
-                  participantsCount={course.participants.length}
-                  onPress={() => handlePress(course)}
-                  imageSource={{ uri: course.image }} // Pass the image source dynamically
-                />
-              ))}
-         
+          <View style={{ alignSelf: "center" }}>
+
+            <View style={DashboardStyles.courseContainer}>
+              {courses.length > 0 ? (
+                courses.map((course) => (
+                  <TeacherCourseCard key={course.$id} course={course} navigation={navigation} />
+                ))
+              ) : (
+                <View style={DashboardStyles.centeredContainer}>
+                  <Icon name="search" size={64} color="#888" />
+                  <Text style={DashboardStyles.noResultsText}>No results</Text>
+                </View>
+              )}
+            </View>
           </View>
         </ScrollView>
         <TouchableOpacity style={DashboardStyles.roundedButton} onPress={handleButtonPress}>
