@@ -1,18 +1,19 @@
-import React, { useCallback, useState, useContext , useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
 import { CourseCard } from '../../../components';
 import DashboardStyles from '../../../themes/DashboardStyles';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { getCourses } from '../../../lib/appwrite';
+import { getCourses, getUserJoinedCourses } from '../../../lib/appwrite';
 import ClassRoomCard from '../../../components/ClassRoomCard';
 import { Ionicons } from '@expo/vector-icons';
 import Icon from "react-native-vector-icons/Ionicons";
+import { useAuth } from '../../../contexts/AuthContext';
 
 const LearningSection = () => {
   const navigation = useNavigation();
-  const [courses, setCourses] = useState([]); // State to hold courses
+  const { currentUser } = useAuth(); // Get current user from AuthContext
+  const [courses, setCourses] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
- 
 
   const handleButtonPress = () => {
     navigation.dispatch(DrawerActions.openDrawer());
@@ -24,19 +25,25 @@ const LearningSection = () => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    fetchCourses();
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   }, []);
 
   useEffect(() => {
-    fetchCourses(); // Fetch courses when component mounts
-  }, []);
+    if (currentUser) {
+      fetchCourses(); // Fetch courses when component mounts and currentUser is defined
+    }
+  }, [currentUser]);
 
   const fetchCourses = async () => {
     try {
-      const coursesData = await getCourses(); // Fetch courses from API
-      setCourses(coursesData); // Set courses in state
+      const coursesData = await getCourses();
+      const userJoinedCourses = await getUserJoinedCourses(currentUser.$id); // Use current user's ID
+      const joinedCourseIds = userJoinedCourses.map(course => course.courseId);
+      const filteredCourses = coursesData.filter(course => joinedCourseIds.includes(course.$id));
+      setCourses(filteredCourses); // Set only joined courses in state
     } catch (error) {
       console.error('Failed to fetch courses:', error.message);
     }
@@ -68,7 +75,6 @@ const LearningSection = () => {
                   <Text style={DashboardStyles.noResultsText}>No results</Text>
                 </View>
               )}
-
             </ScrollView>
           </View>
 

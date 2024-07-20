@@ -88,7 +88,6 @@ const CourseField = ({ course }) => (
       tabBarShowLabel: true,
     }}
     tabBarPosition="top"
-    swipeEnabled
   >
     <Tab.Screen name="Lectures">
       {props => <LecturesScreen {...props} course={course} />}

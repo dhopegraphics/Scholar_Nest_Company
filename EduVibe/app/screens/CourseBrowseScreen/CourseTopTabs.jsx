@@ -19,12 +19,14 @@ const CourseTopTabs = ({ navigation, route }) => {
     setHeaderProps({
       activeTab,
       animateType: 'tab',
+      course, 
+      progressPercentage: 75, 
     });
-  }, [activeTab]);
+  }, [activeTab, course, setHeaderProps]);
 
   return (
     <View style={styles.container}>
-      <CourseCustomHeader {...headerProps} />
+      <CourseCustomHeader {...headerProps} /> 
       <Tab.Navigator
         initialRouteName="Course"
         screenOptions={{

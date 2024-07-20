@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { joinCourse as apiJoinCourse, getUserJoinedCourses as apiGetUserJoinedCourses } from '../lib/appwrite'; // Import your API methods
+import { joinCourse as apiJoinCourse, getUserJoinedCourses as apiGetUserJoinedCourses } from '../lib/appwrite';
 
 const ParticipantContext = createContext();
 
@@ -24,9 +24,11 @@ export const ParticipantProvider = ({ children }) => {
       return joinedCourses.some(course => course.courseId === courseId);
     } catch (error) {
       console.error('Failed to check joined courses:', error.message);
-      return false; // Return false on error
+      return false;
     }
   };
+
+ 
 
   return (
     <ParticipantContext.Provider value={{ joinCourse, hasJoinedCourse }}>

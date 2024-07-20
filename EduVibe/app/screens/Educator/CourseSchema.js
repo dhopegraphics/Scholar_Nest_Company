@@ -3,58 +3,90 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'rea
 import { Video, ResizeMode } from 'expo-av';
 import { useUsers } from '../../../contexts/UsersContext';
 import { useQuestionContext } from '../../../contexts/QuestionContext';
+import { useParticipants } from '../../../contexts/ParticipantContext';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const CourseSchema = ({ route, navigation }) => {
-  const {educator} = useQuestionContext();
+  const { educator } = useQuestionContext();
   const { course } = route.params;
-  const { users } = useUsers(); // Access the UsersContext
+  const { users } = useUsers();
+  const { joinCourse, hasJoinedCourse } = useParticipants();
+  const { currentUser } = useAuth();
   const [teacherName, setTeacherName] = useState('');
-  const [selectedVideo, setSelectedVideo] = useState(null); // State to keep track of the selected video
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const [status, setStatus] = useState({});
+  const [hasJoined, setHasJoined] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
     const fetchTeacherName = () => {
       const user = users.find(user => user.id === course.userId);
       if (user) {
-        setTeacherName(user.username); // Use `username` from the context
-        console.log(`Teacher Name: ${user.username}`); // Log the teacher's name
+        setTeacherName(user.username);
+        console.log(`Teacher Name: ${user.username}`);
       }
     };
 
     fetchTeacherName();
-  }, [course.userId, users]); // Depend on `course.userId` and `users`
+  }, [course.userId, users]);
+
+  useEffect(() => {
+    const checkUserEnrollment = async () => {
+      if (currentUser) {
+        try {
+          const joined = await hasJoinedCourse(currentUser.$id, course.$id);
+          setHasJoined(joined);
+        } catch (error) {
+          console.error('Failed to check user enrollment:', error.message);
+          setHasJoined(false);
+        }
+      }
+    };
+
+    checkUserEnrollment();
+  }, [currentUser, course.$id, hasJoinedCourse]);
 
   const handleVideoPress = (videoUrl) => {
-    setSelectedVideo(videoUrl); // Set the selected video URL
-    console.log(`Selected Video URL: ${videoUrl}`); // Log the selected video URL
+    setSelectedVideo(videoUrl);
+    console.log(`Selected Video URL: ${videoUrl}`);
   };
 
   const handlePlayPause = () => {
     if (status.isPlaying) {
-      console.log('Pausing video'); // Log the pause action
+      console.log('Pausing video');
       videoRef.current.pauseAsync().catch(error => console.error('Pause Error:', error));
     } else {
-      console.log('Playing video'); // Log the play action
+      console.log('Playing video');
       videoRef.current.playAsync().catch(error => console.error('Play Error:', error));
     }
   };
 
   useEffect(() => {
-    console.log('Playback Status:', status); // Log playback status changes
+    console.log('Playback Status:', status);
   }, [status]);
 
-  const handleJoinCourse = () => {
-    console.log('Navigating to Course_Information with course:', course);
-    // Add course to joined courses (you can manage this in a context or global state)
-    Alert.alert('Course Joined', 'You have successfully joined this course!', [
-      {
-        text: 'OK',
-        onPress: () => navigation.navigate('Course_Information', { course }), // Navigate to  with course data
-      },
-    ]);
+  const handleJoinCourse = async () => {
+    try {
+      if (currentUser) {
+        await joinCourse(currentUser.$id, course.$id);
+        console.log('Navigating to Course_Information with course:', course);
+        Alert.alert('Course Joined', 'You have successfully joined this course!', [
+          {
+            text: 'OK',
+            onPress: () => {
+              setHasJoined(true);
+              navigation.navigate('Course_Information', { course });
+            },
+          },
+        ]);
+      } else {
+        Alert.alert('Error', 'User not logged in');
+      }
+    } catch (error) {
+      console.error('Failed to join course:', error.message);
+      Alert.alert('Error', 'Failed to join course');
+    }
   };
-
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -63,7 +95,6 @@ const CourseSchema = ({ route, navigation }) => {
       <Text style={styles.sectionHeader}>Lectures</Text>
       {course.videoHeader.map((header, index) => (
         <View key={index} style={styles.videoContainer}>
-          
           <TouchableOpacity onPress={() => handleVideoPress(course.videos[index])}>
             <Text style={styles.videoHeader}>{header}</Text>
           </TouchableOpacity>
@@ -77,10 +108,10 @@ const CourseSchema = ({ route, navigation }) => {
                 resizeMode={ResizeMode.CONTAIN}
                 isLooping
                 onPlaybackStatusUpdate={status => {
-                    console.log('Playback Status Update:', status);
-                    setStatus(status);
-                  }}
-                onError={(error) => console.error('Video Playback Error:', error)} // Log video playback errors
+                  console.log('Playback Status Update:', status);
+                  setStatus(status);
+                }}
+                onError={(error) => console.error('Video Playback Error:', error)}
               />
               <TouchableOpacity onPress={handlePlayPause} style={styles.button}>
                 <Text style={styles.buttonText}>{status.isPlaying ? 'Pause' : 'Play'}</Text>
@@ -95,16 +126,15 @@ const CourseSchema = ({ route, navigation }) => {
       <Text style={styles.userId}>{teacherName}</Text>
       <Text style={styles.sectionHeader}>Created At</Text>
       <Text style={styles.createdAt}>{new Date(course.createdAt).toLocaleDateString()}</Text>
-
-    
       {educator && (
-      <TouchableOpacity onPress={handleJoinCourse} style={styles.joinButton}>
-       
-        <Text style={styles.joinButtonText}>Join this Course</Text>
-      </TouchableOpacity>
-
-       )}
-       
+        <TouchableOpacity
+          onPress={handleJoinCourse}
+          style={[styles.joinButton, hasJoined && styles.joinedButton]}
+          disabled={hasJoined}
+        >
+          <Text style={styles.joinButtonText}>{hasJoined ? 'Joined' : 'Join this Course'}</Text>
+        </TouchableOpacity>
+      )}
     </ScrollView>
   );
 };
@@ -123,58 +153,60 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sectionHeader: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     marginTop: 20,
     marginBottom: 10,
   },
   videoContainer: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   videoHeader: {
     fontSize: 16,
-    color: '#333',
+    color: 'blue',
+    textDecorationLine: 'underline',
     marginBottom: 5,
   },
   video: {
-    alignSelf: 'center',
     width: '100%',
     height: 200,
-    marginTop: 10,
+    marginBottom: 10,
   },
   resources: {
-    fontSize: 14,
-    color: '#555',
+    fontSize: 16,
+    marginBottom: 20,
   },
   userId: {
-    fontSize: 14,
-    color: '#555',
+    fontSize: 16,
+    marginBottom: 20,
   },
   createdAt: {
-    fontSize: 14,
-    color: '#555',
+    fontSize: 16,
+    marginBottom: 20,
   },
   button: {
-    marginTop: 10,
-    backgroundColor: '#1E90FF',
     padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 16,
-  },
-  joinButton: {
-    marginTop: 20,
-    backgroundColor: '#28a745',
-    padding: 10,
+    backgroundColor: 'blue',
     borderRadius: 5,
     alignItems: 'center',
   },
-  joinButtonText: {
-    color: '#fff',
+  buttonText: {
+    color: 'white',
     fontSize: 16,
+  },
+  joinButton: {
+    padding: 10,
+    backgroundColor: 'green',
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  joinButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  joinedButton: {
+    backgroundColor: 'gray',
   },
 });
 

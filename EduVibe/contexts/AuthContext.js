@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getCurrentUser , signOut } from '../lib/appwrite';
+import { getCurrentUser  } from '../lib/appwrite';
 
 const AuthContext = createContext();
 
@@ -19,17 +19,9 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  const logout = async () => {
-    try {
-      await signOut();
-      setCurrentUser(null);
-    } catch (error) {
-      console.error('Failed to sign out:', error);
-    }
-  };
-
+  
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser, logout }}>
+    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
     </AuthContext.Provider>
   );

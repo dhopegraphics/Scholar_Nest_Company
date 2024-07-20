@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 
-const CourseCustomHeader = ({ activeTab, animateType , route }) => {
+const CourseCustomHeader = ({ activeTab, animateType, course, progressPercentage }) => {
   const [marginAnim] = useState(new Animated.Value(1));
   const [opacityAnim] = useState(new Animated.Value(1));
-
 
   useEffect(() => {
     if (animateType === 'tab') {
@@ -30,9 +29,7 @@ const CourseCustomHeader = ({ activeTab, animateType , route }) => {
     }
   }, [activeTab, animateType]);
 
-  // Dummy data for course information (replace with actual course data)
-  const courseTitle = " books" ;
-  const progressPercentage = 75; // Example percentage
+  const courseTitle = course ? course.title : 'No Title'; 
 
   return (
     <Animated.View
@@ -58,32 +55,32 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 30,
     alignItems: 'center',
-    flexDirection: 'row', // Arrange items horizontally
+    flexDirection: 'row',
   },
   thumbnailContainer: {
     width: 70,
     height: 70,
-    backgroundColor: '#ccc', // Placeholder color for thumbnail
+    backgroundColor: '#ccc',
     marginRight: 5,
     borderRadius: 20,
   },
   thumbnail: {
     flex: 1,
-    backgroundColor: '#aaa', // Placeholder color for thumbnail content
+    backgroundColor: '#aaa',
     borderRadius: 10,
   },
   courseTitle: {
-    flex: 1, // Take remaining space
+    flex: 1,
     color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: -25,
-    marginRight: -270,
-    paddingRight: 10,
+    marginRight: -280,
+    paddingRight: 12,
   },
   progressBar: {
     height: 10,
-    width: "59%", // Full width of the header
+    width: '59%',
     backgroundColor: '#ddd',
     marginTop: 50,
     marginRight: 25,
@@ -92,13 +89,13 @@ const styles = StyleSheet.create({
   },
   progressIndicator: {
     height: '100%',
-    backgroundColor: '#ff9800', // Progress color
+    backgroundColor: '#ff9800',
     borderRadius: 10,
   },
   progress: {
     marginTop: 50,
     marginBottom: 8,
-    color: "black",
+    color: 'black',
   },
 });
 
