@@ -16,6 +16,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ActionSheet from "react-native-actionsheet";
+import { useNavigation } from "@react-navigation/native";
 
 const ChatScreen = ({ contact }) => {
   const [messages, setMessages] = useState([]);
@@ -25,6 +26,7 @@ const ChatScreen = ({ contact }) => {
   const [editingMessage, setEditingMessage] = useState(null);
   const flatListRef = useRef(null);
   const actionSheetRef = useRef(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -165,6 +167,9 @@ const ChatScreen = ({ contact }) => {
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.navigate("Back")}>
+            <Icon name="chevron-left" size={40} color="#000" />
+          </TouchableOpacity>
           <Image style={styles.avatar} source={{ uri: contact?.img }} />
           <View>
             <Text style={styles.userName}>{contact?.name}</Text>
@@ -241,7 +246,7 @@ const styles = StyleSheet.create({
     maxWidth: "70%",
   },
   myMessage: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#1C9C9D",
     alignSelf: "flex-end",
   },
   theirMessage: {
@@ -284,7 +289,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   sendButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#1C9C9D",
     borderRadius: 20,
     width: 40,
     height: 40,

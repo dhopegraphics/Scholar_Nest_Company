@@ -15,11 +15,18 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ActionSheet from "react-native-actionsheet";
+import { useNavigation } from "@react-navigation/native";
 
 const GroupChatScreen = ({ group }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const flatListRef = useRef(null);
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingMessage, setEditingMessage] = useState(null);
+  const actionSheetRef = useRef(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -65,8 +72,53 @@ const GroupChatScreen = ({ group }) => {
     }
   };
 
+  const handleLongPress = (message) => {
+    setSelectedMessage(message);
+    actionSheetRef.current.show();
+  };
+
+  const handleActionSheet = (index) => {
+    switch (index) {
+      case 0: // Reply
+        setInputText(`@${selectedMessage.id}: `);
+        break;
+      case 1: // Forward
+        Alert.alert("Forward", `Forward message: ${selectedMessage.text}`);
+        break;
+      case 2: // Edit
+        handleEdit(selectedMessage);
+        break;
+      case 3: // Delete
+        deleteMessage(selectedMessage.id);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleEdit = (message) => {
+    setEditingMessage(message);
+    setInputText(message.text);
+    setIsEditing(true);
+  };
+
+  const deleteMessage = async (messageId) => {
+    const updatedMessages = messages.filter((msg) => msg.id !== messageId);
+    setMessages(updatedMessages);
+
+    try {
+      await AsyncStorage.setItem(
+        `messages_${contact.id}`,
+        JSON.stringify(updatedMessages)
+      );
+    } catch (error) {
+      console.error("Error deleting message:", error.message);
+    }
+  };
+
   const renderMessageItem = ({ item }) => (
-    <View
+    <TouchableOpacity
+      onLongPress={() => handleLongPress(item)}
       style={[
         styles.messageContainer,
         item.sender === "me" ? styles.myMessage : styles.theirMessage,
@@ -88,7 +140,7 @@ const GroupChatScreen = ({ group }) => {
           {item.time}
         </Text>
       )}
-    </View>
+    </TouchableOpacity>
   );
 
   // Custom getItemLayout function to improve scroll performance
@@ -106,6 +158,9 @@ const GroupChatScreen = ({ group }) => {
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.navigate("Back")}>
+            <Icon name="chevron-left" size={40} color="#000" />
+          </TouchableOpacity>
           <Image style={styles.avatar} source={{ uri: group?.img }} />
           <View>
             <Text style={styles.userName}>{group?.name}</Text>
@@ -132,6 +187,14 @@ const GroupChatScreen = ({ group }) => {
             <Icon name="send" size={24} color="white" />
           </TouchableOpacity>
         </View>
+        <ActionSheet
+          ref={actionSheetRef}
+          title={"Choose an action"}
+          options={["Reply", "Forward", "Edit", "Delete", "Cancel"]}
+          cancelButtonIndex={4}
+          destructiveButtonIndex={3}
+          onPress={(index) => handleActionSheet(index)}
+        />
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
@@ -173,7 +236,7 @@ const styles = StyleSheet.create({
     maxWidth: "70%",
   },
   myMessage: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#1C9C9D",
     alignSelf: "flex-end",
   },
   theirMessage: {
@@ -216,7 +279,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   sendButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#1C9C9D",
     borderRadius: 20,
     width: 40,
     height: 40,
