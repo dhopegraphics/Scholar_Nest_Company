@@ -1,8 +1,7 @@
-// CourseTopTabs.js
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, useFocusEffect } from '@react-navigation/native';
 import Course from './Course';
 import ParticipantsTab from './ParticipantsTab';
 import CourseCustomHeader from './CourseCustomHeader';
@@ -15,6 +14,16 @@ const CourseTopTabs = ({ navigation, route }) => {
   const { course } = route.params;
 
   const activeTab = getFocusedRouteNameFromRoute(route) ?? 'Course';
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reset headerComponent when the screen is focused
+      setHeaderProps((prevProps) => ({
+        ...prevProps,
+        headerComponent: null,
+      }));
+    }, [setHeaderProps])
+  );
 
   useEffect(() => {
     if (!headerProps.headerComponent) {
