@@ -12,7 +12,10 @@ const VideoPlayerHeader = ({ videoUrl, onStatusUpdate }) => {
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
         isLooping
-        onPlaybackStatusUpdate={onStatusUpdate}
+        onPlaybackStatusUpdate={onStatusUpdate  => {
+          console.log('Playback Status Update:', onStatusUpdate);
+        }}
+        
       />
     </View>
   );

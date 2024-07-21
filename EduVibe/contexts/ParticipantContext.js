@@ -1,5 +1,6 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext  , useState , useEffect } from 'react';
 import { joinCourse as apiJoinCourse, getUserJoinedCourses as apiGetUserJoinedCourses } from '../lib/appwrite';
+
 
 const ParticipantContext = createContext();
 
@@ -28,10 +29,10 @@ export const ParticipantProvider = ({ children }) => {
     }
   };
 
- 
+  
 
   return (
-    <ParticipantContext.Provider value={{ joinCourse, hasJoinedCourse }}>
+    <ParticipantContext.Provider value={{ joinCourse, hasJoinedCourse  }}>
       {children}
     </ParticipantContext.Provider>
   );

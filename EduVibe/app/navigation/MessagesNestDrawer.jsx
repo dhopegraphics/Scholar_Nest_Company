@@ -19,6 +19,7 @@ const CustomDrawerContent = (props) => {
   const { answer } = useQuestionContext();
   const { navigation } = props;
   const [currentUser, setCurrentUser] = useState(null); // State to store the current user
+  
 
   useEffect(() => {
     // Fetch the current user when the component mounts

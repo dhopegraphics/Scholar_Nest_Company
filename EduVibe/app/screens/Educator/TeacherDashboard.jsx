@@ -49,9 +49,9 @@ const TeacherDashboard = () => {
         >
           <Text style={DashboardStyles.title}>Dashboard</Text>
 
-          <View style={{ alignSelf: "center" }}>
+          <View style={{ alignSelf: "center" , }}>
 
-            <View style={DashboardStyles.courseContainer}>
+          <View style={[DashboardStyles.courseContainer, { margin: 10   }]}>
               {courses.length > 0 ? (
                 courses.map((course) => (
                   <TeacherCourseCard key={course.$id} course={course} navigation={navigation} />

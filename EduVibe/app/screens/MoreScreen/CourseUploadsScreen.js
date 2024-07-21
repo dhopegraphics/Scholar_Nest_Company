@@ -12,7 +12,6 @@ import {
   ImageBackground,
 } from "react-native";
 import { createCourse, getCurrentUser } from "../../../lib/appwrite";
-import { ParticipantContext } from "../../../contexts/ParticipantContext";
 import { Appbar } from "react-native-paper";
 
 const CourseUploadsScreen = ({ navigation }) => {
@@ -22,7 +21,7 @@ const CourseUploadsScreen = ({ navigation }) => {
   const [resources, setResources] = useState("");
   const [courseAvatar, setCourseAvatar] = useState("");
   const [userId, setUserId] = useState(null);
-  const { addCourse } = useContext(ParticipantContext);
+
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -72,8 +71,6 @@ const CourseUploadsScreen = ({ navigation }) => {
       const newCourse = await createCourse(courseData);
       console.log("Course created successfully:", newCourse);
 
-      // Add the new course to the context
-      await addCourse(newCourse);
     } catch (error) {
       console.error("Failed to create course:", error.message);
     }

@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#fff',
     marginRight: 16,
-    width: 270,
+    width: 290,
     shadowColor: 'rgba(0, 0, 0, 0.5)',
     shadowOffset: {
       width: 0,
@@ -86,6 +86,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
+    margin : 10,
+
   },
   avatar: {
     width: '100%',

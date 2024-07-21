@@ -35,6 +35,7 @@ const SurveyScreen = () => {
   const {setAppSettingsVisible} = useVisibility();
   const { setAnswer } = useQuestionContext();
 const {setEducator}  = useQuestionContext();
+const {setShowDrawerItems} = useQuestionContext();
 
   useEffect(() => {
     setLoading(false);
@@ -91,6 +92,7 @@ const {setEducator}  = useQuestionContext();
       setCurrentQuestion(2);
       setAnswer(!null);
       setEducator(!null);
+      setShowDrawerItems(!null);
       
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Educator') {
       console.log('Educator selected');
@@ -100,6 +102,7 @@ const {setEducator}  = useQuestionContext();
       setAppSettingsVisible (true);
       setAnswer(!null);
       setEducator(null);
+      setShowDrawerItems(null);
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Parent') {
       console.log('Parent selected');
       setCurrentQuestion(1);
@@ -108,6 +111,7 @@ const {setEducator}  = useQuestionContext();
       setAppSettingsVisible (false);
       setAnswer(null);
       setEducator(null);
+      setShowDrawerItems(null);
       
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected');
@@ -116,6 +120,7 @@ const {setEducator}  = useQuestionContext();
       setCourseButtonVisible (false);
       setAppSettingsVisible (false);
       setAnswer(null);
+      setShowDrawerItems(null);
       navigation.navigate("ParentWardSetUpScreen");
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Will Do it later') {
       console.log('Will Do it later selected');
@@ -124,6 +129,7 @@ const {setEducator}  = useQuestionContext();
       setCourseButtonVisible (false);
       setAppSettingsVisible (false);
       setAnswer(null);
+      setShowDrawerItems(null);
       navigation.navigate("Back");
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected from 3');
@@ -133,6 +139,7 @@ const {setEducator}  = useQuestionContext();
       setAppSettingsVisible (true);
       setAnswer(!null);
       setEducator(null);
+      setShowDrawerItems(!null);
       navigation.navigate("Back");
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'No') {
       console.log('No selected from 3');
@@ -142,6 +149,7 @@ const {setEducator}  = useQuestionContext();
       setAppSettingsVisible (true);
       setAnswer(!null);
       setEducator(null);
+      setShowDrawerItems(!null);
       navigation.navigate("Back");
       
     } else {
@@ -150,6 +158,7 @@ const {setEducator}  = useQuestionContext();
       setAppSettingsVisible (true);
       setButtonVisible(false); 
       setAnswer(!null);
+      setShowDrawerItems(!null);
     }
 
     setSelectedAnswers(selectedAnswers => {
