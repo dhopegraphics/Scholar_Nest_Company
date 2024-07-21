@@ -62,7 +62,6 @@ import GroupDetailsScreen from "../screens/GroupChat/GroupDetailsScreen";
 import { useGlobalContext } from "../../contexts/GlobalProvider";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"; // Add this import
 import DocumentUploader from "../screens/MoreScreen/DocumentUploadScreen";
-import VideoPlayerScreen from "../screens/CourseBrowseScreen/VideoPlayerScreen";
 import { BookDetail } from "../bookstore/screens";
 import BookShopHome from "../bookstore/screens/Home";
 import GradingSystemScreen from "../MyGradesApp/screens/GradingSystemScreen";
@@ -348,11 +347,7 @@ const MainStackScreen = () => {
         component={DocumentUploader}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="VideoPlayerScreen"
-        component={VideoPlayerScreen}
-        options={{ headerShown: false }}
-      />
+
       <Stack.Screen
         name="BookShopHome"
         component={BookShopHome}

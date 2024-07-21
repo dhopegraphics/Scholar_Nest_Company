@@ -1,3 +1,4 @@
+// CourseTopTabs.js
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -16,17 +17,19 @@ const CourseTopTabs = ({ navigation, route }) => {
   const activeTab = getFocusedRouteNameFromRoute(route) ?? 'Course';
 
   useEffect(() => {
-    setHeaderProps({
-      activeTab,
-      animateType: 'tab',
-      course, 
-      progressPercentage: 75, 
-    });
-  }, [activeTab, course, setHeaderProps]);
+    if (!headerProps.headerComponent) {
+      setHeaderProps({
+        activeTab,
+        animateType: 'tab',
+        course,
+        progressPercentage: 75,
+      });
+    }
+  }, [activeTab, course, headerProps.headerComponent, setHeaderProps]);
 
   return (
     <View style={styles.container}>
-      <CourseCustomHeader {...headerProps} /> 
+      {headerProps.headerComponent ? headerProps.headerComponent : <CourseCustomHeader {...headerProps} />}
       <Tab.Navigator
         initialRouteName="Course"
         screenOptions={{

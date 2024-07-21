@@ -1,33 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet , TouchableOpacity } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Video, ResizeMode } from 'expo-av';
+import VideoPlayerHeader from './videoPlayerHeader';
+import { useCourseHeader } from '../../../contexts/CourseHeaderContext';
 
 const Tab = createMaterialTopTabNavigator();
 
 const LecturesScreen = ({ course }) => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [status, setStatus] = useState({});
-  const videoRef = useRef(null);
+  const { setHeaderProps } = useCourseHeader();
 
   const handleVideoPress = (videoUrl) => {
     setSelectedVideo(videoUrl);
-    console.log(`Selected Video URL: ${videoUrl}`);
+    setHeaderProps({
+      headerComponent: <VideoPlayerHeader videoUrl={videoUrl} onStatusUpdate={setStatus} />,
+    });
   };
-
-  const handlePlayPause = () => {
-    if (status.isPlaying) {
-      console.log('Pausing video');
-      videoRef.current.pauseAsync().catch(error => console.error('Pause Error:', error));
-    } else {
-      console.log('Playing video');
-      videoRef.current.playAsync().catch(error => console.error('Play Error:', error));
-    }
-  };
-
-  useEffect(() => {
-    console.log('Playback Status:', status);
-  }, [status]);
 
   return (
     <View>
@@ -36,26 +25,6 @@ const LecturesScreen = ({ course }) => {
           <TouchableOpacity onPress={() => handleVideoPress(course.videos[index])}>
             <Text style={styles.videoHeader}>{header}</Text>
           </TouchableOpacity>
-          {selectedVideo === course.videos[index] && (
-            <View>
-              <Video
-                ref={videoRef}
-                style={styles.video}
-                source={{ uri: selectedVideo }}
-                useNativeControls
-                resizeMode={ResizeMode.CONTAIN}
-                isLooping
-                onPlaybackStatusUpdate={status => {
-                  console.log('Playback Status Update:', status);
-                  setStatus(status);
-                }}
-                onError={(error) => console.error('Video Playback Error:', error)}
-              />
-              <TouchableOpacity onPress={handlePlayPause} style={styles.button}>
-                <Text style={styles.buttonText}>{status.isPlaying ? 'Pause' : 'Play'}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
         </View>
       ))}
     </View>
@@ -122,23 +91,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     marginBottom: 5,
-  },
-  video: {
-    alignSelf: 'center',
-    width: '100%',
-    height: 200,
-    marginTop: 10,
-  },
-  button: {
-    marginTop: 10,
-    backgroundColor: '#1E90FF',
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 16,
   },
 });
 

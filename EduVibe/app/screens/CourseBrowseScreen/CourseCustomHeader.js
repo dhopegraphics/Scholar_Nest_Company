@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   thumbnailContainer: {
-    width: 70,
+    width: 80,
     height: 70,
     backgroundColor: '#ccc',
     marginRight: 5,
