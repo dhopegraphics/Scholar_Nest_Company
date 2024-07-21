@@ -14,7 +14,7 @@ const LecturesScreen = ({ course }) => {
   const handleVideoPress = (videoUrl) => {
     setSelectedVideo(videoUrl);
     setHeaderProps({
-      headerComponent: <VideoPlayerHeader videoUrl={videoUrl} onStatusUpdate={setStatus} />,
+      headerComponent: <VideoPlayerHeader videoUrl={videoUrl} onStatusUpdate={setStatus}  />,
     });
   };
 

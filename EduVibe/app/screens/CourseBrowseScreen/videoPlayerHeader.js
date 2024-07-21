@@ -8,7 +8,7 @@ const VideoPlayerHeader = ({ videoUrl, onStatusUpdate }) => {
     <View style={styles.videoContainer}>
       <Video
         style={styles.video}
-        source={{ uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4" }}
+        source={{ uri: videoUrl }}
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
         isLooping
