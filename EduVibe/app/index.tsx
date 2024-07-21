@@ -13,6 +13,7 @@ import { CourseProvider } from '../contexts/CourseContext';
 import { CourseHeaderProvider } from '../contexts/CourseHeaderContext';
 import { AuthProvider } from '../contexts/AuthContext';
 
+
 SplashScreen.preventAutoHideAsync();
 
 const App: React.FC = () => {
@@ -72,6 +73,7 @@ const App: React.FC = () => {
       </GlobalProvider>
       </AuthProvider>
     </GestureHandlerRootView>
+  
   );
 };
 

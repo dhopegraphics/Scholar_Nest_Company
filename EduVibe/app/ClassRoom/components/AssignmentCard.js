@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, Avatar, Button } from 'react-native-elements';
-import FileDownloadComponent from './  FileDownloadComponent';
+import FileDownloadComponent from './FileDownloadComponent';
 
 export default function AssignmentCard({ title, date, attachment }) {
   return (

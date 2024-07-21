@@ -78,6 +78,8 @@ import ClassRoomHome from "../ClassRoom/classroom";
 import SubjectRoom from "../ClassRoom/SubjectRoom";
 import StreamRoom from "../ClassRoom/StreamRoom";
 import CourseSchema from "../screens/Educator/CourseSchema";
+import QuestionTaken from "../screens/CourseBrowseScreen/QuestionTaken";
+
 
 
 export type StackParamList = {
@@ -150,6 +152,7 @@ export type StackParamList = {
   SubjectRoom: undefined;
   StreamRoom: undefined;
   CourseCustomHeader: undefined;
+  QuestionTaken: { course: any };
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -417,6 +420,12 @@ const MainStackScreen = () => {
       <Stack.Screen
         name="CourseSchema"
         component={CourseSchema}
+        options={{ headerShown: false }}
+      />
+ 
+ <Stack.Screen
+        name="QuestionTaken"
+        component={QuestionTaken}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

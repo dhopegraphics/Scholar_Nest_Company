@@ -98,7 +98,7 @@ const DifferentDrawerNavigator = () => {
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} drawerPosition="left">
       {isCourseButtonVisible ? (
-         <Drawer.Screen name="TeacherDashboard" component={TeacherDashboard} options={{ headerShown: false, drawerPosition: "right" }} />
+         <Drawer.Screen name="TeacherDashboard" component={TeacherDashboard} options={{ headerShown: false }} />
       ) : (
         <Drawer.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false, drawerPosition: "right" }} />
       )}

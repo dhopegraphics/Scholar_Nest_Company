@@ -4,7 +4,8 @@ export const ButtonsTextStyle = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "white",
-    marginTop: -30,
+    marginTop: -10,
+   
   },
   scrollViewContent: {
     flexGrow: 5,
@@ -25,6 +26,7 @@ export const ButtonsTextStyle = StyleSheet.create({
   moreText: {
     fontWeight: "bold",
     fontSize: 20,
+    backgroundColor : "white",
   },
   buttonContainer: {
     width: "100%",

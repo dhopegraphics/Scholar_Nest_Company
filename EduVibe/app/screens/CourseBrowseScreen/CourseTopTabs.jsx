@@ -32,6 +32,7 @@ const CourseTopTabs = ({ navigation, route }) => {
         animateType: 'tab',
         course,
         progressPercentage: 75,
+        thumbnailImage: { uri: course.courseAvatar },
       });
     }
   }, [activeTab, course, headerProps.headerComponent, setHeaderProps]);

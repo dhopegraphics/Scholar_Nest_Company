@@ -10,25 +10,37 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import imageExport from "../../../assets/images/imageExport";
-import { Tile } from "react-native-elements";
-
-const data = [
-  {
-    id: "1",
-    title: "Moodle - Open-source learning platform",
-    url: "moodle.org",
-    name: "Paapa Cobbold",
-    size: "4.97 MB",
-    image: imageExport.logo,
-  },
-];
+import imageExport from "../../../assets/images/imageExport"; 
+import { useUsers } from "../../../contexts/UsersContext";
 
 const SpaceUsageScreen = (props) => {
+  const { users, currentUserId } = useUsers();
+  const [currentUserName, setCurrentUserName] = useState("");
+
+  useEffect(() => {
+    // Find the current user's data
+    const currentUser = users.find(user => user.id === currentUserId);
+    if (currentUser) {
+      setCurrentUserName(currentUser.name);
+    }
+  }, [users, currentUserId]);
+
+  // Example data array with currentUserName
+  const data = [
+    {
+      id: "1",
+      title: "EduVibe - learning and Teaching platform",
+      url: "scholarnestcompany.edu.gh",
+      name: currentUserName, // Use currentUserName here
+      size: "4.97 MB",
+      image: imageExport.logo, // Use local image directly
+    },
+  ];
+
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
       <View style={styles.itemLeft}>
-        <Image source={{ uri: item.image }} style={styles.avatar} />
+        <Image source={item.image}  style={styles.avatar} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.url}>{item.url}</Text>
@@ -105,6 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
+    flex: 1,
     fontSize: 14,
     fontWeight: "bold",
   },
@@ -122,7 +135,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   trashIcon: {
-    padding: 10,
+    padding: 0,
   },
   totalContainer: {
     flexDirection: "row",

@@ -32,12 +32,16 @@ const MoreScreen = ({ navigation }) => {
   };
 
   return (
+    <>
+    <View style= {{ padding : 20, backgroundColor : "white",}}>
+    <Text style={ButtonsTextStyle.moreText}>More</Text>
+    </View>
     <SafeAreaView style={ButtonsTextStyle.safeArea}>
-        <Text style={ButtonsTextStyle.moreText}>More</Text>
+
       <ScrollView contentContainerStyle={ButtonsTextStyle.scrollViewContent}>
         <View style={[ButtonsTextStyle.container, { marginBottom: 30 }]}>
           <View style={ButtonsTextStyle.more}>
-          
+
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
@@ -48,15 +52,13 @@ const MoreScreen = ({ navigation }) => {
                 style={ButtonsTextStyle.icon}
                 name="search"
                 size={30}
-                color="#ffffff"
-              />
+                color="#ffffff" />
               <Text style={ButtonsTextStyle.text}>Global Search</Text>
               <Icon
                 style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
                 size={30}
-                color="gray"
-              />
+                color="gray" />
             </TouchableOpacity>
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
@@ -68,15 +70,13 @@ const MoreScreen = ({ navigation }) => {
                 style={ButtonsTextStyle.icon}
                 name="event"
                 size={30}
-                color="#ffffff"
-              />
+                color="#ffffff" />
               <Text style={ButtonsTextStyle.text}>Calendar</Text>
               <Icon
                 style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
                 size={30}
-                color="gray"
-              />
+                color="gray" />
             </TouchableOpacity>
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
@@ -88,15 +88,13 @@ const MoreScreen = ({ navigation }) => {
                 style={ButtonsTextStyle.icon}
                 name="label"
                 size={30}
-                color="#ffffff"
-              />
+                color="#ffffff" />
               <Text style={ButtonsTextStyle.text}>Tags</Text>
               <Icon
                 style={ButtonsTextStyle.rightIcon}
                 name="chevron-right"
                 size={30}
-                color="gray"
-              />
+                color="gray" />
             </TouchableOpacity>
           </View>
           <View style={ButtonsTextStyle.buttonContainer}>
@@ -109,15 +107,13 @@ const MoreScreen = ({ navigation }) => {
                   style={ButtonsTextStyle.icon}
                   name="cloud-upload"
                   size={30}
-                  color="#ffffff"
-                />
+                  color="#ffffff" />
                 <Text style={ButtonsTextStyle.text}>Upload Courses Here</Text>
                 <Icon
                   style={ButtonsTextStyle.rightIcon}
                   name="chevron-right"
                   size={30}
-                  color="gray"
-                />
+                  color="gray" />
               </TouchableOpacity>
             )}
 
@@ -130,61 +126,51 @@ const MoreScreen = ({ navigation }) => {
                   style={ButtonsTextStyle.icon}
                   name="assignment-add"
                   size={30}
-                  color="#ffffff"
-                />
+                  color="#ffffff" />
                 <Text style={ButtonsTextStyle.text}>Upload Documents Here</Text>
                 <Icon
                   style={ButtonsTextStyle.rightIcon}
                   name="chevron-right"
                   size={30}
-                  color="gray"
-                />
+                  color="gray" />
               </TouchableOpacity>
             )}
             {isButtonVisible ? (
               <TouchableOpacity
                 style={ButtonsTextStyle.button}
-                onPress={() =>
-                  navigation.navigate("WardsScreen", { selectedUsers })
-                }
+                onPress={() => navigation.navigate("WardsScreen", { selectedUsers })}
               >
                 <Icon
                   style={ButtonsTextStyle.icon}
                   name="supervised-user-circle"
                   size={30}
-                  color="#ffffff"
-                />
+                  color="#ffffff" />
                 <Text style={ButtonsTextStyle.text}>Your Wards</Text>
                 <Icon
                   style={ButtonsTextStyle.rightIcon}
                   name="chevron-right"
                   size={30}
-                  color="gray"
-                />
+                  color="gray" />
               </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
+            ) : (
+              <TouchableOpacity
                 style={ButtonsTextStyle.button}
-                onPress={() =>
-                  navigation.navigate("BookShopHome")
-                }
+                onPress={() => navigation.navigate("BookShopHome")}
               >
                 <Icon
                   style={ButtonsTextStyle.icon}
                   name="add-shopping-cart"
                   size={30}
-                  color="#ffffff"
-                />
+                  color="#ffffff" />
                 <Text style={ButtonsTextStyle.text}>Book Shop</Text>
                 <Icon
                   style={ButtonsTextStyle.rightIcon}
                   name="chevron-right"
                   size={30}
-                  color="gray"
-                />
+                  color="gray" />
               </TouchableOpacity>
 
-            )} 
+            )}
           </View>
         </View>
       </ScrollView>
@@ -198,19 +184,17 @@ const MoreScreen = ({ navigation }) => {
               style={ButtonsTextStyle.icon}
               name="settings"
               size={30}
-              color="#ffffff"
-            />
+              color="#ffffff" />
             <Text style={ButtonsTextStyle.text}>App Settings</Text>
             <Icon
               style={ButtonsTextStyle.rightIcon}
               name="chevron-right"
               size={30}
-              color="gray"
-            />
+              color="gray" />
           </TouchableOpacity>
         )}
       </View>
-    </SafeAreaView>
+    </SafeAreaView></>
   );
 };
 

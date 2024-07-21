@@ -1,8 +1,7 @@
 import React, { useCallback, useState, useContext, useEffect } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView, Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import DashboardStyles from '../../../themes/DashboardStyles';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { getCourses } from '../../../lib/appwrite';
 import Icon from "react-native-vector-icons/Ionicons";
 import TeacherCourseCard from '../../../components/TeacherCourseCard';
@@ -14,9 +13,7 @@ const TeacherDashboard = () => {
   const [refreshing, setRefreshing] = useState(false);
 
 
-  const handleButtonPress = () => {
-    navigation.dispatch(DrawerActions.openDrawer());
-  };
+ 
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -65,9 +62,6 @@ const TeacherDashboard = () => {
             </View>
           </View>
         </ScrollView>
-        <TouchableOpacity style={DashboardStyles.roundedButton} onPress={handleButtonPress}>
-          <Ionicons name="chevron-back-circle" size={24} color="white" />
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

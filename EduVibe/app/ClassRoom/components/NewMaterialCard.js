@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import FileDownloadComponent from './  FileDownloadComponent';
+import FileDownloadComponent from './FileDownloadComponent';
 
 export default function NewMaterialCard({ title, date }) {
   return (
