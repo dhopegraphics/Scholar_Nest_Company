@@ -65,7 +65,7 @@ const ExpenseBlock = ({ expenseList }) => {
             },
           ]}
         >
-          ${amount[0]}.
+          ₵{amount[0]}.
           <Text style={styles.expenseBlockTxt2Span}>{amount[1]}</Text>
         </Text>
         <View style={styles.expenseBlock3View}>

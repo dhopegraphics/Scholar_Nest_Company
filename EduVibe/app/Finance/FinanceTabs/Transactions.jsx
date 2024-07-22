@@ -46,7 +46,6 @@ const TransactionsSection = () => (
       <Text style={styles.header}>2022/2023, First Semester</Text>
       <Text style={styles.subHeader}>Year 1</Text>
     </View>
-    
     <FlatList
       data={transactions}
       keyExtractor={(item) => item.id}
@@ -57,6 +56,7 @@ const TransactionsSection = () => (
       }
       ItemSeparatorComponent={() => <View style={styles.separator} />}
     />
+    
   </View>
 );
 

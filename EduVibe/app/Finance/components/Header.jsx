@@ -2,25 +2,32 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../constants/Colors";
+import { useUsers } from "../../../contexts/UsersContext";
 
-const Header = () => {
+
+const Header = ({ navigation } ) => {
+  const { users,  currentUserId  , } = useUsers();
+  const currentUser = users.find((user) => user.id === currentUserId );
+
   return (
  
       <View style={styles.wrapper}>
         <View style={styles.userInfoWrapper}>
           <Image
-            source={{ uri: "https://i.pravatar.cc/250?u=12" }}
+            source={{  uri: currentUser.img  }}
             style={styles.userImg}
           />
           <View style={styles.userTxtWrapper}>
-            <Text style={[styles.userText, { fontSize: 12 }]}>Hi, Jenny</Text>
+          { currentUser &&
+            <Text style={[styles.userText, { fontSize: 15 }]}>Hi, {currentUser.name} </Text>
+          }
             <Text style={[styles.userText, { fontSize: 16 }]}>
               Your <Text style={styles.boldText}>Budget</Text>
             </Text>
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={() => navigation.navigate("TransactionsSection")}
           style={styles.btnWrapper}
         >
           <Text style={styles.btnText}>

@@ -14,13 +14,13 @@ const PiePage = ({ navigation }) => {
   const pieData = [
     {
       value: 47,
-      color: Colors.tintColor,
+      color: "#1C9C9D",
       focused: true,
       text: '47%',
     },
     {
       value: 40,
-      color: Colors.blue,
+      color: "#F5B227",
       text: '40%',
     },
     {
@@ -28,14 +28,14 @@ const PiePage = ({ navigation }) => {
       color: "#010101",
       text: '16%',
     },
-    { value: 3, color: '#FFA5BA', gradientCenterColor: '#FF7F97', text: '3%' },
+    { value: 3, color: '#1C9C9D', gradientCenterColor: '#FF7F97', text: '3%' },
   ];
 
   return (
     <>
     
       <View style={styles.headerContainer}>
-      <Header />
+      <Header  navigation={navigation}  />
       </View>
       <View style={[styles.container, { paddingTop: 40 }]}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -53,7 +53,7 @@ const PiePage = ({ navigation }) => {
               <Text
                 style={{ color: "#F5B227", fontSize: 36, fontWeight: 700 }}
               >
-                $1475.<Text style={{ fontSize: 22, fontWeight: 400 }}>00</Text>
+                ₵1475.<Text style={{ fontSize: 22, fontWeight: 400 }}>00</Text>
               </Text>
             </View>
             <View style={{ paddingVertical: 20, alignItems: 'center' }}>
@@ -65,7 +65,7 @@ const PiePage = ({ navigation }) => {
                 semiCircle
                 radius={70}
                 innerRadius={55}
-                innerCircleColor={Colors.black}
+                innerCircleColor={"black"}
                 centerLabelComponent={() => {
                   return (
                     <View
@@ -74,7 +74,7 @@ const PiePage = ({ navigation }) => {
                       <Text
                         style={{
                           fontSize: 22,
-                          color: '#F5B227',
+                          color: 'white',
                           fontWeight: 'bold',
                         }}
                       >

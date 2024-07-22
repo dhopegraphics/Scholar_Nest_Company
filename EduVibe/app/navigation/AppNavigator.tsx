@@ -80,9 +80,13 @@ import StreamRoom from "../ClassRoom/StreamRoom";
 import CourseSchema from "../screens/Educator/CourseSchema";
 import QuestionTaken from "../screens/CourseBrowseScreen/QuestionTaken";
 import FinanceTab from "../Finance/FinanceTabs/Finance";
-
+import TransactionsSection from "../Finance/FinanceTabs/Transactions";
+import Header from "../Finance/components/Header";
+import { EducationPlacesProvider } from "../../contexts/EducationPlaceContext";
 
 export type StackParamList = {
+FinanceHeader : undefined;
+  TransactionsSection : undefined;
   FinanceTab : undefined;
   CourseSchema: undefined;
   TeacherCourseCard: undefined;
@@ -434,6 +438,16 @@ const MainStackScreen = () => {
         component={FinanceTab}
         options={{ headerShown: false }}
       />
+                  <Stack.Screen
+        name="TransactionsSection"
+        component={TransactionsSection}
+        options={{ headerShown: false }}
+      />
+                        <Stack.Screen
+        name="FinanceHeader"
+        component={Header}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
@@ -447,6 +461,7 @@ const AppNavigator = () => (
           <VisibilityProvider>
             <SettingsProvider>
               <UsersProvider>
+                <EducationPlacesProvider>
                 <PlacesProvider>
                   <ExperienceProvider>
                     <MessageProvider>
@@ -464,6 +479,7 @@ const AppNavigator = () => (
                     </MessageProvider>
                   </ExperienceProvider>
                 </PlacesProvider>
+                </EducationPlacesProvider>
               </UsersProvider>
             </SettingsProvider>
           </VisibilityProvider>

@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
+import SchoolProfile from "../../screens/StudentsDashboard/SchoolProfile";
 
 
 const ProfileSection = () => {
   return (
     <>
-      <View style={styles.container}>
-        <Text style={styles.text}>Profile</Text>
-      </View>
+   <SchoolProfile/>
     </>
   );
 };

@@ -16,19 +16,16 @@ export const UserAccountStyling = StyleSheet.create({
       width: 48,
     },
     search: {
-      flex: 1,
-      height: 40,
+     
       borderRadius: 12,
       overflow: 'hidden',
-      marginHorizontal: 90,
-    
-      marginBottom : -25,
+      marginHorizontal: 60,
     },
     searchIcon: {
       position: 'absolute',
       zIndex: 1,
       height: '100%',
-      width: 48,
+      width: 60,
       justifyContent: 'center',
       alignItems: 'center',
     },

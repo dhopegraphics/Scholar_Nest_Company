@@ -1,7 +1,7 @@
 const ExpenseList = [
     {
       "id": "1",
-      "name": "Housing",
+      "name": "Hostel Fees",
       "amount": "955.75",
       "percentage": "61"
     },
