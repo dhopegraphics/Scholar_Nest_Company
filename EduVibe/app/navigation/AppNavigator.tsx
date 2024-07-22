@@ -79,10 +79,11 @@ import SubjectRoom from "../ClassRoom/SubjectRoom";
 import StreamRoom from "../ClassRoom/StreamRoom";
 import CourseSchema from "../screens/Educator/CourseSchema";
 import QuestionTaken from "../screens/CourseBrowseScreen/QuestionTaken";
-
+import FinanceTab from "../Finance/FinanceTabs/Finance";
 
 
 export type StackParamList = {
+  FinanceTab : undefined;
   CourseSchema: undefined;
   TeacherCourseCard: undefined;
   Layout: undefined;
@@ -422,10 +423,15 @@ const MainStackScreen = () => {
         component={CourseSchema}
         options={{ headerShown: false }}
       />
- 
- <Stack.Screen
+
+      <Stack.Screen
         name="QuestionTaken"
         component={QuestionTaken}
+        options={{ headerShown: false }}
+      />
+            <Stack.Screen
+        name="FinanceTab"
+        component={FinanceTab}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

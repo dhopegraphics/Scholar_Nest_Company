@@ -86,8 +86,12 @@ const LearningSection = () => {
                 uri: 'https://img.freepik.com/free-vector/empty-classroom-interior-with-chalkboard_1308-61229.jpg',
               }}
             />
+            <TouchableOpacity onPress={() => navigation.navigate("FinanceTab")}>
+              <Text>Finace</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
+
         <TouchableOpacity
           style={DashboardStyles.roundedButton}
           onPress={handleButtonPress}

@@ -193,6 +193,8 @@ const MoreScreen = ({ navigation }) => {
               color="gray" />
           </TouchableOpacity>
         )}
+
+        
       </View>
     </SafeAreaView></>
   );
