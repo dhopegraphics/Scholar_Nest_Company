@@ -25,7 +25,7 @@ const PiePage = ({ navigation }) => {
     },
     {
       value: 16,
-      color: Colors.white,
+      color: "#010101",
       text: '16%',
     },
     { value: 3, color: '#FFA5BA', gradientCenterColor: '#FF7F97', text: '3%' },
@@ -47,11 +47,11 @@ const PiePage = ({ navigation }) => {
             }}
           >
             <View style={{ gap: 10 }}>
-              <Text style={{ color: Colors.white, fontSize: 16 }}>
+              <Text style={{ color: "#F5B227", fontSize: 16 }}>
                 My <Text style={{ fontWeight: 700 }}>Expenses</Text>
               </Text>
               <Text
-                style={{ color: Colors.white, fontSize: 36, fontWeight: 700 }}
+                style={{ color: "#F5B227", fontSize: 36, fontWeight: 700 }}
               >
                 $1475.<Text style={{ fontSize: 22, fontWeight: 400 }}>00</Text>
               </Text>
@@ -74,7 +74,7 @@ const PiePage = ({ navigation }) => {
                       <Text
                         style={{
                           fontSize: 22,
-                          color: 'white',
+                          color: '#F5B227',
                           fontWeight: 'bold',
                         }}
                       >
@@ -103,7 +103,7 @@ export default PiePage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.black,
+    backgroundColor: "white",
     paddingHorizontal: 20,
   },
   headerContainer: {

@@ -1,7 +1,7 @@
 const Colors = {
-  black: '#1A1A1A',
+  black: 'white',
   grey: '#242424',
-  white: '#FCFCFC',
+  white: '#010101',
   tintColor: '#723FEB',
   blue: '#97E0F7'
 };

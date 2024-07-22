@@ -40,7 +40,7 @@ const SpendingBlock = ({ spendingList }) => {
         return (
           <View style={styles.spendingWrapper} key={item.id}>
             <View style={styles.iconWrapper}>
-              <Feather name={iconName} size={22} color={Colors.white} />
+              <Feather name={iconName} size={22} color={"white"} />
             </View>
             <View style={styles.textWrapper}>
               <View style={{ gap: 5 }}>

@@ -3,18 +3,41 @@ import MessagesNestDrawer from "../navigation/MessagesNestDrawer";
 import More from "./More";
 import Notifications from "./Notifications";
 import * as React from "react";
+import { useEffect , useState } from "react";
 import { View, StatusBar } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 import DifferentDrawerNavigator from "../navigation/DifferentDrawerNavigator";
 import { useQuestionContext } from "../../contexts/QuestionContext";
 import ParentDashboard from "../screens/ParentWards/ParentDashboard";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Tab = createBottomTabNavigator(); // Temporary workaround with type assertion
 
+const retrieveUserState = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('userState');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.error("Failed to load user state from AsyncStorage", e);
+  }
+};
+
 const Tab_Layout = () => {
-  const { answer } = useQuestionContext();
-  const {educator} = useQuestionContext();
+  const { setAnswer, setEducator } = useQuestionContext();
+  const { answer , educator } = useQuestionContext();
+
+  useEffect(() => {
+    const fetchUserState = async () => {
+      const savedState = await retrieveUserState();
+      if (savedState) {
+        setAnswer(savedState.answer);
+        setEducator(savedState.educator);
+      }
+    };
+    fetchUserState();
+  }, []);
 
   return (
     <>

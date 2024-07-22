@@ -4,6 +4,15 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useVisibility } from '../../../contexts/VisibilityContext';
 import { useQuestionContext } from '../../../contexts/QuestionContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const saveUserState = async (key, value) => {
+  try {
+    await AsyncStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.error("Failed to save user state to AsyncStorage", e);
+  }
+};
 
 const questions = [
   {
@@ -84,6 +93,8 @@ const {setShowDrawerItems} = useQuestionContext();
   };
 
   const handleAnswerSelection = (index) => {
+    let newState = {};
+    
     if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Student') {
       console.log('Student selected');
       setButtonVisible(false);
@@ -93,7 +104,7 @@ const {setShowDrawerItems} = useQuestionContext();
       setAnswer(!null);
       setEducator(!null);
       setShowDrawerItems(!null);
-      
+      newState = { role: 'Student', isButtonVisible: false, isCourseButtonVisible: false, isAppSettingsVisible: true, answer: !null, educator: !null, showDrawerItems: !null };
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Educator') {
       console.log('Educator selected');
       setCurrentQuestion(3);
@@ -103,6 +114,7 @@ const {setShowDrawerItems} = useQuestionContext();
       setAnswer(!null);
       setEducator(null);
       setShowDrawerItems(null);
+      newState = { role: 'Educator', isButtonVisible: false, isCourseButtonVisible: true, isAppSettingsVisible: true, answer: !null, educator: null, showDrawerItems: null };
     } else if (currentQuestion === 0 && questions[currentQuestion].answers[index] === 'Parent') {
       console.log('Parent selected');
       setCurrentQuestion(1);
@@ -112,7 +124,7 @@ const {setShowDrawerItems} = useQuestionContext();
       setAnswer(null);
       setEducator(null);
       setShowDrawerItems(null);
-      
+      newState = { role: 'Parent', isButtonVisible: true, isCourseButtonVisible: false, isAppSettingsVisible: false, answer: null, educator: null, showDrawerItems: null };
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected');
       setLoading(true); // Show loading indicator before navigating to "ParentWardSetUpScreen"
@@ -122,6 +134,7 @@ const {setShowDrawerItems} = useQuestionContext();
       setAnswer(null);
       setShowDrawerItems(null);
       navigation.navigate("ParentWardSetUpScreen");
+      newState = { role: 'Parent', isButtonVisible: true, isCourseButtonVisible: false, isAppSettingsVisible: false, answer: null, showDrawerItems: null };
     } else if (currentQuestion === 1 && questions[currentQuestion].answers[index] === 'Will Do it later') {
       console.log('Will Do it later selected');
       setLoading(true); // Show loading indicator before navigating to "Back"
@@ -131,6 +144,7 @@ const {setShowDrawerItems} = useQuestionContext();
       setAnswer(null);
       setShowDrawerItems(null);
       navigation.navigate("Back");
+      newState = { role: 'Parent', isButtonVisible: true, isCourseButtonVisible: false, isAppSettingsVisible: false, answer: null, showDrawerItems: null };
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'Yes') {
       console.log('Yes selected from 3');
       setLoading(true); // Show loading indicator before navigating to "Back"
@@ -141,6 +155,7 @@ const {setShowDrawerItems} = useQuestionContext();
       setEducator(null);
       setShowDrawerItems(!null);
       navigation.navigate("Back");
+      newState = { role: 'Educator', isButtonVisible: false, isCourseButtonVisible: true, isAppSettingsVisible: true, answer: !null, educator: null, showDrawerItems: !null };
     } else if (currentQuestion === 3 && questions[currentQuestion].answers[index] === 'No') {
       console.log('No selected from 3');
       setLoading(true); // Show loading indicator before navigating to "Back"
@@ -151,14 +166,68 @@ const {setShowDrawerItems} = useQuestionContext();
       setEducator(null);
       setShowDrawerItems(!null);
       navigation.navigate("Back");
-      
-    } else {
-      navigation.navigate("Back");
+      newState = { role: 'Educator', isButtonVisible: false, isCourseButtonVisible: true, isAppSettingsVisible: true, answer: !null, educator: null, showDrawerItems: !null };
+    } else if (currentQuestion === 2 && questions[currentQuestion].answers[index] === 'Learn') {
+      setLoading(true); // Show loading indicator before navigating to "Back"
+      setButtonVisible(false); // Hide the button
       setCourseButtonVisible (false);
       setAppSettingsVisible (true);
-      setButtonVisible(false); 
       setAnswer(!null);
+      setEducator(!null);
       setShowDrawerItems(!null);
+      navigation.navigate("Back");
+      newState = { role: 'Student', isButtonVisible: false, isCourseButtonVisible: false, isAppSettingsVisible: true, answer: !null, educator: !null, showDrawerItems: !null };
+      
+    }  else if (currentQuestion === 2 && questions[currentQuestion].answers[index] === 'Photography') {
+      setLoading(true); // Show loading indicator before navigating to "Back"
+      setButtonVisible(false); // Hide the button
+      setCourseButtonVisible (false);
+      setAppSettingsVisible (true);
+      setAnswer(!null);
+      setEducator(!null);
+      setShowDrawerItems(!null);
+      navigation.navigate("Back");
+      newState = { role: 'Student', isButtonVisible: false, isCourseButtonVisible: false, isAppSettingsVisible: true, answer: !null, educator: !null, showDrawerItems: !null };
+    }  else if (currentQuestion === 2 && questions[currentQuestion].answers[index] === 'Writing') {
+      setLoading(true); // Show loading indicator before navigating to "Back"
+      setButtonVisible(false); // Hide the button
+      setCourseButtonVisible (false);
+      setAppSettingsVisible (true);
+      setAnswer(!null);
+      setEducator(!null);
+      setShowDrawerItems(!null);
+      navigation.navigate("Back");
+      newState = { role: 'Student', isButtonVisible: false, isCourseButtonVisible: false, isAppSettingsVisible: true, answer: !null, educator: !null, showDrawerItems: !null };
+    }  else if (currentQuestion === 2 && questions[currentQuestion].answers[index] === 'Teach') {
+      setLoading(true); // Show loading indicator before navigating to "Back"
+      setButtonVisible(false); // Hide the button
+      setCourseButtonVisible (false);
+      setAppSettingsVisible (true);
+      setAnswer(!null);
+      setEducator(!null);
+      setShowDrawerItems(!null);
+      navigation.navigate("Back");
+      newState = { role: 'Student', isButtonVisible: false, isCourseButtonVisible: false, isAppSettingsVisible: true, answer: !null, educator: !null, showDrawerItems: !null };
+    }  else if (currentQuestion === 2 && questions[currentQuestion].answers[index] === 'Creativity') {
+      setLoading(true); // Show loading indicator before navigating to "Back"
+      setButtonVisible(false); // Hide the button
+      setCourseButtonVisible (false);
+      setAppSettingsVisible (true);
+      setAnswer(!null);
+      setEducator(!null);
+      setShowDrawerItems(!null);
+      navigation.navigate("Back");
+      newState = { role: 'Student', isButtonVisible: false, isCourseButtonVisible: false, isAppSettingsVisible: true, answer: !null, educator: !null, showDrawerItems: !null };
+    }  else {
+      setLoading(true); // Show loading indicator before navigating to "Back"
+      navigation.navigate("Back");
+      setCourseButtonVisible (true);
+      setAppSettingsVisible (true);
+      setButtonVisible(true); 
+      setAnswer(!null);
+      setEducator(!null);
+      setShowDrawerItems(!null);
+      newState = { role: 'Other', isButtonVisible: true, isCourseButtonVisible: true, isAppSettingsVisible: true, answer: !null, educator: !null, showDrawerItems: !null };
     }
 
     setSelectedAnswers(selectedAnswers => {
@@ -166,6 +235,8 @@ const {setShowDrawerItems} = useQuestionContext();
       updatedAnswers[currentQuestion] = index;
       return updatedAnswers;
     });
+
+    saveUserState('userState', newState);
   };
 
   const navigateToBackScreen = () => {

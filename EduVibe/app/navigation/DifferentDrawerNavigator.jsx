@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useEffect , useState } from 'react';
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Assuming you're using Expo vector icons
@@ -6,8 +6,19 @@ import Dashboard from '../tabs/Dashboard';
 import announcements from '../screens/Annoucement/announcementsData';
 import TeacherDashboard from '../screens/Educator/TeacherDashboard';
 import { useVisibility } from '../../contexts/VisibilityContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Drawer = createDrawerNavigator();
+
+const retrieveUserState = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('userState');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.error("Failed to load user state from AsyncStorage", e);
+  }
+};
 
 const CustomDrawerContent = ({ navigation }) => {
 
@@ -95,6 +106,18 @@ const styles = StyleSheet.create({
 
 const DifferentDrawerNavigator = () => {
   const {isCourseButtonVisible} = useVisibility();
+  const {  setCourseButtonVisible   } = useVisibility(); 
+
+useEffect(() => {
+    const fetchUserState = async () => {
+      const savedState = await retrieveUserState();
+      if (savedState) {
+        setCourseButtonVisible(savedState.isCourseButtonVisible);
+      }
+    };
+    fetchUserState();
+  }, []);
+
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} drawerPosition="left">
       {isCourseButtonVisible ? (

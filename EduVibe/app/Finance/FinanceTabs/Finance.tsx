@@ -31,8 +31,8 @@ const FinanceTab = () => {
             borderTopColor: '#333',
           },
           tabBarShowLabel: false,
-          tabBarInactiveTintColor: '#999',
-          tabBarActiveTintColor: Colors.white,
+          tabBarInactiveTintColor: '#F5B227',
+          tabBarActiveTintColor: "white",
         }}
       >
         <Tab.Screen
@@ -44,7 +44,7 @@ const FinanceTab = () => {
                 style={{
                   padding: 12,
                   borderRadius: 30,
-                  backgroundColor: focused ? Colors.tintColor : Colors.grey,
+                  backgroundColor: focused ? "#F5B227": Colors.grey,
                 }}
               >
                 <SimpleLineIcons name="pie-chart" size={18} color={color} />
@@ -62,7 +62,7 @@ const FinanceTab = () => {
                 style={{
                   padding: 12,
                   borderRadius: 30,
-                  backgroundColor: focused ? Colors.tintColor : Colors.grey,
+                  backgroundColor: focused ? "#F5B227" : Colors.grey,
                 }}
               >
                 <AntDesign name="swap" size={18} color={color} />
@@ -80,7 +80,7 @@ const FinanceTab = () => {
                 style={{
                   padding: 12,
                   borderRadius: 30,
-                  backgroundColor: focused ? Colors.tintColor : Colors.grey,
+                  backgroundColor: focused ? "#F5B227" : Colors.grey,
                 }}
               >
                 <FontAwesome name="user-o" size={18} color={color} />

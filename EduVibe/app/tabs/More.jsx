@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState  , useEffect } from "react";
 import {
   View,
   Text,
@@ -11,13 +11,37 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { ButtonsTextStyle } from "../../themes/ButtonsWithTextContainerStyle";
 import { useUsers } from "../../contexts/UsersContext";
 import { useVisibility } from "../../contexts/VisibilityContext"; // import useVisibility
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
+const retrieveUserState = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('userState');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.error("Failed to load user state from AsyncStorage", e);
+  }
+};
 
 const MoreScreen = ({ navigation }) => {
-  const { isButtonVisible } = useVisibility(); // use the visibility state
-  const { isCourseButtonVisible } = useVisibility();
-  const { isAppSettingsVisible } = useVisibility();
+
+  const { isButtonVisible  , isCourseButtonVisible , isAppSettingsVisible  } = useVisibility(); // use the visibility state
+  const { setButtonVisible  , setCourseButtonVisible , setAppSettingsVisible  } = useVisibility(); // use the visibility state
   const { users } = useUsers();
   const [selectedUsers, setSelectedUsers] = useState([]);
+
+
+  useEffect(() => {
+    const fetchUserState = async () => {
+      const savedState = await retrieveUserState();
+      if (savedState) {
+        setButtonVisible(savedState.isButtonVisible);
+        setCourseButtonVisible(savedState.isCourseButtonVisible);
+        setAppSettingsVisible(savedState.isAppSettingsVisible);
+      }
+    };
+    fetchUserState();
+  }, []);
 
   const handleResultPress = (item) => {
     const isUserSelected = selectedUsers.some((user) => user.id === item.id);

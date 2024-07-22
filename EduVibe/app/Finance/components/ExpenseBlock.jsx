@@ -15,7 +15,7 @@ const ExpenseBlock = ({ expenseList }) => {
       return (
         <TouchableOpacity onPress={() => {}}>
           <View style={styles.addItemBtn}>
-            <Feather name="plus" size={22} color={"#ccc"} />
+            <Feather name="plus" size={22} color={"black"} />
           </View>
         </TouchableOpacity>
       );
@@ -30,10 +30,10 @@ const ExpenseBlock = ({ expenseList }) => {
           {
             backgroundColor:
               item.name === "Food"
-                ? Colors.blue
+                ? "#F5B227"
                 : item.name === "Saving"
                 ? Colors.white
-                : Colors.tintColor,
+                : "#1C9C9D",
           },
         ]}
       >
@@ -46,7 +46,7 @@ const ExpenseBlock = ({ expenseList }) => {
                   ? Colors.black
                   : item.name === "Saving"
                   ? Colors.black
-                  : Colors.white,
+                  : "white",
             },
           ]}
         >
@@ -61,7 +61,7 @@ const ExpenseBlock = ({ expenseList }) => {
                   ? Colors.black
                   : item.name === "Saving"
                   ? Colors.black
-                  : Colors.white,
+                  : "white",
             },
           ]}
         >
@@ -75,10 +75,10 @@ const ExpenseBlock = ({ expenseList }) => {
               {
                 color:
                   item.name === "Food"
-                    ? Colors.black
+                    ? "Colors.black"
                     : item.name === "Saving"
                     ? Colors.black
-                    : Colors.white,
+                    : "white",
               },
             ]}
           >

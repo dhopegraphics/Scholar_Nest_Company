@@ -11,15 +11,34 @@ import ContactsCard from "../../components/ContactsCard";
 import MessagesScreen from "../tabs/Messages";
 import { signOut, getCurrentUser } from "../../lib/appwrite";
 import { useQuestionContext } from "../../contexts/QuestionContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const retrieveUserState = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('userState');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.error("Failed to load user state from AsyncStorage", e);
+  }
+};
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
-  const { answer } = useQuestionContext();
+  const { answer , setAnswer } = useQuestionContext();
   const { navigation } = props;
   const [currentUser, setCurrentUser] = useState(null); // State to store the current user
   
-
+  useEffect(() => {
+    const fetchUserState = async () => {
+      const savedState = await retrieveUserState();
+      if (savedState) {
+        setAnswer(savedState.answer);
+      }
+    };
+    fetchUserState();
+  }, []);
+  
   useEffect(() => {
     // Fetch the current user when the component mounts
     const fetchCurrentUser = async () => {

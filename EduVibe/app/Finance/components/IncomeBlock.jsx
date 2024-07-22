@@ -40,14 +40,14 @@ const IncomeBlock = ({ incomeList }) => {
               alignSelf: "flex-start",
             }}
           >
-            <Feather name={iconName} size={22} color={Colors.white} />
+            <Feather name={iconName} size={22} color={"white"} />
           </View>
           <TouchableOpacity onPress={() => {}}>
-            <Feather name="more-horizontal" size={20} color={Colors.white} />
+            <Feather name="more-horizontal" size={20} color={"white"} />
           </TouchableOpacity>
         </View>
-        <Text style={{ color: Colors.white }}>{item.name}</Text>
-        <Text style={{ color: Colors.white, fontSize: 18, fontWeight: "600" }}>
+        <Text style={{ color: "white" }}>{item.name}</Text>
+        <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
           ${item.amount.split(".")[0]}.
           <Text style={{ fontSize: 12, fontWeight: "400" }}>
             {item.amount.split(".")[1]}
