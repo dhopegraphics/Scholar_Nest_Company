@@ -33,8 +33,9 @@ const PiePage = ({ navigation }) => {
 
   return (
     <>
+    
       <View style={styles.headerContainer}>
-        <Header />
+      <Header />
       </View>
       <View style={[styles.container, { paddingTop: 40 }]}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     backgroundColor: Colors.black,
-    paddingTop: 40,
+    padding : 10,
+   
   },
 });

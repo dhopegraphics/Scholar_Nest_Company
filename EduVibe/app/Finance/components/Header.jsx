@@ -5,7 +5,7 @@ import Colors from "../constants/Colors";
 
 const Header = () => {
   return (
-    <SafeAreaView style={styles.container}>
+ 
       <View style={styles.wrapper}>
         <View style={styles.userInfoWrapper}>
           <Image
@@ -28,7 +28,7 @@ const Header = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+  
   );
 };
 

@@ -8,6 +8,7 @@ import ClassRoomCard from '../../../components/ClassRoomCard';
 import { Ionicons } from '@expo/vector-icons';
 import Icon from "react-native-vector-icons/Ionicons";
 import { useAuth } from '../../../contexts/AuthContext';
+import FinanceCard from '../../../components/FinanceCard';
 
 const LearningSection = () => {
   const navigation = useNavigation();
@@ -21,6 +22,10 @@ const LearningSection = () => {
 
   const handleClassPress = () => {
     navigation.navigate('ClassRoomHome');
+  };
+
+  const handleFinancePress = () => {
+    navigation.navigate('FinanceTab');
   };
 
   const onRefresh = useCallback(() => {
@@ -86,9 +91,15 @@ const LearningSection = () => {
                 uri: 'https://img.freepik.com/free-vector/empty-classroom-interior-with-chalkboard_1308-61229.jpg',
               }}
             />
-            <TouchableOpacity onPress={() => navigation.navigate("FinanceTab")}>
-              <Text>Finace</Text>
-            </TouchableOpacity>
+          </View>
+          <View style={{ padding: 10 }}>
+            <FinanceCard
+              title={'Finance Management'}
+              onPress={handleFinancePress}
+              imageSource={{
+                uri: 'https://www.wealthandfinance-news.com/wp-content/uploads/2021/07/Finance-technology.jpg',
+              }}
+            />
           </View>
         </ScrollView>
 
