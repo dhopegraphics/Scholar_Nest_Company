@@ -96,7 +96,11 @@ const ParentWardSetUpScreen = () => {
           />
         </Animated.View>
       )}
-      
+      <TouchableOpacity style={styles.DoneButton}  onPress={() => navigation.navigate("Back")}>
+        <Text style = {{ fontWeight : "600" , fontSize : 20 , paddingTop : 10 , }} >
+          Done
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -133,6 +137,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#999",
     marginTop: 20,
+  },
+  DoneButton: {
+   
+borderColor : "blue",
+borderWidth : 3,
+borderRadius : 20,
+alignItems : "center",
+width : 120,
+height : 50,
+alignContent : "center",
+alignSelf : "center",
   },
 });
 

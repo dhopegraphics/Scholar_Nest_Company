@@ -61,10 +61,10 @@ const WardsScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {/* Display selected users */}
+ 
       <FlatList
         data={selectedUsers}
-        keyExtractor={(item) => item.id.toString()} // Ensure item.id is converted to string
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => handlePress(item.id)}>
             <ContactsCard
