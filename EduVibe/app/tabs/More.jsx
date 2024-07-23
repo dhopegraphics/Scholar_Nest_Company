@@ -220,7 +220,22 @@ const MoreScreen = ({ navigation }) => {
               color="gray" />
           </TouchableOpacity>
         )}
-
+    <TouchableOpacity
+            style={ButtonsTextStyle.MoreSettingsButton}
+            onPress={() => navigation.navigate("LottieEduvibeLoader")}
+          >
+            <Icon
+              style={ButtonsTextStyle.icon}
+              name="settings"
+              size={30}
+              color="#ffffff" />
+            <Text style={ButtonsTextStyle.text}>Loader</Text>
+            <Icon
+              style={ButtonsTextStyle.rightIcon}
+              name="chevron-right"
+              size={30}
+              color="gray" />
+          </TouchableOpacity> 
         
       </View>
     </SafeAreaView></>

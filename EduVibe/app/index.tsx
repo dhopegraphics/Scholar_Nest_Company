@@ -1,19 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import AppNavigator from './navigation/AppNavigator'; // Adjust the path
 import 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-Animated.addWhitelistedNativeProps({ text: true });
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as SplashScreen from 'expo-splash-screen';
-import GlobalProvider from '../contexts/GlobalProvider';
 import * as Font from 'expo-font';
 import { Entypo } from '@expo/vector-icons'; // Import the icon set you need
-import { CourseProvider } from '../contexts/CourseContext';
-import { CourseHeaderProvider } from '../contexts/CourseHeaderContext';
-import { AuthProvider } from '../contexts/AuthContext';
+import GlobalProvider from '../contexts/GlobalProvider'; // Adjust the path
+import { CourseProvider } from '../contexts/CourseContext'; // Adjust the path
+import { CourseHeaderProvider } from '../contexts/CourseHeaderContext'; // Adjust the path
+import { AuthProvider } from '../contexts/AuthContext'; // Adjust the path
+import LottieEduvibeLoader from '../constants/LottieEduvibeLoader'; // Adjust the path
 
-
+Animated.addWhitelistedNativeProps({ text: true });
 SplashScreen.preventAutoHideAsync();
 
 const App: React.FC = () => {
@@ -47,34 +47,35 @@ const App: React.FC = () => {
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      // This tells the splash screen to hide immediately! If we call this after
-      // `setAppIsReady`, then we may see a blank screen while the app is
-      // loading its initial state and rendering its first pixels. So instead,
-      // we hide the splash screen once we know the root view has already
-      // performed layout.
+      // Hide the splash screen once the root view has performed layout.
       await SplashScreen.hideAsync();
     }
   }, [appIsReady]);
 
   if (!appIsReady) {
-    return null;
+    return <LottieEduvibeLoader />;
   }
 
   return (
-    <GestureHandlerRootView onLayout={onLayoutRootView} style={{ flex: 1 }}>
+    <GestureHandlerRootView onLayout={onLayoutRootView} style={styles.container}>
       <StatusBar barStyle="default" backgroundColor="black" />
-     <AuthProvider> 
-      <GlobalProvider>
-        <CourseProvider>
-      <CourseHeaderProvider>
-        <AppNavigator />
-      </CourseHeaderProvider>
-      </CourseProvider>
-      </GlobalProvider>
+      <AuthProvider> 
+        <GlobalProvider>
+          <CourseProvider>
+            <CourseHeaderProvider>
+              <AppNavigator />
+            </CourseHeaderProvider>
+          </CourseProvider>
+        </GlobalProvider>
       </AuthProvider>
     </GestureHandlerRootView>
-  
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default App;
