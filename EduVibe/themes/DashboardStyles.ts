@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const DashboardStyles = StyleSheet.create({
   safeArea: {
     flex: 1,
-   
+
     backgroundColor: "#fff",
   },
   scrollViewContent: {
@@ -12,7 +12,7 @@ const DashboardStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 14,
-   
+
     backgroundColor: "#fff",
   },
   title: {
@@ -37,7 +37,7 @@ const DashboardStyles = StyleSheet.create({
     right: 16,
     top: "60%",
     transform: [{ translateY: -25 }],
-    backgroundColor: "#3b82f6", // Adjust the button color as needed
+    backgroundColor: "#1C9C9D", // Adjust the button color as needed
     width: 60,
     height: 50,
     borderTopLeftRadius: 25,
@@ -51,7 +51,7 @@ const DashboardStyles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-    alignSelf : "center",
+    alignSelf: "center",
   },
   centeredContainer: {
     flex: 1,
