@@ -59,7 +59,7 @@ const OnBoardingScreen: React.FC = () => {
             Explore a variety of interactive lesson,
           </Text>
           <Text style={[styles.dscpText, { fontFamily: "Nunito_400Regular" }]}>
-            video, quizze & assignment.
+            videos, quizzes & assignments.
           </Text>
         </View>
         <TouchableOpacity
