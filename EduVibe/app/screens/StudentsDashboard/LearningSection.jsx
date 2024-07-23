@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CourseCard } from '../../../components';
 import DashboardStyles from '../../../themes/DashboardStyles';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
@@ -38,9 +39,22 @@ const LearningSection = () => {
 
   useEffect(() => {
     if (currentUser) {
-      fetchCourses(); // Fetch courses when component mounts and currentUser is defined
+      fetchStoredCourses();
     }
   }, [currentUser]);
+
+  const fetchStoredCourses = async () => {
+    try {
+      const storedCourses = await AsyncStorage.getItem('courses');
+      if (storedCourses) {
+        setCourses(JSON.parse(storedCourses));
+      } else {
+        fetchCourses(); // Fetch courses if not found in AsyncStorage
+      }
+    } catch (error) {
+      console.error('Failed to load courses from storage:', error.message);
+    }
+  };
 
   const fetchCourses = async () => {
     try {
@@ -49,6 +63,7 @@ const LearningSection = () => {
       const joinedCourseIds = userJoinedCourses.map(course => course.courseId);
       const filteredCourses = coursesData.filter(course => joinedCourseIds.includes(course.$id));
       setCourses(filteredCourses); // Set only joined courses in state
+      await AsyncStorage.setItem('courses', JSON.stringify(filteredCourses)); // Save courses to AsyncStorage
     } catch (error) {
       console.error('Failed to fetch courses:', error.message);
     }

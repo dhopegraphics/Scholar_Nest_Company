@@ -60,7 +60,10 @@ const MoreScreen = ({ navigation }) => {
     <View style= {{ padding : 20, backgroundColor : "white",}}>
     <Text style={ButtonsTextStyle.moreText}>More</Text>
     </View>
-    <SafeAreaView style={ButtonsTextStyle.safeArea}>
+    <SafeAreaView style={{ flex: 1,
+    backgroundColor: "white",
+    marginTop: -35,
+   }}>
 
       <ScrollView contentContainerStyle={ButtonsTextStyle.scrollViewContent}>
         <View style={[ButtonsTextStyle.container, { marginBottom: 30 }]}>

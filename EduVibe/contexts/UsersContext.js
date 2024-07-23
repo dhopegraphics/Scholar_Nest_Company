@@ -1,9 +1,10 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
     getCurrentUser, 
     getAllUsers, 
     databases, 
-    updateAvatar, 
+    updateAvatar as updateAvatarAPI, 
     fetchAllTagCollectionDocuments, 
     updateTagCollectionDocument 
 } from '../lib/appwrite'; // Adjust imports as per your setup
@@ -13,91 +14,103 @@ const UsersContext = createContext();
 
 // Create a provider component
 export const UsersProvider = ({ children }) => {
-  // Define the state for the users data
   const [users, setUsers] = useState([]);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [tagData, setTagData] = useState({});
-  const [stats, setStats] = useState({}); // State for stats
+  const [stats, setStats] = useState({});
 
-  // Fetch or set the data for users
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const currentUser = await getCurrentUser();
-        setCurrentUserId(currentUser.userId); // Store the current user ID
-  
-        const allUsers = await getAllUsers();
-        const allUsersData = allUsers.map(user => ({
-          id: user.userId,
-          img: user.avatar,
-          name: user.username,
-          email: user.email,
-          username: user.username,
-          tags: tagData[user.userId] || [], // Provide default empty array if no tags found
-          phone: user.phone || 'N/A', // Replace with actual data if available
-          NoteCount: user.NoteCount || 0, // Replace with actual data if available
-          duration: user.duration || 0, // Replace with actual data if available
-          portfolio: user.portfolio || 'N/A', // Replace with actual data if available
-          bio: user.bio || 'N/A', // Replace with actual data if available
-          birthday: user.birthday || 'N/A', // Replace with actual data if available
-          password: user.password || ' ', // Replace with actual data if available
-          country: user.country || 'N/A', // Replace with actual data if available
-          lastseen: user.lastseen || 0, // Replace with actual data if available
-        }));
-  
-        // Fetch the tags from TagsCollections
-        const fetchedTags = await fetchAllTagCollectionDocuments();
-        const tagDataMap = {};
-        fetchedTags.forEach(tag => {
-          if (!tagDataMap[tag.userId]) {
-            tagDataMap[tag.userId] = [];
-          }
-          tagDataMap[tag.userId].push(tag);
-        });
-  
-        // Define stats object with the current user ID
-        const userStats = {
-          [currentUser.userId]: [
-            { label: 'Location', value: 'USA' },
-            { label: 'Job Type', value: 'Full Time' },
-            { label: 'Experience', value: '6 years' },
-          ],
-        };
-  
-        setStats(userStats); // Set the stats state
-        setTagData(tagDataMap);
-  
-        // Exclude the current user from the users data
-        const otherUsersData = allUsersData.filter(user => user.id !== currentUser.userId);
-  
-        // Combine the current user data and all other users data
-        setUsers([
-          {
+        const storedUsers = await AsyncStorage.getItem('users');
+        const storedCurrentUserId = await AsyncStorage.getItem('currentUserId');
+        const storedTagData = await AsyncStorage.getItem('tagData');
+        const storedStats = await AsyncStorage.getItem('stats');
+
+        if (storedUsers && storedCurrentUserId && storedTagData && storedStats) {
+          setUsers(JSON.parse(storedUsers));
+          setCurrentUserId(storedCurrentUserId);
+          setTagData(JSON.parse(storedTagData));
+          setStats(JSON.parse(storedStats));
+        } else {
+          const currentUser = await getCurrentUser();
+          setCurrentUserId(currentUser.userId);
+
+          const allUsers = await getAllUsers();
+          const fetchedTags = await fetchAllTagCollectionDocuments();
+
+          const tagDataMap = {};
+          fetchedTags.forEach(tag => {
+            if (!tagDataMap[tag.userId]) {
+              tagDataMap[tag.userId] = [];
+            }
+            tagDataMap[tag.userId].push(tag);
+          });
+
+          const userStats = {
+            [currentUser.userId]: [
+              { label: 'Location', value: 'USA' },
+              { label: 'Job Type', value: 'Full Time' },
+              { label: 'Experience', value: '6 years' },
+            ],
+          };
+
+          const allUsersData = allUsers.map(user => ({
+            id: user.userId,
+            img: user.avatar,
+            name: user.username,
+            email: user.email,
+            username: user.username,
+            tags: tagDataMap[user.userId] || [],
+            phone: user.phone || 'N/A',
+            NoteCount: user.NoteCount || 0,
+            duration: user.duration || 0,
+            portfolio: user.portfolio || 'N/A',
+            bio: user.bio || 'N/A',
+            birthday: user.birthday || 'N/A',
+            password: user.password || ' ',
+            country: user.country || 'N/A',
+            lastseen: user.lastseen || 0,
+          }));
+
+          const otherUsersData = allUsersData.filter(user => user.id !== currentUser.userId);
+
+          const currentUserData = {
             id: currentUser.userId,
             img: currentUser.avatar,
             name: currentUser.username,
             email: currentUser.email,
             username: currentUser.username,
             tags: tagDataMap[currentUser.userId] || [],
-            phone: '0202472680', // Placeholder data, update as needed
-            NoteCount: 44,      // Placeholder data, update as needed
-            duration: 10,       // Placeholder data, update as needed
-            portfolio: 'UI/UX Designer', // Placeholder data, update as needed
-            bio: 'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.', // Placeholder data, update as needed
-            birthday: '02/07/2012', // Placeholder data, update as needed
-            password: ' ', // Placeholder data, update as needed
-            country: 'Ghana', // Placeholder data, update as needed
-            lastseen: 20, // Placeholder data, update as needed
-          },
-          ...otherUsersData,
-        ]);
+            phone: '0202472680',
+            NoteCount: 44,
+            duration: 10,
+            portfolio: 'UI/UX Designer',
+            bio: 'Skilled in user research, wireframing, prototyping, and collaborating with cross-functional teams.',
+            birthday: '02/07/2012',
+            password: ' ',
+            country: 'Ghana',
+            lastseen: 20,
+          };
+
+          const allUserDataCombined = [currentUserData, ...otherUsersData];
+          
+          setUsers(allUserDataCombined);
+          setTagData(tagDataMap);
+          setStats(userStats);
+
+          await AsyncStorage.setItem('users', JSON.stringify(allUserDataCombined));
+          await AsyncStorage.setItem('currentUserId', currentUser.userId);
+          await AsyncStorage.setItem('tagData', JSON.stringify(tagDataMap));
+          await AsyncStorage.setItem('stats', JSON.stringify(userStats));
+        }
       } catch (error) {
         console.error('Failed to fetch user data:', error);
       }
     };
-  
+
     fetchUserData();
-  }, []); // Ensure useEffect runs only once when the component mounts
+  }, []);
 
   const updateAvatar = async (userId, avatarUrl) => {
     setUsers(prevUsers =>
@@ -116,6 +129,11 @@ export const UsersProvider = ({ children }) => {
         userId,
         { avatar: avatarUrl }
       );
+      const updatedUsers = users.map(user =>
+        user.id === userId ? { ...user, img: avatarUrl } : user
+      );
+      setUsers(updatedUsers);
+      await AsyncStorage.setItem('users', JSON.stringify(updatedUsers));
     } catch (error) {
       console.error('Failed to update user avatar:', error);
     }
@@ -129,6 +147,9 @@ export const UsersProvider = ({ children }) => {
 
     try {
       await updateTagCollectionDocument(userId, { tags: updatedTags });
+      const updatedTagData = { ...tagData, [userId]: updatedTags };
+      setTagData(updatedTagData);
+      await AsyncStorage.setItem('tagData', JSON.stringify(updatedTagData));
     } catch (error) {
       console.error('Failed to update user tags:', error);
     }

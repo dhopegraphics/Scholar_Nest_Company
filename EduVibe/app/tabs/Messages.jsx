@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import messagesScreenstyles from "../../themes/messagesScreenStyles";
 import ContactsCard from "../../components/ContactsCard"; // Import the ContactsCard component
 import GroupCard from "../../components/GroupCard"; // Import the GroupCard component
@@ -12,13 +13,22 @@ const MessagesScreen = ({ navigation }) => {
   const { users } = useUsers(); // Access users data from UsersContext
   const { group } = useGroup(); // Access group data from GroupContext
   const [currentUser, setCurrentUser] = useState(null); // State to store the current user
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    // Fetch the current user when the component mounts
     const fetchCurrentUser = async () => {
       try {
-        const user = await getCurrentUser();
-        setCurrentUser(user);
+        // Check if user data is stored in AsyncStorage
+        const storedUser = await AsyncStorage.getItem('currentUser');
+        if (storedUser) {
+          setCurrentUser(JSON.parse(storedUser));
+        } else {
+          // Fetch the current user if not found in AsyncStorage
+          const user = await getCurrentUser();
+          setCurrentUser(user);
+          // Save user data to AsyncStorage
+          await AsyncStorage.setItem('currentUser', JSON.stringify(user));
+        }
       } catch (error) {
         console.error("Failed to fetch current user:", error);
       }
@@ -78,7 +88,18 @@ const MessagesScreen = ({ navigation }) => {
           )}
           {currentUser && (
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Image source={{ uri: currentUser.avatar }} style={messagesScreenstyles.profileIcon} />
+              {!imageLoaded && (
+                <Image
+                  source={require('../../assets/images/Eduvibe.png')}
+                  style={messagesScreenstyles.profileIcon}
+                />
+              )}
+              <Image
+                source={{ uri: currentUser.avatar }}
+                style={messagesScreenstyles.profileIcon}
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageLoaded(false)}
+              />
             </TouchableOpacity>
           )}
         </View>

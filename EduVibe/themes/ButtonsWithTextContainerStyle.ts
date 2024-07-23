@@ -27,6 +27,8 @@ export const ButtonsTextStyle = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     backgroundColor : "white",
+    padding : 20,
+    paddingLeft : 5,
   },
   buttonContainer: {
     width: "100%",
