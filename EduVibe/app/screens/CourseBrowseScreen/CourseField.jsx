@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FileDownloadComponent from '../../ClassRoom/components/FileDownloadComponent';
 import QuestionTaken from './QuestionTaken';
 import NotesComponent from './NotesTaken';
+import * as Sharing from 'expo-sharing';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -130,6 +131,23 @@ const MoreScreen = ({ course, navigation }) => {
     }
   }, [selectedItem]);
 
+  const handleShare = async () => {
+    try {
+      // Replace with the content you want to share
+      const url = `https://eduvibe.com/courses/${course.$id}/${course.title}`; // Example URL
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(url, {
+          mimeType: 'text/plain',
+          UTI: 'public.text',
+        });
+      } else {
+        Alert.alert('Sharing is not available on this device');
+      }
+    } catch (error) {
+      Alert.alert('Error', `Failed to share: ${error.message}`);
+    }
+  };
+
   return (
     <View style={styles.ActionContainer}>
       <TouchableOpacity
@@ -146,7 +164,7 @@ const MoreScreen = ({ course, navigation }) => {
         <Icon name="certificate" size={26} color="#3b82f6" style={styles.icon} />
         <Text style={styles.buttonText}>Course certificate</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button}  onPress={handleShare} >
         <Icon name="arrow-up-box" size={24} color="#3b82f6" style={styles.icon} />
         <Text style={styles.buttonText}>Share this course</Text>
       </TouchableOpacity>

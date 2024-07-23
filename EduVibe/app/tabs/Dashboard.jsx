@@ -2,7 +2,6 @@ import React from "react";
 import { Text , StyleSheet } from "react-native";
 import LearningSection from "../screens/StudentsDashboard/LearningSection";
 import JobSearchSection from "../screens/StudentsDashboard/JobSearchSection";
-import DashboardStyles from "../../themes/DashboardStyles";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 const Tab = createMaterialTopTabNavigator();

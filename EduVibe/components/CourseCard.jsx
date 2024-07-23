@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useUsers } from '../contexts/UsersContext';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Correct import
 
 const CourseCard = ({ course }) => {
   const navigation = useNavigation();
@@ -18,6 +19,25 @@ const CourseCard = ({ course }) => {
 
     fetchTeacherName();
   }, [course.userId, users]);
+
+  useEffect(() => {
+    const storeCourse = async () => {
+      try {
+        // Retrieve existing courses
+        const storedCourses = JSON.parse(await AsyncStorage.getItem('courses')) || [];
+        const updatedCourses = storedCourses.map(c => c.$id === course.$id ? course : c);
+        if (!updatedCourses.some(c => c.$id === course.$id)) {
+          updatedCourses.push(course);
+        }
+        // Store updated courses
+        await AsyncStorage.setItem('courses', JSON.stringify(updatedCourses));
+      } catch (error) {
+        console.error('Failed to store course in AsyncStorage:', error.message);
+      }
+    };
+
+    storeCourse();
+  }, [course]);
 
   const handlePress = () => {
     navigation.navigate('Course_Information', { course });

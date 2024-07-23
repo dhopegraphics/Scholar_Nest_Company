@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useUsers } from '../contexts/UsersContext'; // Adjust import path as needed
 import ActionSheet from 'react-native-actionsheet';
 import { deleteCourse } from '../lib/appwrite';
 import { useQuestionContext } from '../contexts/QuestionContext'; // Adjust import path as needed
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TeacherCourseCard = ({ course }) => {
   const navigation = useNavigation();
@@ -24,6 +25,23 @@ const TeacherCourseCard = ({ course }) => {
     fetchTeacherName();
   }, [course.userId, users]); // Depend on `course.userId` and `users`
 
+  useEffect(() => {
+    const storeCourse = async () => {
+      try {
+        const courses = JSON.parse(await AsyncStorage.getItem('courses')) || [];
+        const updatedCourses = courses.map(c => c.$id === course.$id ? course : c);
+        if (!updatedCourses.some(c => c.$id === course.$id)) {
+          updatedCourses.push(course);
+        }
+        await AsyncStorage.setItem('courses', JSON.stringify(updatedCourses));
+      } catch (error) {
+        console.error('Failed to store course in AsyncStorage:', error.message);
+      }
+    };
+
+    storeCourse();
+  }, [course]); // Store course data when it changes
+
   const handlePress = () => {
     navigation.navigate('CourseSchema', { course });
   };
@@ -37,7 +55,13 @@ const TeacherCourseCard = ({ course }) => {
       try {
         await deleteCourse(course.$id);
         Alert.alert('Success', 'Course deleted successfully');
-        // Add any additional logic for after course deletion, e.g., updating state
+        
+        // Update AsyncStorage after deletion
+        const courses = JSON.parse(await AsyncStorage.getItem('courses')) || [];
+        const updatedCourses = courses.filter(c => c.$id !== course.$id);
+        await AsyncStorage.setItem('courses', JSON.stringify(updatedCourses));
+
+        // Optionally, notify parent component or refresh data
       } catch (error) {
         Alert.alert('Error', error.message);
       }
@@ -86,8 +110,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
-    margin : 10,
-
+    margin: 10,
   },
   avatar: {
     width: '100%',
