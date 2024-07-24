@@ -22,10 +22,14 @@ const retrieveUserState = async () => {
 };
 
 const MoreScreen = ({ navigation }) => {
-  const { isButtonVisible, isCourseButtonVisible, isAppSettingsVisible } =
-    useVisibility(); // use the visibility state
-  const { setButtonVisible, setCourseButtonVisible, setAppSettingsVisible } =
-    useVisibility(); // use the visibility state
+  const {
+    isButtonVisible,
+    isCourseButtonVisible,
+    isAppSettingsVisible,
+    setButtonVisible,
+    setCourseButtonVisible,
+    setAppSettingsVisible,
+  } = useVisibility(); // use the visibility state
 
   useEffect(() => {
     const fetchUserState = async () => {
@@ -41,7 +45,7 @@ const MoreScreen = ({ navigation }) => {
 
   return (
     <>
-      <View style={{ padding: 20, backgroundColor: "white", marginTop: -20 }}>
+      <View style={{ padding: 20, backgroundColor: "white" }}>
         <Text style={ButtonsTextStyle.moreText}>More</Text>
       </View>
       <SafeAreaView
@@ -131,7 +135,6 @@ const MoreScreen = ({ navigation }) => {
                   />
                 </TouchableOpacity>
               )}
-
               {isCourseButtonVisible && (
                 <TouchableOpacity
                   style={ButtonsTextStyle.button}
@@ -224,3 +227,7 @@ const MoreScreen = ({ navigation }) => {
 };
 
 export default MoreScreen;
+
+const styles = StyleSheet.create({
+  // Add your custom styles here
+});
