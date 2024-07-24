@@ -6,9 +6,11 @@ import ContactsCard from "../../../components/ContactsCard";
 import { useUsers } from "../../../contexts/UsersContext";
 import { useNavigation } from '@react-navigation/native';
 import { createParentWard } from "../../../lib/appwrite";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const ParentWardSetUpScreen = () => {
   const { users } = useUsers();
+  const { currentUser } = useAuth(); // Get the current user from the Auth context
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -54,7 +56,8 @@ const ParentWardSetUpScreen = () => {
             const isUserSelected = selectedUsers.some(user => user.id === item.id);
             if (!isUserSelected) {
               try {
-                await createParentWard(item.id); // Create the document in Appwrite
+                console.log('Creating ParentWard with:', item.id, currentUser.username); // Use currentUser.username instead of currentUser.id
+                await createParentWard(item.id, currentUser.username); // Pass currentUser.username instead of currentUser.id
                 const updatedSelectedUsers = [...selectedUsers, item];
                 setSelectedUsers(updatedSelectedUsers);
                 navigation.navigate('WardsScreen', { selectedUsers: updatedSelectedUsers });

@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { ButtonsTextStyle } from "../../themes/ButtonsWithTextContainerStyle";
-import { useUsers } from "../../contexts/UsersContext";
 import { useVisibility } from "../../contexts/VisibilityContext"; // import useVisibility
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -27,8 +26,6 @@ const MoreScreen = ({ navigation }) => {
 
   const { isButtonVisible  , isCourseButtonVisible , isAppSettingsVisible  } = useVisibility(); // use the visibility state
   const { setButtonVisible  , setCourseButtonVisible , setAppSettingsVisible  } = useVisibility(); // use the visibility state
-  const { users } = useUsers();
-  const [selectedUsers, setSelectedUsers] = useState([]);
 
 
   useEffect(() => {
@@ -42,18 +39,6 @@ const MoreScreen = ({ navigation }) => {
     };
     fetchUserState();
   }, []);
-
-  const handleResultPress = (item) => {
-    const isUserSelected = selectedUsers.some((user) => user.id === item.id);
-
-    if (!isUserSelected) {
-      const updatedSelectedUsers = [...selectedUsers, item];
-      setSelectedUsers(updatedSelectedUsers);
-      navigation.navigate("WardsScreen", {
-        selectedUsers: updatedSelectedUsers,
-      });
-    }
-  };
 
   return (
     <>
@@ -165,7 +150,7 @@ const MoreScreen = ({ navigation }) => {
             {isButtonVisible ? (
               <TouchableOpacity
                 style={ButtonsTextStyle.button}
-                onPress={() => navigation.navigate("WardsScreen", { selectedUsers })}
+                onPress={() => navigation.navigate("AddedWards")}
               >
                 <Icon
                   style={ButtonsTextStyle.icon}

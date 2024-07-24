@@ -600,8 +600,7 @@ export const unjoinCourse = async (userId, courseId) => {
   }
 };
 
-
-export const createParentWard = async (WardsId) => {
+export const createParentWard = async (WardsId, AddedBy) => {
   try {
     const response = await databases.createDocument(
       appwriteConfig.databaseId,
@@ -609,6 +608,7 @@ export const createParentWard = async (WardsId) => {
       ID.unique(), // Unique ID for the document
       {
         WardsId: WardsId,
+        AddedBy: AddedBy,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
@@ -616,6 +616,34 @@ export const createParentWard = async (WardsId) => {
     return response;
   } catch (error) {
     console.error('Failed to create ParentWards document:', error);
+    throw error;
+  }
+};
+
+export const fetchParentWardsForUser = async (username) => {
+  try {
+    const response = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.parentWardsCollectionId,
+      [
+        Query.equal('AddedBy', username)
+      ]
+    );
+    
+    const documents = response.documents;
+    
+    // Fetch user details for each WardsId
+    const documentsWithUsernames = await Promise.all(documents.map(async (doc) => {
+      const userDetails = await getUserDetails(doc.WardsId);
+      return {
+        ...doc,
+        WardsUsername: userDetails.username // Assuming the user details contain a 'username' field
+      };
+    }));
+
+    return documentsWithUsernames;
+  } catch (error) {
+    console.error('Failed to fetch ParentWards documents:', error);
     throw error;
   }
 };

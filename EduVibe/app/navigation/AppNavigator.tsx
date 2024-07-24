@@ -84,6 +84,7 @@ import TransactionsSection from "../Finance/FinanceTabs/Transactions";
 import Header from "../Finance/components/Header";
 import { EducationPlacesProvider } from "../../contexts/EducationPlaceContext";
 import LottieEduvibeLoader from "../../constants/LottieEduvibeLoader";
+import AddedWards from "../screens/ParentWards/AddedWards";
 
 export type StackParamList = {
 FinanceHeader : undefined;
@@ -160,6 +161,7 @@ FinanceHeader : undefined;
   CourseCustomHeader: undefined;
   QuestionTaken: { course: any };
   LottieEduvibeLoader : undefined;
+  AddedWards : undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -453,6 +455,12 @@ const MainStackScreen = () => {
                               <Stack.Screen
         name="LottieEduvibeLoader"
         component={LottieEduvibeLoader}
+        options={{ headerShown: false }}
+      />
+
+<Stack.Screen
+        name="AddedWards"
+        component={AddedWards}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
