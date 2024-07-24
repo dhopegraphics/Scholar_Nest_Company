@@ -51,7 +51,11 @@ const CourseTopTabs = ({ navigation, route }) => {
         <Tab.Screen name="Course">
           {props => <Course {...props} course={course} />}
         </Tab.Screen>
-        <Tab.Screen name="Participants" component={ParticipantsTab} />
+        <Tab.Screen  name="Participants" >
+        {props => <ParticipantsTab {...props} course={course}
+        component={ParticipantsTab} /> }
+        </Tab.Screen>
+
       </Tab.Navigator>
     </View>
   );

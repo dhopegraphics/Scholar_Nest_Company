@@ -10,7 +10,6 @@ interface ContactsCardProps {
 const ContactsCard: React.FC<ContactsCardProps> = ({ name, img, onPress }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
-      {/* Use require for local images, and uri for remote images */}
       {typeof img === 'number' ? (
         <Image source={img} style={styles.image} />
       ) : (
