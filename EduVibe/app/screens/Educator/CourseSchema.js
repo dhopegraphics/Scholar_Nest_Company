@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUsers } from '../../../contexts/UsersContext';
 import { useQuestionContext } from '../../../contexts/QuestionContext';
 import { useParticipants } from '../../../contexts/ParticipantContext';
@@ -87,6 +88,52 @@ const CourseSchema = ({ route, navigation }) => {
       Alert.alert('Error', 'Failed to join course');
     }
   };
+
+  const saveCourseToAsyncStorage = async (courseData) => {
+    try {
+      await AsyncStorage.setItem(`course_${course.$id}`, JSON.stringify(courseData));
+      console.log('Course data saved to AsyncStorage');
+    } catch (error) {
+      console.error('Failed to save course data to AsyncStorage:', error.message);
+    }
+  };
+
+  const fetchCourseFromAsyncStorage = async () => {
+    try {
+      const storedCourse = await AsyncStorage.getItem(`course_${course.$id}`);
+      if (storedCourse) {
+        const courseData = JSON.parse(storedCourse);
+        console.log('Course data retrieved from AsyncStorage:', courseData);
+        return courseData;
+      } else {
+        console.log('No course data found in AsyncStorage');
+        return null;
+      }
+    } catch (error) {
+      console.error('Failed to retrieve course data from AsyncStorage:', error.message);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const loadCourseData = async () => {
+      const courseData = await fetchCourseFromAsyncStorage();
+      if (!courseData) {
+        console.log('Fetching course data from API');
+        try {
+          // Replace with actual data fetching logic
+          // Example: const fetchedCourseData = await fetchCourseDataFromAPI(course.$id);
+          // Simulate API call with mock data
+          const fetchedCourseData = { ...course }; // Mocked data
+          await saveCourseToAsyncStorage(fetchedCourseData);
+        } catch (error) {
+          console.error('Failed to fetch or save course data:', error.message);
+        }
+      }
+    };
+
+    loadCourseData();
+  }, [course.$id]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

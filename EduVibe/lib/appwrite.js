@@ -26,6 +26,7 @@ export const appwriteConfig = {
   videoCollectionId: ENV.VIDEO_COLLECTION_ID,
   statsCollectionId: ENV.STATS_COLLECTION_ID,
   userCoursesCollectionId: ENV.USER_COURSES_COLLECTION_ID,
+  parentWardsCollectionId:ENV.PARENT_WARDS_COLLECTION_ID,
 };
 
 const client = new Client();
@@ -596,5 +597,25 @@ export const unjoinCourse = async (userId, courseId) => {
   } catch (error) {
     console.error('Failed to unjoin course:', error.message);
     throw error; // Propagate error
+  }
+};
+
+
+export const createParentWard = async (WardsId) => {
+  try {
+    const response = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.parentWardsCollectionId,
+      ID.unique(), // Unique ID for the document
+      {
+        WardsId: WardsId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error('Failed to create ParentWards document:', error);
+    throw error;
   }
 };

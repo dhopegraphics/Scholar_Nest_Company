@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, TextInput, FlatList, StyleSheet, ActivityIndicator, Animated, Text, TouchableOpacity } from "react-native";
+import { View, TextInput, FlatList, StyleSheet, ActivityIndicator, Animated, Text, TouchableOpacity, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { debounce } from 'lodash';
 import ContactsCard from "../../../components/ContactsCard";
 import { useUsers } from "../../../contexts/UsersContext";
 import { useNavigation } from '@react-navigation/native';
+import { createParentWard } from "../../../lib/appwrite";
 
 const ParentWardSetUpScreen = () => {
   const { users } = useUsers();
@@ -38,15 +39,35 @@ const ParentWardSetUpScreen = () => {
   };
 
   const handleResultPress = (item) => {
-    const isUserSelected = selectedUsers.some(user => user.id === item.id);
-    
-    if (!isUserSelected) {
-      const updatedSelectedUsers = [...selectedUsers, item];
-      setSelectedUsers(updatedSelectedUsers);
-      navigation.navigate('WardsScreen', { selectedUsers: updatedSelectedUsers });
-    } else {
-      navigation.navigate('WardsScreen', { selectedUsers });
-    }
+    Alert.alert(
+      "Confirm",
+      "Do you want to set up this user as your ward?",
+      [
+        {
+          text: "No",
+          onPress: () => console.log("User canceled"),
+          style: "cancel"
+        },
+        {
+          text: "Yes",
+          onPress: async () => {
+            const isUserSelected = selectedUsers.some(user => user.id === item.id);
+            if (!isUserSelected) {
+              try {
+                await createParentWard(item.id); // Create the document in Appwrite
+                const updatedSelectedUsers = [...selectedUsers, item];
+                setSelectedUsers(updatedSelectedUsers);
+                navigation.navigate('WardsScreen', { selectedUsers: updatedSelectedUsers });
+              } catch (error) {
+                console.error('Error creating ParentWards document:', error);
+              }
+            } else {
+              navigation.navigate('WardsScreen', { selectedUsers });
+            }
+          }
+        }
+      ]
+    );
   };
 
   const mockSearchFunction = (query) => {
@@ -85,21 +106,18 @@ const ParentWardSetUpScreen = () => {
             data={searchResults}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleResultPress(item)}>
-                <ContactsCard 
-                  name={item.name} 
-                  img={item.img} 
-                />
-              </TouchableOpacity>
+              <ContactsCard 
+                name={item.name} 
+                img={item.img}
+                onPress={() => handleResultPress(item)} 
+              />
             )}
             ListEmptyComponent={<Text style={styles.noResultsText}>No results found</Text>}
           />
         </Animated.View>
       )}
-      <TouchableOpacity style={styles.DoneButton}  onPress={() => navigation.navigate("Back")}>
-        <Text style = {{ fontWeight : "600" , fontSize : 20 , paddingTop : 10 , }} >
-          Done
-        </Text>
+      <TouchableOpacity style={styles.DoneButton} onPress={() => navigation.navigate("Back")}>
+        <Text style={{ fontWeight: "600", fontSize: 20, paddingTop: 10 }}>Done</Text>
       </TouchableOpacity>
     </View>
   );
@@ -139,15 +157,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   DoneButton: {
-   
-borderColor : "blue",
-borderWidth : 3,
-borderRadius : 20,
-alignItems : "center",
-width : 120,
-height : 50,
-alignContent : "center",
-alignSelf : "center",
+    borderColor: "blue",
+    borderWidth: 3,
+    borderRadius: 20,
+    alignItems: "center",
+    width: 120,
+    height: 50,
+    alignContent: "center",
+    alignSelf: "center",
   },
 });
 
