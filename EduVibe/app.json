@@ -8,7 +8,7 @@
     "icon": "./assets/images/Eduvibe.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/Eduvibe.png",
+      "image": "./assets/EduVibeGifNoBG.gif",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
