@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CourseCard } from '../../../components';
 import DashboardStyles from '../../../themes/DashboardStyles';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
@@ -28,12 +29,12 @@ const LearningSection = () => {
     navigation.navigate('FinanceTab');
   };
 
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
+    console.log('Refreshing data...');
     setRefreshing(true);
-    fetchCourses();
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    const fetchedCourses = await fetchCourses(); // Fetch courses and get the data
+    console.log('Refetched courses:', fetchedCourses); // Log the fetched data
+    setRefreshing(false);
   }, []);
 
   useEffect(() => {
@@ -44,11 +45,21 @@ const LearningSection = () => {
 
   const fetchCourses = async () => {
     try {
-      const coursesData = await getCourses();
-      const userJoinedCourses = await getUserJoinedCourses(currentUser.$id); // Use current user's ID
-      const joinedCourseIds = userJoinedCourses.map(course => course.courseId);
-      const filteredCourses = coursesData.filter(course => joinedCourseIds.includes(course.$id));
-      setCourses(filteredCourses); // Set only joined courses in state
+      const cachedCourses = await AsyncStorage.getItem('courses');
+      let fetchedCourses = [];
+
+      if (cachedCourses) {
+        fetchedCourses = JSON.parse(cachedCourses);
+      } else {
+        const coursesData = await getCourses();
+        const userJoinedCourses = await getUserJoinedCourses(currentUser.$id); // Use current user's ID
+        const joinedCourseIds = userJoinedCourses.map(course => course.courseId);
+        fetchedCourses = coursesData.filter(course => joinedCourseIds.includes(course.$id));
+        await AsyncStorage.setItem('courses', JSON.stringify(fetchedCourses)); // Cache courses in AsyncStorage
+      }
+
+      setCourses(fetchedCourses); // Set the fetched courses in state
+      return fetchedCourses; // Return fetched courses for logging
     } catch (error) {
       console.error('Failed to fetch courses:', error.message);
     }

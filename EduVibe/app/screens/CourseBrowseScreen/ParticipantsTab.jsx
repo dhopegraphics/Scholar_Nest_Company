@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getParticipantsForCourse, unjoinCourse } from '../../../lib/appwrite';
 import { useUsers } from '../../../contexts/UsersContext';
 import ParticipantCard from '../../../components/ParticipantCard';
-
 
 const ParticipantsTab = ({ course }) => {
   const [participants, setParticipants] = useState([]);
@@ -15,8 +15,16 @@ const ParticipantsTab = ({ course }) => {
   useEffect(() => {
     const fetchParticipants = async () => {
       try {
-        const participantsData = await getParticipantsForCourse(course.$id);
-        setParticipants(participantsData);
+        // Check AsyncStorage first
+        const storedParticipants = await AsyncStorage.getItem(`participants_${course.$id}`);
+        if (storedParticipants) {
+          setParticipants(JSON.parse(storedParticipants));
+        } else {
+          // Fetch from API if not in AsyncStorage
+          const participantsData = await getParticipantsForCourse(course.$id);
+          setParticipants(participantsData);
+          await AsyncStorage.setItem(`participants_${course.$id}`, JSON.stringify(participantsData));
+        }
       } catch (error) {
         setError(error.message);
       } finally {
@@ -35,7 +43,9 @@ const ParticipantsTab = ({ course }) => {
 
     try {
       await unjoinCourse(currentUserId, course.$id);
-      setParticipants(prevParticipants => prevParticipants.filter(p => p.userId !== currentUserId));
+      const updatedParticipants = participants.filter(p => p.userId !== currentUserId);
+      setParticipants(updatedParticipants);
+      await AsyncStorage.setItem(`participants_${course.$id}`, JSON.stringify(updatedParticipants));
     } catch (error) {
       console.error('Failed to unjoin course:', error.message);
     }
