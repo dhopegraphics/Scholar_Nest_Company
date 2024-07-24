@@ -41,10 +41,15 @@ const Tab_Layout = () => {
 
   return (
     <>
-      <View style={{ flex: 1, marginBottom: -25 }}>
+ 
         <StatusBar barStyle="dark-content" backgroundColor="white" />
         <Tab.Navigator
           screenOptions={({ route }) => ({
+            tabBarStyle: {
+              paddingBottom: -5, // Adjust padding to ensure tabs are visible
+              height: 45, // Adjust height as needed
+            },
+
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
@@ -125,7 +130,7 @@ const Tab_Layout = () => {
             }}
           />
         </Tab.Navigator>
-      </View>
+    
     </>
   );
 };

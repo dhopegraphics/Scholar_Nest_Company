@@ -622,6 +622,7 @@ export const createParentWard = async (WardsId, AddedBy) => {
 
 export const fetchParentWardsForUser = async (username) => {
   try {
+    // Fetch parent wards where the current user is the one who added
     const response = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.parentWardsCollectionId,
@@ -631,17 +632,24 @@ export const fetchParentWardsForUser = async (username) => {
     );
     
     const documents = response.documents;
-    
-    // Fetch user details for each WardsId
-    const documentsWithUsernames = await Promise.all(documents.map(async (doc) => {
+
+    // Fetch user details and courses for each document 
+    const documentsWithCourses = await Promise.all(documents.map(async (doc) => {
+      // Fetch user details for each WardsId
       const userDetails = await getUserDetails(doc.WardsId);
+      
+      // Fetch courses for this user
+      const joinedCourses = await getUserJoinedCourses(userDetails.userId);
+
       return {
         ...doc,
-        WardsUsername: userDetails.username // Assuming the user details contain a 'username' field
+        WardsUsername: userDetails.username, // Assuming the user details contain a 'username' field
+        WardsAvatar: userDetails.avatar, // Assuming the user details contain an 'avatar' field
+        JoinedCourses: joinedCourses, // Attach the list of joined courses
       };
     }));
 
-    return documentsWithUsernames;
+    return documentsWithCourses;
   } catch (error) {
     console.error('Failed to fetch ParentWards documents:', error);
     throw error;
