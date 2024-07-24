@@ -87,9 +87,9 @@ import LottieEduvibeLoader from "../../constants/LottieEduvibeLoader";
 import AddedWards from "../screens/ParentWards/AddedWards";
 
 export type StackParamList = {
-FinanceHeader : undefined;
-  TransactionsSection : undefined;
-  FinanceTab : undefined;
+  FinanceHeader: undefined;
+  TransactionsSection: undefined;
+  FinanceTab: undefined;
   CourseSchema: undefined;
   TeacherCourseCard: undefined;
   Layout: undefined;
@@ -160,8 +160,8 @@ FinanceHeader : undefined;
   StreamRoom: undefined;
   CourseCustomHeader: undefined;
   QuestionTaken: { course: any };
-  LottieEduvibeLoader : undefined;
-  AddedWards : undefined;
+  LottieEduvibeLoader: undefined;
+  AddedWards: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -181,7 +181,7 @@ const MainStackScreen = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={isLogged ? "Back" : "Onboarding"} // Navigate to "Back" if logged in, else "Onboarding"
+      initialRouteName={isLogged ? "Back" : "LottieEduvibeLoader"} // Navigate to "Back" if logged in, else "Onboarding"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Onboarding" component={OnBoardingScreen} />
@@ -437,28 +437,28 @@ const MainStackScreen = () => {
         component={QuestionTaken}
         options={{ headerShown: false }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="FinanceTab"
         component={FinanceTab}
         options={{ headerShown: false }}
       />
-                  <Stack.Screen
+      <Stack.Screen
         name="TransactionsSection"
         component={TransactionsSection}
         options={{ headerShown: false }}
       />
-                        <Stack.Screen
+      <Stack.Screen
         name="FinanceHeader"
         component={Header}
         options={{ headerShown: false }}
       />
-                              <Stack.Screen
+      <Stack.Screen
         name="LottieEduvibeLoader"
         component={LottieEduvibeLoader}
         options={{ headerShown: false }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="AddedWards"
         component={AddedWards}
         options={{ headerShown: false }}
@@ -477,23 +477,23 @@ const AppNavigator = () => (
             <SettingsProvider>
               <UsersProvider>
                 <EducationPlacesProvider>
-                <PlacesProvider>
-                  <ExperienceProvider>
-                    <MessageProvider>
-                      <TagProvider>
-                        <CourseProvider>
-                          <CourseHeaderProvider>
-                            <ParticipantProvider>
-                              <EventProvider>
-                                <MainStackScreen />
-                              </EventProvider>
-                            </ParticipantProvider>
-                          </CourseHeaderProvider>
-                        </CourseProvider>
-                      </TagProvider>
-                    </MessageProvider>
-                  </ExperienceProvider>
-                </PlacesProvider>
+                  <PlacesProvider>
+                    <ExperienceProvider>
+                      <MessageProvider>
+                        <TagProvider>
+                          <CourseProvider>
+                            <CourseHeaderProvider>
+                              <ParticipantProvider>
+                                <EventProvider>
+                                  <MainStackScreen />
+                                </EventProvider>
+                              </ParticipantProvider>
+                            </CourseHeaderProvider>
+                          </CourseProvider>
+                        </TagProvider>
+                      </MessageProvider>
+                    </ExperienceProvider>
+                  </PlacesProvider>
                 </EducationPlacesProvider>
               </UsersProvider>
             </SettingsProvider>
