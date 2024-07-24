@@ -1,12 +1,9 @@
 
 /node_modules
 /.expo
-/hooks/firebaseConfig.js
-/hook
-/lib
+.env
 
 firebaseConfig.js
 .DS_Store
 
-
-/hooks
+envConfig.js

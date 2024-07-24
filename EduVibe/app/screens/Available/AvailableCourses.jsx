@@ -147,13 +147,13 @@ const AvailableCourses = () => {
                     ]}
                   >
                     <TouchableOpacity style={styles.menuItem}>
-                      <Text style={styles.menuText}>Option 1</Text>
+                      <Text style={styles.menuText}>Show Downloaded Only</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.menuItem}>
-                      <Text style={styles.menuText}>Option 2</Text>
+                      <Text style={styles.menuText}>Show Joined Courses Only</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.menuItem}>
-                      <Text style={styles.menuText}>Option 3</Text>
+                      <Text style={styles.menuText}>Show New Courses Only</Text>
                     </TouchableOpacity>
                   </Animated.View>
                 </TouchableWithoutFeedback>

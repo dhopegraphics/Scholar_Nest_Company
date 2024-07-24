@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 
-const Participantcard = ({ name, img }) => {
+const ParticipantCard = ({ name, img }) => {
   return (
     <View style={styles.card}>
       {img ? (
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Participantcard;
+export default ParticipantCard;
