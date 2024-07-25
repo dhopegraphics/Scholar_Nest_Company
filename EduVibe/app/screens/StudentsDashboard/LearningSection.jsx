@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CourseCard } from '../../../components';
 import DashboardStyles from '../../../themes/DashboardStyles';
@@ -7,13 +7,16 @@ import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { getCourses, getUserJoinedCourses } from '../../../lib/appwrite';
 import ClassRoomCard from '../../../components/ClassRoomCard';
 import { Ionicons } from '@expo/vector-icons';
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from 'react-native-vector-icons/Ionicons';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useParticipants } from '../../../contexts/ParticipantContext';
 import FinanceCard from '../../../components/FinanceCard';
+import clearAsyncStorage from '../../../scripts/CacheClear';
 
 const LearningSection = () => {
   const navigation = useNavigation();
   const { currentUser } = useAuth(); // Get current user from AuthContext
+  const { unjoinCourse } = useParticipants(); // Get unjoinCourse function from ParticipantContext
   const [courses, setCourses] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -45,23 +48,25 @@ const LearningSection = () => {
 
   const fetchCourses = async () => {
     try {
-      const cachedCourses = await AsyncStorage.getItem('courses');
-      let fetchedCourses = [];
-
-      if (cachedCourses) {
-        fetchedCourses = JSON.parse(cachedCourses);
-      } else {
-        const coursesData = await getCourses();
-        const userJoinedCourses = await getUserJoinedCourses(currentUser.$id); // Use current user's ID
-        const joinedCourseIds = userJoinedCourses.map(course => course.courseId);
-        fetchedCourses = coursesData.filter(course => joinedCourseIds.includes(course.$id));
-        await AsyncStorage.setItem('courses', JSON.stringify(fetchedCourses)); // Cache courses in AsyncStorage
-      }
-
+      const userJoinedCourses = await getUserJoinedCourses(currentUser.$id); // Use current user's ID
+      const joinedCourseIds = userJoinedCourses.map(course => course.courseId);
+      const coursesData = await getCourses();
+      const fetchedCourses = coursesData.filter(course => joinedCourseIds.includes(course.$id));
       setCourses(fetchedCourses); // Set the fetched courses in state
       return fetchedCourses; // Return fetched courses for logging
     } catch (error) {
       console.error('Failed to fetch courses:', error.message);
+    }
+  };
+
+  const handleUnjoinCourse = async (courseId) => {
+    try {
+      await unjoinCourse(currentUser.$id, courseId); // Unjoin the course
+      await AsyncStorage.removeItem('courses'); // Clear the AsyncStorage
+      const updatedCourses = await fetchCourses(); // Fetch the updated courses
+      setCourses(updatedCourses); // Update the state with the new courses
+    } catch (error) {
+      console.error('Failed to unjoin course:', error.message);
     }
   };
 
@@ -71,9 +76,7 @@ const LearningSection = () => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={DashboardStyles.scrollViewContent}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
           <View style={DashboardStyles.scrollContainerWrapper}>
             <ScrollView
@@ -83,7 +86,7 @@ const LearningSection = () => {
             >
               {courses.length > 0 ? (
                 courses.map((course) => (
-                  <CourseCard key={course.$id} course={course} navigation={navigation} />
+                  <CourseCard key={course.$id} course={course} navigation={navigation} onUnjoin={() => handleUnjoinCourse(course.$id)} />
                 ))
               ) : (
                 <View style={DashboardStyles.centeredContainer}>
@@ -113,11 +116,8 @@ const LearningSection = () => {
             />
           </View>
         </ScrollView>
-
-        <TouchableOpacity
-          style={DashboardStyles.roundedButton}
-          onPress={handleButtonPress}
-        >
+    
+        <TouchableOpacity style={DashboardStyles.roundedButton} onPress={handleButtonPress}>
           <Ionicons name='chevron-back-circle' size={24} color='white' />
         </TouchableOpacity>
       </View>

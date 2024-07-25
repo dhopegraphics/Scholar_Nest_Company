@@ -7,6 +7,9 @@ import { useUsers } from "../../../contexts/UsersContext";
 import { useNavigation } from '@react-navigation/native';
 import { createParentWard } from "../../../lib/appwrite";
 import { useAuth } from "../../../contexts/AuthContext";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const PARENT_WARDS_STORAGE_KEY = 'parentWards';
 
 const ParentWardSetUpScreen = () => {
   const { users } = useUsers();
@@ -41,36 +44,44 @@ const ParentWardSetUpScreen = () => {
   };
 
   const handleResultPress = (item) => {
-    Alert.alert(
-      "Confirm",
-      "Do you want to set up this user as your ward?",
-      [
-        {
-          text: "No",
-          onPress: () => console.log("User canceled"),
-          style: "cancel"
-        },
-        {
-          text: "Yes",
-          onPress: async () => {
-            const isUserSelected = selectedUsers.some(user => user.id === item.id);
-            if (!isUserSelected) {
+    const isUserSelected = selectedUsers.some(user => user.id === item.id);
+
+    if (isUserSelected) {
+      Alert.alert(
+        "Info",
+        "This user is already set up as your ward.",
+        [
+          { text: "OK", onPress: () => console.log("User already selected") }
+        ]
+      );
+    } else {
+      Alert.alert(
+        "Confirm",
+        "Do you want to set up this user as your ward?",
+        [
+          {
+            text: "No",
+            onPress: () => console.log("User canceled"),
+            style: "cancel"
+          },
+          {
+            text: "Yes",
+            onPress: async () => {
               try {
                 console.log('Creating ParentWard with:', item.id, currentUser.username); // Use currentUser.username instead of currentUser.id
                 await createParentWard(item.id, currentUser.username); // Pass currentUser.username instead of currentUser.id
                 const updatedSelectedUsers = [...selectedUsers, item];
                 setSelectedUsers(updatedSelectedUsers);
+                await AsyncStorage.setItem(PARENT_WARDS_STORAGE_KEY, JSON.stringify(updatedSelectedUsers)); // Store selected users in AsyncStorage
                 navigation.navigate('WardsScreen', { selectedUsers: updatedSelectedUsers });
               } catch (error) {
                 console.error('Error creating ParentWards document:', error);
               }
-            } else {
-              navigation.navigate('WardsScreen', { selectedUsers });
             }
           }
-        }
-      ]
-    );
+        ]
+      );
+    }
   };
 
   const mockSearchFunction = (query) => {
@@ -81,6 +92,19 @@ const ParentWardSetUpScreen = () => {
   };
 
   useEffect(() => {
+    const loadSelectedUsers = async () => {
+      try {
+        const storedSelectedUsers = await AsyncStorage.getItem(PARENT_WARDS_STORAGE_KEY);
+        if (storedSelectedUsers) {
+          setSelectedUsers(JSON.parse(storedSelectedUsers));
+        }
+      } catch (error) {
+        console.error('Failed to load selected users from storage:', error);
+      }
+    };
+
+    loadSelectedUsers();
+
     Animated.timing(slideAnim, {
       toValue: 0,
       duration: 500,

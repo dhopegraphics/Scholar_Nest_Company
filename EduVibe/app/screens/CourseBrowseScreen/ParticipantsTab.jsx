@@ -9,8 +9,9 @@ const ParticipantsTab = ({ course }) => {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { users } = useUsers(); 
+  const { users } = useUsers();
   const currentUserId = users?.id; // Make sure you're getting the correct user ID
+  const [participantCount, setParticipantCount] = useState(0); // State for participant count
 
   useEffect(() => {
     const fetchParticipants = async () => {
@@ -18,11 +19,14 @@ const ParticipantsTab = ({ course }) => {
         // Check AsyncStorage first
         const storedParticipants = await AsyncStorage.getItem(`participants_${course.$id}`);
         if (storedParticipants) {
-          setParticipants(JSON.parse(storedParticipants));
+          const parsedParticipants = JSON.parse(storedParticipants);
+          setParticipants(parsedParticipants);
+          setParticipantCount(parsedParticipants.length); // Update count
         } else {
           // Fetch from API if not in AsyncStorage
           const participantsData = await getParticipantsForCourse(course.$id);
           setParticipants(participantsData);
+          setParticipantCount(participantsData.length); // Update count
           await AsyncStorage.setItem(`participants_${course.$id}`, JSON.stringify(participantsData));
         }
       } catch (error) {
@@ -45,6 +49,7 @@ const ParticipantsTab = ({ course }) => {
       await unjoinCourse(currentUserId, course.$id);
       const updatedParticipants = participants.filter(p => p.userId !== currentUserId);
       setParticipants(updatedParticipants);
+      setParticipantCount(updatedParticipants.length); // Update count
       await AsyncStorage.setItem(`participants_${course.$id}`, JSON.stringify(updatedParticipants));
     } catch (error) {
       console.error('Failed to unjoin course:', error.message);
@@ -56,6 +61,7 @@ const ParticipantsTab = ({ course }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.participantCountText}>Number of Participants: {participantCount}</Text>
       {participants.length > 0 ? (
         participants.map((participant) => (
           <ParticipantCard 
@@ -81,6 +87,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+  },
+  participantCountText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   errorText: {
     color: 'red',

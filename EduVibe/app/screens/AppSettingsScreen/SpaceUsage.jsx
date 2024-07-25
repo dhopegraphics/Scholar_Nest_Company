@@ -12,6 +12,10 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import imageExport from "../../../assets/images/imageExport"; 
 import { useUsers } from "../../../contexts/UsersContext";
+import getCacheSize from "../../../constants/CachedFiles";
+
+
+
 
 const SpaceUsageScreen = (props) => {
   const { users, currentUserId } = useUsers();
