@@ -73,7 +73,7 @@ const TeacherCourseCard = ({ course }) => {
       <TouchableOpacity
         style={styles.card}
         onPress={handlePress}
-        {...(educator && { onLongPress: showActionSheet })}
+        {...(!educator && { onLongPress: showActionSheet })}
       >
         <View style={styles.innerContainer}>
           <Image source={{ uri: course.courseAvatar }} style={styles.avatar} />

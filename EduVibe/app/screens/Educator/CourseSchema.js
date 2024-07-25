@@ -11,7 +11,7 @@ const CourseSchema = ({ route, navigation }) => {
   const { educator } = useQuestionContext();
   const { course } = route.params;
   const { users } = useUsers();
-  const { joinCourse, hasJoinedCourse } = useParticipants();
+  const { joinCourse, hasJoinedCourse, unjoinCourse } = useParticipants();
   const { currentUser } = useAuth();
   const [teacherName, setTeacherName] = useState('');
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -66,35 +66,21 @@ const CourseSchema = ({ route, navigation }) => {
     console.log('Playback Status:', status);
   }, [status]);
 
-  const handleJoinCourse = async () => {
-    try {
-      if (currentUser) {
-        await joinCourse(currentUser.$id, course.$id);
-        console.log('Navigating to Course_Information with course:', course);
-        Alert.alert('Course Joined', 'You have successfully joined this course!', [
-          {
-            text: 'OK',
-            onPress: () => {
-              setHasJoined(true);
-              navigation.navigate('Course_Information', { course });
-            },
-          },
-        ]);
-      } else {
-        Alert.alert('Error', 'User not logged in');
-      }
-    } catch (error) {
-      console.error('Failed to join course:', error.message);
-      Alert.alert('Error', 'Failed to join course');
-    }
-  };
-
   const saveCourseToAsyncStorage = async (courseData) => {
     try {
       await AsyncStorage.setItem(`course_${course.$id}`, JSON.stringify(courseData));
       console.log('Course data saved to AsyncStorage');
     } catch (error) {
       console.error('Failed to save course data to AsyncStorage:', error.message);
+    }
+  };
+
+  const clearCourseFromAsyncStorage = async () => {
+    try {
+      await AsyncStorage.removeItem(`course_${course.$id}`);
+      console.log('Course data removed from AsyncStorage');
+    } catch (error) {
+      console.error('Failed to remove course data from AsyncStorage:', error.message);
     }
   };
 
@@ -115,6 +101,52 @@ const CourseSchema = ({ route, navigation }) => {
     }
   };
 
+  const handleJoinCourse = async () => {
+    try {
+      if (currentUser) {
+        await joinCourse(currentUser.$id, course.$id);
+        await saveCourseToAsyncStorage(course); // Save to AsyncStorage upon joining
+        console.log('Navigating to Course_Information with course:', course);
+        Alert.alert('Course Joined', 'You have successfully joined this course!', [
+          {
+            text: 'OK',
+            onPress: () => {
+              setHasJoined(true);
+              navigation.navigate('Course_Information', { course });
+            },
+          },
+        ]);
+      } else {
+        Alert.alert('Error', 'User not logged in');
+      }
+    } catch (error) {
+      console.error('Failed to join course:', error.message);
+      Alert.alert('Error', 'Failed to join course');
+    }
+  };
+
+  const handleUnjoinCourse = async () => {
+    try {
+      if (currentUser) {
+        await unjoinCourse(currentUser.$id, course.$id);
+        await clearCourseFromAsyncStorage(); // Clear from AsyncStorage upon unjoining
+        Alert.alert('Course Unjoined', 'You have successfully unjoined this course!', [
+          {
+            text: 'OK',
+            onPress: () => {
+              setHasJoined(false);
+            },
+          },
+        ]);
+      } else {
+        Alert.alert('Error', 'User not logged in');
+      }
+    } catch (error) {
+      console.error('Failed to unjoin course:', error.message);
+      Alert.alert('Error', 'Failed to unjoin course');
+    }
+  };
+
   useEffect(() => {
     const loadCourseData = async () => {
       const courseData = await fetchCourseFromAsyncStorage();
@@ -125,9 +157,9 @@ const CourseSchema = ({ route, navigation }) => {
           // Example: const fetchedCourseData = await fetchCourseDataFromAPI(course.$id);
           // Simulate API call with mock data
           const fetchedCourseData = { ...course }; // Mocked data
-          await saveCourseToAsyncStorage(fetchedCourseData);
+          console.log('Fetched course data from API:', fetchedCourseData);
         } catch (error) {
-          console.error('Failed to fetch or save course data:', error.message);
+          console.error('Failed to fetch course data:', error.message);
         }
       }
     };
@@ -175,11 +207,10 @@ const CourseSchema = ({ route, navigation }) => {
       <Text style={styles.createdAt}>{new Date(course.createdAt).toLocaleDateString()}</Text>
       {educator && (
         <TouchableOpacity
-          onPress={handleJoinCourse}
+          onPress={hasJoined ? handleUnjoinCourse : handleJoinCourse}
           style={[styles.joinButton, hasJoined && styles.joinedButton]}
-          disabled={hasJoined}
         >
-          <Text style={styles.joinButtonText}>{hasJoined ? 'Joined' : 'Join this Course'}</Text>
+          <Text style={styles.joinButtonText}>{hasJoined ? 'Unjoin this Course' : 'Join this Course'}</Text>
         </TouchableOpacity>
       )}
     </ScrollView>
@@ -212,12 +243,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'blue',
     textDecorationLine: 'underline',
-    marginBottom: 5,
   },
   video: {
     width: '100%',
     height: 200,
-    marginBottom: 10,
+  },
+  button: {
+    padding: 10,
+    backgroundColor: '#6200ee',
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 16,
   },
   resources: {
     fontSize: 16,
@@ -231,29 +271,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
   },
-  button: {
-    padding: 10,
-    backgroundColor: 'blue',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-  },
   joinButton: {
-    padding: 10,
-    backgroundColor: 'green',
+    padding: 15,
+    backgroundColor: '#6200ee',
     borderRadius: 5,
     alignItems: 'center',
     marginTop: 20,
   },
-  joinButtonText: {
-    color: 'white',
-    fontSize: 16,
-  },
   joinedButton: {
-    backgroundColor: 'gray',
+    backgroundColor: 'red',
+  },
+  joinButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
