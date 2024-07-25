@@ -45,7 +45,7 @@ const MoreScreen = ({ navigation }) => {
 
   return (
     <>
-      <View style={{ padding: 20, backgroundColor: "white" }}>
+      <View style={{ padding: 20, backgroundColor: "white", marginTop: -20 }}>
         <Text style={ButtonsTextStyle.moreText}>More</Text>
       </View>
       <SafeAreaView
