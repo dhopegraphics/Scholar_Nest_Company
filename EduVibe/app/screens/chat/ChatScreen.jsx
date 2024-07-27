@@ -1,22 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-  SafeAreaView,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Alert,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView, Platform, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ActionSheet from "react-native-actionsheet";
 import { useNavigation } from "@react-navigation/native";
 import { sendMessage, getMessages, getCurrentUser } from "../../../lib/appwrite";
+import { appwriteConfig } from "../../../lib/appwrite";
+import { Client, Databases, Query } from 'appwrite';
+
+// Initialize Appwrite Client
+const client = new Client();
+client.setEndpoint(appwriteConfig.endpoint).setProject(appwriteConfig.projectId);
+const databases = new Databases(client);
 
 const ChatScreen = ({ contact }) => {
   const [messages, setMessages] = useState([]);
@@ -43,6 +38,36 @@ const ChatScreen = ({ contact }) => {
 
         const messages = await getMessages(user.$id, contact.id);
         setMessages(messages);
+
+        // Subscribe to message creation and updates
+        const unsubscribe = client.subscribe(
+          `databases.${appwriteConfig.databaseId}.collections.${appwriteConfig.messagesCollectionId}.documents`,
+          (response) => {
+            const event = response.events[0];
+            if (event.includes("create") || event.includes("update")) {
+              if (
+                (response.payload.senderId === user.$id && response.payload.receiverId === contact.id) ||
+                (response.payload.senderId === contact.id && response.payload.receiverId === user.$id)
+              ) {
+                setMessages((prevMessages) => {
+                  const updatedMessages = [...prevMessages];
+                  const existingMessageIndex = updatedMessages.findIndex(msg => msg.$id === response.payload.$id);
+                  if (existingMessageIndex > -1) {
+                    updatedMessages[existingMessageIndex] = response.payload;
+                  } else {
+                    updatedMessages.unshift(response.payload);
+                  }
+                  return updatedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                });
+              }
+            }
+          }
+        );
+
+        // Cleanup subscription on component unmount
+        return () => {
+          unsubscribe();
+        };
       } catch (error) {
         console.error("Error initializing chat:", error.message);
       }
@@ -230,46 +255,44 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 16,
   },
   lastSeen: {
     fontSize: 12,
-    color: "#888",
+    color: "#777",
   },
   messageList: {
     flex: 1,
   },
   messageContainer: {
-    borderRadius: 20,
     padding: 10,
     marginVertical: 5,
-    maxWidth: "70%",
+    marginHorizontal: 10,
+    borderRadius: 10,
   },
   myMessage: {
-    backgroundColor: "#1C9C9D",
+    backgroundColor: "#DCF8C6",
     alignSelf: "flex-end",
   },
   theirMessage: {
-    backgroundColor: "#e5e5ea",
+    backgroundColor: "#ECECEC",
     alignSelf: "flex-start",
   },
   myMessageText: {
-    color: "#fff",
+    color: "#000",
   },
   theirMessageText: {
     color: "#000",
   },
   myTimeText: {
-    color: "#fff",
-    fontSize: 10,
-    marginTop: 5,
     alignSelf: "flex-end",
+    fontSize: 10,
+    color: "#999",
   },
   theirTimeText: {
-    color: "#000",
-    fontSize: 10,
-    marginTop: 5,
     alignSelf: "flex-start",
+    fontSize: 10,
+    color: "#999",
   },
   inputContainer: {
     flexDirection: "row",
@@ -277,24 +300,19 @@ const styles = StyleSheet.create({
     padding: 10,
     borderTopWidth: 1,
     borderTopColor: "#ddd",
-    backgroundColor: "#fff",
   },
   input: {
     flex: 1,
-    height: 40,
-    borderRadius: 20,
     borderWidth: 1,
     borderColor: "#ddd",
-    paddingHorizontal: 10,
+    borderRadius: 20,
+    padding: 10,
     marginRight: 10,
   },
   sendButton: {
-    backgroundColor: "#1C9C9D",
+    backgroundColor: "#007AFF",
     borderRadius: 20,
-    width: 40,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    padding: 10,
   },
 });
 
