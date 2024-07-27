@@ -24,7 +24,7 @@ const FinanceTab = () => {
             paddingHorizontal: 10,
             paddingVertical: 8,
             paddingBottom: 8,
-            borderRadius: 40,
+            borderRadius: 50,
             borderWidth: 1,
             borderTopWidth: 1,
             borderColor: '#333',
