@@ -86,6 +86,7 @@ const ContactsMainScreen: React.FC<ContactsMainScreenProps> = ({
         {isSearchVisible && (
           <Animated.View style={[styles.searchBar, { height: animatedHeight }]}>
             <TextInput
+              selectionColor={"#1C9C9D"}
               style={styles.searchInput}
               placeholder="Search..."
               value={searchText}
@@ -135,8 +136,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 10,
     borderRadius: 15,
-    borderColor: "blue",
-    borderWidth: 2,
+    borderColor: "#1C9C9D",
+    borderWidth: 1,
     marginTop: 5,
   },
 });

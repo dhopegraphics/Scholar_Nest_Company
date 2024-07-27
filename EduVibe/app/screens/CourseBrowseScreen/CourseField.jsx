@@ -1,9 +1,9 @@
-import React, { useState, useEffect} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import LecturesScreen from './LecturesScreen';
-import MoreScreen from './MoreScreen';
-import DownloadsScreen from './DownloadsScreen';
+import React, { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import LecturesScreen from "./LecturesScreen";
+import MoreScreen from "./MoreScreen";
+import DownloadsScreen from "./DownloadsScreen";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -13,12 +13,14 @@ const CourseField = ({ course }) => {
   useEffect(() => {
     const loadDownloadProgress = async () => {
       try {
-        const storedProgress = await AsyncStorage.getItem(`downloadProgress-${course.$id}`);
+        const storedProgress = await AsyncStorage.getItem(
+          `downloadProgress-${course.$id}`
+        );
         if (storedProgress) {
           setDownloadProgress(JSON.parse(storedProgress));
         }
       } catch (error) {
-        console.error('Failed to load download progress', error);
+        console.error("Failed to load download progress", error);
       }
     };
 
@@ -28,9 +30,12 @@ const CourseField = ({ course }) => {
   useEffect(() => {
     const saveDownloadProgress = async () => {
       try {
-        await AsyncStorage.setItem(`downloadProgress-${course.$id}`, JSON.stringify(downloadProgress));
+        await AsyncStorage.setItem(
+          `downloadProgress-${course.$id}`,
+          JSON.stringify(downloadProgress)
+        );
       } catch (error) {
-        console.error('Failed to save download progress', error);
+        console.error("Failed to save download progress", error);
       }
     };
 
@@ -41,28 +46,36 @@ const CourseField = ({ course }) => {
     <Tab.Navigator
       initialRouteName="Lectures"
       screenOptions={{
+        tabBarIndicatorStyle: {
+          backgroundColor: "#1C9C9D",
+        },
         tabBarLabelStyle: { fontSize: 16 },
-        tabBarStyle: { backgroundColor: '#f5f5f5' },
-        tabBarIndicatorStyle: { backgroundColor: '#3b82f6' },
-        tabBarActiveTintColor: '#3b82f6',
-        tabBarInactiveTintColor: 'gray',
+        tabBarStyle: { backgroundColor: "#f5f5f5" },
+
+        tabBarActiveTintColor: "#3b82f6",
+        tabBarInactiveTintColor: "gray",
         tabBarShowIcon: false,
         tabBarShowLabel: true,
       }}
       tabBarPosition="top"
     >
       <Tab.Screen name="Lectures">
-        {props => <LecturesScreen {...props} course={course} />}
+        {(props) => <LecturesScreen {...props} course={course} />}
       </Tab.Screen>
       <Tab.Screen name="Downloads">
-        {props => <DownloadsScreen {...props} course={course} downloadProgress={downloadProgress} />}
+        {(props) => (
+          <DownloadsScreen
+            {...props}
+            course={course}
+            downloadProgress={downloadProgress}
+          />
+        )}
       </Tab.Screen>
       <Tab.Screen name="More">
-        {props => <MoreScreen {...props} course={course} />}
+        {(props) => <MoreScreen {...props} course={course} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
 };
-
 
 export default CourseField;
