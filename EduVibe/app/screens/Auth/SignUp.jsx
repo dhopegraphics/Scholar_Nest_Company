@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 import {
   View,
   Image,
@@ -11,16 +11,16 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
-} from 'react-native';
-import imageExport from '../../../assets/images/imageExport';
-import { CommonStyle } from '../../../themes/styles_index';
-import { createUser } from '../../../lib/appwrite'; // Adjusted import statement
+} from "react-native";
+import imageExport from "../../../assets/images/imageExport";
+import { CommonStyle } from "../../../themes/styles_index";
+import { createUser } from "../../../lib/appwrite"; // Adjusted import statement
 
 const SignUpScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [buttonSpinner, setButtonSpinner] = useState(false);
   const [isUsernameFocused, setUsernameFocused] = useState(false);
   const [isPasswordFocused, setPasswordFocused] = useState(false);
@@ -82,19 +82,19 @@ const SignUpScreen = ({ navigation }) => {
 
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert("Error", "Passwords do not match");
       return;
     }
 
     try {
       setButtonSpinner(true);
-      await createUser( email, password, username, );
+      await createUser(email, password, username);
       setButtonSpinner(false);
-      Alert.alert('Success', 'User registered successfully!');
-      navigation.navigate('Survey'); // Navigate to SignInScreen after successful registration
+      Alert.alert("Success", "User registered successfully!");
+      navigation.navigate("Survey"); // Navigate to SignInScreen after successful registration
     } catch (error) {
       setButtonSpinner(false);
-      Alert.alert('Error', error.message);
+      Alert.alert("Error", error.message);
       console.log(error);
     }
   };
@@ -110,6 +110,7 @@ const SignUpScreen = ({ navigation }) => {
             <Image source={imageExport.logo} style={CommonStyle.logo} />
             <Text style={CommonStyle.loginText}>Sign up</Text>
             <TextInput
+              selectionColor={"#1C9C9D"}
               ref={usernameRef}
               style={[
                 CommonStyle.input,
@@ -121,6 +122,7 @@ const SignUpScreen = ({ navigation }) => {
               onFocus={handleUsernameFocus}
             />
             <TextInput
+              selectionColor={"#1C9C9D"}
               ref={emailRef}
               style={[
                 CommonStyle.input,
@@ -132,6 +134,7 @@ const SignUpScreen = ({ navigation }) => {
               onFocus={handleEmailFocus}
             />
             <TextInput
+              selectionColor={"#1C9C9D"}
               ref={passwordRef}
               style={[
                 CommonStyle.input,
@@ -144,6 +147,7 @@ const SignUpScreen = ({ navigation }) => {
               onFocus={handlePasswordFocus}
             />
             <TextInput
+              selectionColor={"#1C9C9D"}
               ref={confirmPasswordRef}
               style={[
                 CommonStyle.input,
@@ -160,7 +164,7 @@ const SignUpScreen = ({ navigation }) => {
               onPress={handleSignUp}
             >
               {buttonSpinner ? (
-                <ActivityIndicator size="small" color={'white'} />
+                <ActivityIndicator size="small" color={"white"} />
               ) : (
                 <Text style={CommonStyle.loginButtonText}>Sign up</Text>
               )}
@@ -186,7 +190,7 @@ const SignUpScreen = ({ navigation }) => {
             <View style={CommonStyle.guestSection}>
               <TouchableOpacity
                 style={CommonStyle.createAccountButton}
-                onPress={() => navigation.navigate('SignInScreen')}
+                onPress={() => navigation.navigate("SignInScreen")}
               >
                 <Text style={CommonStyle.createAccountButtonText}>Login</Text>
               </TouchableOpacity>

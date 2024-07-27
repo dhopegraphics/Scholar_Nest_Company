@@ -1,16 +1,35 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView, Platform, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ActionSheet from "react-native-actionsheet";
 import { useNavigation } from "@react-navigation/native";
-import { sendMessage, getMessages, getCurrentUser } from "../../../lib/appwrite";
+import {
+  sendMessage,
+  getMessages,
+  getCurrentUser,
+} from "../../../lib/appwrite";
 import { appwriteConfig } from "../../../lib/appwrite";
-import { Client, Databases, Query } from 'appwrite';
+import { Client, Databases, Query } from "appwrite";
+import { color } from "react-native-elements/dist/helpers";
 
 // Initialize Appwrite Client
 const client = new Client();
-client.setEndpoint(appwriteConfig.endpoint).setProject(appwriteConfig.projectId);
+client
+  .setEndpoint(appwriteConfig.endpoint)
+  .setProject(appwriteConfig.projectId);
 const databases = new Databases(client);
 
 const ChatScreen = ({ contact }) => {
@@ -34,10 +53,17 @@ const ChatScreen = ({ contact }) => {
           throw new Error("Invalid user ID");
         }
 
-        console.log("Fetching messages for user:", user.$id, "and contact:", contact.id);
+        console.log(
+          "Fetching messages for user:",
+          user.$id,
+          "and contact:",
+          contact.id
+        );
 
         const messages = await getMessages(user.$id, contact.id);
-        setMessages(messages);
+        setMessages(
+          messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+        );
 
         // Subscribe to message creation and updates
         const unsubscribe = client.subscribe(
@@ -46,18 +72,24 @@ const ChatScreen = ({ contact }) => {
             const event = response.events[0];
             if (event.includes("create") || event.includes("update")) {
               if (
-                (response.payload.senderId === user.$id && response.payload.receiverId === contact.id) ||
-                (response.payload.senderId === contact.id && response.payload.receiverId === user.$id)
+                (response.payload.senderId === user.$id &&
+                  response.payload.receiverId === contact.id) ||
+                (response.payload.senderId === contact.id &&
+                  response.payload.receiverId === user.$id)
               ) {
                 setMessages((prevMessages) => {
                   const updatedMessages = [...prevMessages];
-                  const existingMessageIndex = updatedMessages.findIndex(msg => msg.$id === response.payload.$id);
+                  const existingMessageIndex = updatedMessages.findIndex(
+                    (msg) => msg.$id === response.payload.$id
+                  );
                   if (existingMessageIndex > -1) {
                     updatedMessages[existingMessageIndex] = response.payload;
                   } else {
-                    updatedMessages.unshift(response.payload);
+                    updatedMessages.push(response.payload);
                   }
-                  return updatedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                  return updatedMessages.sort(
+                    (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+                  );
                 });
               }
             }
@@ -90,8 +122,16 @@ const ChatScreen = ({ contact }) => {
         // Add new message
         if (currentUserId) {
           try {
-            const newMessage = await sendMessage(currentUserId, contact.id, inputText);
-            setMessages((prevMessages) => [newMessage, ...prevMessages]);
+            const newMessage = await sendMessage(
+              currentUserId,
+              contact.id,
+              inputText
+            );
+            setMessages((prevMessages) =>
+              [...prevMessages, newMessage].sort(
+                (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+              )
+            );
           } catch (error) {
             console.error("Error sending message:", error.message);
           }
@@ -102,7 +142,7 @@ const ChatScreen = ({ contact }) => {
       setInputText("");
 
       // Scroll to the end of the list after adding a new message
-      flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+      flatListRef.current.scrollToEnd({ animated: true });
     }
   };
 
@@ -156,12 +196,16 @@ const ChatScreen = ({ contact }) => {
       onLongPress={() => handleLongPress(item)}
       style={[
         styles.messageContainer,
-        item.senderId === currentUserId ? styles.myMessage : styles.theirMessage,
+        item.senderId === currentUserId
+          ? styles.myMessage
+          : styles.theirMessage,
       ]}
     >
       <Text
         style={
-          item.senderId === currentUserId ? styles.myMessageText : styles.theirMessageText
+          item.senderId === currentUserId
+            ? styles.myMessageText
+            : styles.theirMessageText
         }
       >
         {item.content}
@@ -169,7 +213,9 @@ const ChatScreen = ({ contact }) => {
       {item.createdAt && (
         <Text
           style={
-            item.senderId === currentUserId ? styles.myTimeText : styles.theirTimeText
+            item.senderId === currentUserId
+              ? styles.myTimeText
+              : styles.theirTimeText
           }
         >
           {new Date(item.createdAt).toLocaleTimeString()}
@@ -208,7 +254,6 @@ const ChatScreen = ({ contact }) => {
           renderItem={renderMessageItem}
           style={styles.messageList}
           contentContainerStyle={{ paddingVertical: 10 }}
-          inverted
           getItemLayout={getItemLayout} // Specify custom getItemLayout for performance
         />
         <View style={styles.inputContainer}>
@@ -217,6 +262,7 @@ const ChatScreen = ({ contact }) => {
             value={inputText}
             onChangeText={setInputText}
             placeholder="Type a message..."
+            selectionColor={"#1C9C9D"}
           />
           <TouchableOpacity onPress={saveMessage} style={styles.sendButton}>
             <Icon name="send" size={24} color="white" />
@@ -264,6 +310,9 @@ const styles = StyleSheet.create({
   messageList: {
     flex: 1,
   },
+  cursorColor: {
+    color: "#1C9C9D",
+  },
   messageContainer: {
     padding: 10,
     marginVertical: 5,
@@ -310,7 +359,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   sendButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#1C9C9D",
     borderRadius: 20,
     padding: 10,
   },

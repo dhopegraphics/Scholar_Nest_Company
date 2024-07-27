@@ -54,6 +54,7 @@ const ForgotPasswordForm: React.FC = (props) => {
         Reset Email Password
       </Text>
       <TextInput
+        selectionColor={"#1C9C9D"}
         style={[styles.input, { fontFamily: "Nunito_400Regular" }]}
         placeholder="Username@gmail.com"
         keyboardType="email-address"
