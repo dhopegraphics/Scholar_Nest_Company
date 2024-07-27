@@ -15,7 +15,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import TeacherCourseCard from "../../../components/TeacherCourseCard";
-import { getCourses } from '../../../lib/appwrite'; // Import getCourses function
+import { getCourses } from "../../../lib/appwrite"; // Import getCourses function
 
 const AvailableCourses = () => {
   const navigation = useNavigation(); // Initialize navigation object
@@ -39,7 +39,7 @@ const AvailableCourses = () => {
       if (searchText === "") {
         setFilteredCourses(courses);
       } else {
-        const filtered = courses.filter(course =>
+        const filtered = courses.filter((course) =>
           course.title.toLowerCase().includes(searchText.toLowerCase())
         );
         setFilteredCourses(filtered);
@@ -55,7 +55,7 @@ const AvailableCourses = () => {
       setCourses(coursesData); // Set courses in state
       setFilteredCourses(coursesData); // Initialize filteredCourses
     } catch (error) {
-      console.error('Failed to fetch courses:', error.message);
+      console.error("Failed to fetch courses:", error.message);
     }
   };
 
@@ -144,6 +144,7 @@ const AvailableCourses = () => {
               onBlur={handleBlur}
               style={styles.input}
               ref={searchRef}
+              selectionColor={"#1C9C9D"}
             />
             <Animated.View
               style={[styles.searchIcon, { right: searchIconTranslateX }]}
@@ -199,14 +200,20 @@ const AvailableCourses = () => {
 
           <ScrollView
             showsVerticalScrollIndicator={false}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             contentContainerStyle={styles.scrollViewContent}
             style={styles.scrollView}
           >
             <View style={styles.courseContainer}>
               {filteredCourses.length > 0 ? (
                 filteredCourses.map((course) => (
-                  <TeacherCourseCard key={course.$id} course={course} navigation={navigation} />
+                  <TeacherCourseCard
+                    key={course.$id}
+                    course={course}
+                    navigation={navigation}
+                  />
                 ))
               ) : (
                 <View style={styles.centeredContainer}>
@@ -315,8 +322,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
-    alignContent : "center",
-    alignItems : "center"
+    alignContent: "center",
+    alignItems: "center",
   },
   centeredContainer: {
     flex: 1,

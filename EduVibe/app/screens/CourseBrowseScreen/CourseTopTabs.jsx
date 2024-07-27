@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { getFocusedRouteNameFromRoute, useFocusEffect } from '@react-navigation/native';
-import Course from './Course';
-import ParticipantsTab from './ParticipantsTab';
-import CourseCustomHeader from './CourseCustomHeader';
-import { useCourseHeader } from '../../../contexts/CourseHeaderContext';
+import React, { useEffect } from "react";
+import { View, StyleSheet } from "react-native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import {
+  getFocusedRouteNameFromRoute,
+  useFocusEffect,
+} from "@react-navigation/native";
+import Course from "./Course";
+import ParticipantsTab from "./ParticipantsTab";
+import CourseCustomHeader from "./CourseCustomHeader";
+import { useCourseHeader } from "../../../contexts/CourseHeaderContext";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -13,7 +16,7 @@ const CourseTopTabs = ({ navigation, route }) => {
   const { headerProps, setHeaderProps } = useCourseHeader();
   const { course } = route.params;
 
-  const activeTab = getFocusedRouteNameFromRoute(route) ?? 'Course';
+  const activeTab = getFocusedRouteNameFromRoute(route) ?? "Course";
 
   useFocusEffect(
     React.useCallback(() => {
@@ -29,7 +32,7 @@ const CourseTopTabs = ({ navigation, route }) => {
     if (!headerProps.headerComponent) {
       setHeaderProps({
         activeTab,
-        animateType: 'tab',
+        animateType: "tab",
         course,
         progressPercentage: 75,
         thumbnailImage: { uri: course.courseAvatar },
@@ -39,23 +42,31 @@ const CourseTopTabs = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {headerProps.headerComponent ? headerProps.headerComponent : <CourseCustomHeader {...headerProps} />}
+      {headerProps.headerComponent ? (
+        headerProps.headerComponent
+      ) : (
+        <CourseCustomHeader {...headerProps} />
+      )}
       <Tab.Navigator
         initialRouteName="Course"
         screenOptions={{
-          tabBarActiveTintColor: '#6200ee',
-          tabBarInactiveTintColor: 'gray',
-          tabBarLabelStyle: { fontSize: 16, fontWeight: 'bold' },
+          tabBarActiveTintColor: "#1C9C9D",
+          tabBarInactiveTintColor: "gray",
+          tabBarLabelStyle: { fontSize: 16, fontWeight: "bold" },
         }}
       >
         <Tab.Screen name="Course">
-          {props => <Course {...props} course={course} />}
+          {(props) => <Course {...props} course={course} />}
         </Tab.Screen>
-        <Tab.Screen  name="Participants" >
-        {props => <ParticipantsTab {...props} course={course}
-        component={ParticipantsTab} /> }
+        <Tab.Screen name="Participants">
+          {(props) => (
+            <ParticipantsTab
+              {...props}
+              course={course}
+              component={ParticipantsTab}
+            />
+          )}
         </Tab.Screen>
-
       </Tab.Navigator>
     </View>
   );

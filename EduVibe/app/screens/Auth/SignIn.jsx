@@ -54,11 +54,11 @@ const SignInScreen = ({ navigation }) => {
     try {
       setButtonSpinner(true);
       const email = await getEmailByUsername(userInfo.username);
-      
+
       if (!email) {
         throw new Error("User not found. Please check your username.");
       }
-      
+
       await signIn(email, userInfo.password);
       setButtonSpinner(false);
       navigation.navigate("Back");
@@ -80,6 +80,7 @@ const SignInScreen = ({ navigation }) => {
             <Text style={CommonStyle.loginText}>Log in</Text>
             <View>
               <TextInput
+                selectionColor={"#1C9C9D"}
                 ref={usernameRef}
                 style={[
                   CommonStyle.input1,
@@ -102,6 +103,7 @@ const SignInScreen = ({ navigation }) => {
               />
               <View>
                 <TextInput
+                  selectionColor={"#1C9C9D"}
                   ref={passwordRef}
                   style={[
                     CommonStyle.input1,

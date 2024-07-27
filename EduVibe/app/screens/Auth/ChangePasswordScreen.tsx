@@ -113,6 +113,7 @@ const ChangePasswordScreen: React.FC<ChangePasswordScreenProp> = ({
             <Text style={CommonStyle.loginText}>Change Password</Text>
 
             <TextInput
+              selectionColor={"#1C9C9D"}
               ref={currentPasswordRef}
               style={[
                 CommonStyle.input,
@@ -122,6 +123,7 @@ const ChangePasswordScreen: React.FC<ChangePasswordScreenProp> = ({
               onFocus={handleCurrentPasswordFocus}
             />
             <TextInput
+              selectionColor={"#1C9C9D"}
               ref={newPasswordRef}
               style={[
                 CommonStyle.input,
@@ -132,6 +134,7 @@ const ChangePasswordScreen: React.FC<ChangePasswordScreenProp> = ({
               onFocus={handleNewPasswordFocus}
             />
             <TextInput
+              selectionColor={"#1C9C9D"}
               ref={confirmNewPasswordRef}
               style={[
                 CommonStyle.input,

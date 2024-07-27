@@ -23,6 +23,7 @@ import {
 } from "../../../lib/appwrite";
 import { appwriteConfig } from "../../../lib/appwrite";
 import { Client, Databases, Query } from "appwrite";
+import { color } from "react-native-elements/dist/helpers";
 
 // Initialize Appwrite Client
 const client = new Client();
@@ -261,6 +262,7 @@ const ChatScreen = ({ contact }) => {
             value={inputText}
             onChangeText={setInputText}
             placeholder="Type a message..."
+            selectionColor={"#1C9C9D"}
           />
           <TouchableOpacity onPress={saveMessage} style={styles.sendButton}>
             <Icon name="send" size={24} color="white" />
@@ -307,6 +309,9 @@ const styles = StyleSheet.create({
   },
   messageList: {
     flex: 1,
+  },
+  cursorColor: {
+    color: "#1C9C9D",
   },
   messageContainer: {
     padding: 10,
