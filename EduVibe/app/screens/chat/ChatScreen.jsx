@@ -10,7 +10,6 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";

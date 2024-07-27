@@ -58,6 +58,9 @@ const DashboardStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     minHeight: 200, // Ensure a minimum height so it's scrollable
+    alignContent : "center",
+    alignSelf : "center",
+    
   },
   noResultsText: {
     marginTop: 8,

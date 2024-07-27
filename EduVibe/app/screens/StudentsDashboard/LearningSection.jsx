@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView, Button } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, RefreshControl, SafeAreaView, } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CourseCard } from '../../../components';
 import DashboardStyles from '../../../themes/DashboardStyles';
@@ -11,7 +11,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useParticipants } from '../../../contexts/ParticipantContext';
 import FinanceCard from '../../../components/FinanceCard';
-import clearAsyncStorage from '../../../scripts/CacheClear';
 
 const LearningSection = () => {
   const navigation = useNavigation();

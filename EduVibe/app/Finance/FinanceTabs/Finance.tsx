@@ -20,7 +20,7 @@ const FinanceTab = () => {
             justifyContent: 'center',
             alignSelf: 'center',
             height: 63,
-            marginHorizontal: 120,
+            marginHorizontal: 90,
             paddingHorizontal: 10,
             paddingVertical: 8,
             paddingBottom: 8,
@@ -29,6 +29,7 @@ const FinanceTab = () => {
             borderTopWidth: 1,
             borderColor: '#333',
             borderTopColor: '#333',
+            width : "auto",
           },
           tabBarShowLabel: false,
           tabBarInactiveTintColor: '#F5B227',
@@ -42,6 +43,7 @@ const FinanceTab = () => {
             tabBarIcon: ({ color, size, focused }) => (
               <View
                 style={{
+                  flex : 1,
                   padding: 12,
                   borderRadius: 30,
                   backgroundColor: focused ? "#F5B227": Colors.grey,
@@ -60,6 +62,7 @@ const FinanceTab = () => {
             tabBarIcon: ({ color, size, focused }) => (
               <View
                 style={{
+                  flex : 1,
                   padding: 12,
                   borderRadius: 30,
                   backgroundColor: focused ? "#F5B227" : Colors.grey,
@@ -78,6 +81,7 @@ const FinanceTab = () => {
             tabBarIcon: ({ color, size, focused }) => (
               <View
                 style={{
+                  flex : 1,
                   padding: 12,
                   borderRadius: 30,
                   backgroundColor: focused ? "#F5B227" : Colors.grey,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image, TextInput, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messagesScreenstyles from "../../themes/messagesScreenStyles";
@@ -8,6 +8,9 @@ import GroupCard from "../../components/GroupCard"; // Import the GroupCard comp
 import { useUsers } from "../../contexts/UsersContext";
 import { useGroup } from "../../contexts/GroupContexts";
 import { getCurrentUser } from "../../lib/appwrite";
+import ReactNativeBiometrics from 'react-native-biometrics';
+
+const rnBiometrics = new ReactNativeBiometrics();
 
 const MessagesScreen = ({ navigation }) => {
   const { users } = useUsers(); // Access users data from UsersContext
@@ -62,8 +65,35 @@ const MessagesScreen = ({ navigation }) => {
     setDropdown2Open(!dropdown2Open);
   };
 
-  const toggleDropdown3 = () => {
-    setDropdown3Open(!dropdown3Open);
+  const authenticateUser = async () => {
+    try {
+      const { available } = await rnBiometrics.isSensorAvailable();
+
+      if (!available) {
+        Alert.alert('Biometric sensor not available');
+        return false;
+      }
+
+      const { success, error } = await rnBiometrics.simplePrompt({ promptMessage: 'Confirm your identity' });
+
+      if (success) {
+        return true;
+      } else {
+        Alert.alert('Authentication failed', error);
+        return false;
+      }
+    } catch (error) {
+      Alert.alert('Biometrics failed', error.message);
+      console.log(error);
+      return false;
+    }
+  };
+
+  const toggleDropdown3 = async () => {
+    const authenticated = await authenticateUser();
+    if (authenticated) {
+      setDropdown3Open(!dropdown3Open);
+    }
   };
 
   return (
