@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView  , Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import VideoPlayerHeader from './videoPlayerHeader';
