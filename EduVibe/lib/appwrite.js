@@ -407,25 +407,42 @@ export async function sendMessage(senderId, receiverId, content) {
 }
 
 
+
 export async function getMessages(senderId, receiverId) {
     try {
-        const messages = await databases.listDocuments(
+        // Constructing the query with correct syntax
+        const query = [
+            Query.or([
+                Query.and([Query.equal('senderId', senderId), Query.equal('receiverId', receiverId)]),
+                Query.and([Query.equal('senderId', receiverId), Query.equal('receiverId', senderId)])
+            ]),
+            Query.orderAsc('createdAt')
+        ];
+
+        console.log('Constructed Query:', JSON.stringify(query, null, 2)); // Debugging the query
+
+        const response = await databases.listDocuments(
             appwriteConfig.databaseId,
             appwriteConfig.messagesCollectionId,
-            [
-                Query.or(
-                    Query.and(Query.equal("senderId", senderId), Query.equal("receiverId", receiverId)),
-                    Query.and(Query.equal("senderId", receiverId), Query.equal("receiverId", senderId))
-                ),
-                Query.orderAsc("createdAt")
-            ]
+            query
         );
 
-        return messages.documents;
+        console.log('Response:', response); // Debugging the response
+
+        if (response && response.documents) {
+            return response.documents;
+        } else {
+            throw new Error('Response does not contain documents');
+        }
     } catch (error) {
+        console.error('Error fetching messages:', error);
         throw new Error(`Failed to fetch messages: ${error.message}`);
     }
 }
+
+
+
+
 
 export async function fetchAllTagCollectionDocuments() {
   try {
@@ -655,3 +672,4 @@ export const fetchParentWardsForUser = async (username) => {
     throw error;
   }
 };
+

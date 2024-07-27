@@ -16,6 +16,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ActionSheet from "react-native-actionsheet";
 import { useNavigation } from "@react-navigation/native";
+import { sendMessage, getMessages, getCurrentUser } from "../../../lib/appwrite";
 
 const ChatScreen = ({ contact }) => {
   const [messages, setMessages] = useState([]);
@@ -23,25 +24,31 @@ const ChatScreen = ({ contact }) => {
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editingMessage, setEditingMessage] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
   const flatListRef = useRef(null);
   const actionSheetRef = useRef(null);
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchMessages = async () => {
+    const initializeChat = async () => {
       try {
-        const storedMessages = await AsyncStorage.getItem(
-          `messages_${contact.id}`
-        );
-        if (storedMessages) {
-          setMessages(JSON.parse(storedMessages));
+        const user = await getCurrentUser();
+        if (user && user.$id) {
+          setCurrentUserId(user.$id);
+        } else {
+          throw new Error("Invalid user ID");
         }
+
+        console.log("Fetching messages for user:", user.$id, "and contact:", contact.id);
+
+        const messages = await getMessages(user.$id, contact.id);
+        setMessages(messages);
       } catch (error) {
-        console.error("Error fetching messages:", error.message);
+        console.error("Error initializing chat:", error.message);
       }
     };
 
-    fetchMessages();
+    initializeChat();
   }, [contact]);
 
   const saveMessage = async () => {
@@ -49,32 +56,25 @@ const ChatScreen = ({ contact }) => {
       if (isEditing) {
         // Edit existing message
         const updatedMessages = messages.map((msg) =>
-          msg.id === editingMessage.id ? { ...msg, text: inputText } : msg
+          msg.$id === editingMessage.$id ? { ...msg, content: inputText } : msg
         );
         setMessages(updatedMessages);
         setIsEditing(false);
         setEditingMessage(null);
       } else {
         // Add new message
-        const newMessage = {
-          id: (messages.length + 1).toString(),
-          text: inputText,
-          sender: "me",
-          time: new Date().toLocaleTimeString(),
-        };
-        const updatedMessages = [newMessage, ...messages];
-        setMessages(updatedMessages);
+        if (currentUserId) {
+          try {
+            const newMessage = await sendMessage(currentUserId, contact.id, inputText);
+            setMessages((prevMessages) => [newMessage, ...prevMessages]);
+          } catch (error) {
+            console.error("Error sending message:", error.message);
+          }
+        } else {
+          console.error("Error: currentUserId is not valid.");
+        }
       }
       setInputText("");
-
-      try {
-        await AsyncStorage.setItem(
-          `messages_${contact.id}`,
-          JSON.stringify(messages)
-        );
-      } catch (error) {
-        console.error("Error saving message:", error.message);
-      }
 
       // Scroll to the end of the list after adding a new message
       flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
@@ -89,16 +89,16 @@ const ChatScreen = ({ contact }) => {
   const handleActionSheet = (index) => {
     switch (index) {
       case 0: // Reply
-        setInputText(`@${selectedMessage.id}: `);
+        setInputText(`@${selectedMessage.$id}: `);
         break;
       case 1: // Forward
-        Alert.alert("Forward", `Forward message: ${selectedMessage.text}`);
+        Alert.alert("Forward", `Forward message: ${selectedMessage.content}`);
         break;
       case 2: // Edit
         handleEdit(selectedMessage);
         break;
       case 3: // Delete
-        deleteMessage(selectedMessage.id);
+        deleteMessage(selectedMessage.$id);
         break;
       default:
         break;
@@ -107,14 +107,15 @@ const ChatScreen = ({ contact }) => {
 
   const handleEdit = (message) => {
     setEditingMessage(message);
-    setInputText(message.text);
+    setInputText(message.content);
     setIsEditing(true);
   };
 
   const deleteMessage = async (messageId) => {
-    const updatedMessages = messages.filter((msg) => msg.id !== messageId);
+    const updatedMessages = messages.filter((msg) => msg.$id !== messageId);
     setMessages(updatedMessages);
 
+    // Update the message storage here if needed
     try {
       await AsyncStorage.setItem(
         `messages_${contact.id}`,
@@ -130,23 +131,23 @@ const ChatScreen = ({ contact }) => {
       onLongPress={() => handleLongPress(item)}
       style={[
         styles.messageContainer,
-        item.sender === "me" ? styles.myMessage : styles.theirMessage,
+        item.senderId === currentUserId ? styles.myMessage : styles.theirMessage,
       ]}
     >
       <Text
         style={
-          item.sender === "me" ? styles.myMessageText : styles.theirMessageText
+          item.senderId === currentUserId ? styles.myMessageText : styles.theirMessageText
         }
       >
-        {item.text}
+        {item.content}
       </Text>
-      {item.time && (
+      {item.createdAt && (
         <Text
           style={
-            item.sender === "me" ? styles.myTimeText : styles.theirTimeText
+            item.senderId === currentUserId ? styles.myTimeText : styles.theirTimeText
           }
         >
-          {item.time}
+          {new Date(item.createdAt).toLocaleTimeString()}
         </Text>
       )}
     </TouchableOpacity>
@@ -166,7 +167,7 @@ const ChatScreen = ({ contact }) => {
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.navigate("Back")}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="chevron-left" size={40} color="#000" />
           </TouchableOpacity>
           <Image style={styles.avatar} source={{ uri: contact?.img }} />
@@ -178,7 +179,7 @@ const ChatScreen = ({ contact }) => {
         <FlatList
           ref={flatListRef}
           data={messages}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.$id}
           renderItem={renderMessageItem}
           style={styles.messageList}
           contentContainerStyle={{ paddingVertical: 10 }}
