@@ -50,6 +50,9 @@ const CourseTopTabs = ({ navigation, route }) => {
       <Tab.Navigator
         initialRouteName="Course"
         screenOptions={{
+          tabBarIndicatorStyle: {
+            backgroundColor: "#1C9C9D",
+          },
           tabBarActiveTintColor: "#1C9C9D",
           tabBarInactiveTintColor: "gray",
           tabBarLabelStyle: { fontSize: 16, fontWeight: "bold" },
