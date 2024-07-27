@@ -1,5 +1,14 @@
 import React, { useState, useRef } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Keyboard, TouchableWithoutFeedback, Animated } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Animated,
+} from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
@@ -11,10 +20,17 @@ const Tab = createMaterialTopTabNavigator();
 type ContactsMainScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
+
 //@ts-ignore
 const ContactsTabs = ({ searchText }) => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarIndicatorStyle: {
+          backgroundColor: "#1C9C9D",
+        },
+      }}
+    >
       <Tab.Screen name="Contacts">
         {() => <ContactsScreen searchText={searchText} />}
       </Tab.Screen>
@@ -23,7 +39,9 @@ const ContactsTabs = ({ searchText }) => {
   );
 };
 
-const ContactsMainScreen: React.FC<ContactsMainScreenProps> = ({ navigation }) => {
+const ContactsMainScreen: React.FC<ContactsMainScreenProps> = ({
+  navigation,
+}) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const animatedHeight = useRef(new Animated.Value(0)).current;
@@ -64,7 +82,6 @@ const ContactsMainScreen: React.FC<ContactsMainScreenProps> = ({ navigation }) =
           <TouchableOpacity onPress={toggleSearchBar}>
             <Icon name="search" size={30} color="#000" />
           </TouchableOpacity>
-          
         </View>
         {isSearchVisible && (
           <Animated.View style={[styles.searchBar, { height: animatedHeight }]}>

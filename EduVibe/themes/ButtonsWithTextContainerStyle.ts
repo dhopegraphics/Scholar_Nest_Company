@@ -5,13 +5,13 @@ export const ButtonsTextStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     marginTop: -10,
-   
   },
   scrollViewContent: {
     flexGrow: 5,
     alignItems: "center",
     justifyContent: "flex-start",
     padding: 20,
+    marginTop: -33,
   },
   container: {
     width: "110%",
@@ -26,9 +26,9 @@ export const ButtonsTextStyle = StyleSheet.create({
   moreText: {
     fontWeight: "bold",
     fontSize: 20,
-    backgroundColor : "white",
-    padding : 20,
-    paddingLeft : 5,
+    backgroundColor: "white",
+    padding: 20,
+    paddingLeft: 5,
   },
   buttonContainer: {
     width: "100%",
