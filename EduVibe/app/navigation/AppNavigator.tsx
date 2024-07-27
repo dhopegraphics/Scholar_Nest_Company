@@ -181,7 +181,7 @@ const MainStackScreen = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={isLogged ? "Back" : "LottieEduvibeLoader"} // Navigate to "Back" if logged in, else "Onboarding"
+      initialRouteName={isLogged ? "Back" : "OnBoardingScreen"} // Navigate to "Back" if logged in, else "Onboarding"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Onboarding" component={OnBoardingScreen} />
