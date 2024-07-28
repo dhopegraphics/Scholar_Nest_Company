@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
   View,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   Text,
   Image,
+  ActivityIndicator, // Import ActivityIndicator
+  Alert, // Import Alert
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import ExperienceCard from '../../../components/ExperienceCard';
 import { useUsers } from '../../../contexts/UsersContext';
 import { UserAccountStyling } from '../../../themes/UserAccountStyle';
 import { useTagContext } from '../../../contexts/TagContext'; // Import the context
+import { createChatRequest, deleteChatRequest, createFollowRequest, deleteFollowRequest} from '../../../lib/appwrite'; // Import the functions and configurations
 
 const tags = ['ios', 'android', 'web', 'ui', 'ux'];
 
@@ -30,17 +33,103 @@ const UserAccount = ({ navigation, route }) => {
   // State for chat request status
   const [isChatRequested, setIsChatRequested] = useState(false);
 
+  // State to store the document IDs of the chat and follow requests
+  const [chatRequestDocumentId, setChatRequestDocumentId] = useState(null);
+  const [followRequestDocumentId, setFollowRequestDocumentId] = useState(null);
+
+  // State for loading
+  const [loading, setLoading] = useState(false);
+
   // Function to toggle follow status
-  const toggleFollow = () => {
-    setIsFollowed(prevState => !prevState);
-    // You can add additional logic here, such as API calls to update follow status
+  const toggleFollow = async () => {
+    setLoading(true); // Show loader
+    if (isFollowed) {
+      // If followed, delete the follow request
+      try {
+        await deleteFollowRequest(followRequestDocumentId);
+        console.log("Follow request deleted successfully");
+        setIsFollowed(false);
+        setFollowRequestDocumentId(null);
+        await AsyncStorage.removeItem(`follow_${currentUser.id}`);
+        Alert.alert("Follow Removed");
+      } catch (error) {
+        console.error("Failed to delete follow request:", error);
+        Alert.alert("Failed to remove follow");
+      }
+    } else {
+      // If not followed, create a new follow request
+      try {
+        const newFollowRequest = await createFollowRequest(currentUser.id, currentUser.username);
+        console.log("Follow request created successfully:", newFollowRequest);
+        setIsFollowed(true);
+        setFollowRequestDocumentId(newFollowRequest.$id); // Store the document ID
+        await AsyncStorage.setItem(`follow_${currentUser.id}`, newFollowRequest.$id);
+        Alert.alert("Followed");
+      } catch (error) {
+        console.error("Failed to create follow request:", error);
+        Alert.alert("Failed to follow");
+      }
+    }
+    setLoading(false); // Hide loader
   };
 
   // Function to toggle chat request status
-  const toggleChatRequest = () => {
-    setIsChatRequested(prevState => !prevState);
-    // You can add additional logic here, such as API calls to handle chat request
+  const toggleChatRequest = async () => {
+    setLoading(true); // Show loader
+    if (isChatRequested) {
+      // If chat is already requested, delete the chat request
+      try {
+        await deleteChatRequest(chatRequestDocumentId);
+        console.log("Chat request deleted successfully");
+        setIsChatRequested(false);
+        setChatRequestDocumentId(null);
+        await AsyncStorage.removeItem(`chat_${currentUser.id}`);
+        Alert.alert("Request Removed");
+      } catch (error) {
+        console.error("Failed to delete chat request:", error);
+        Alert.alert("Failed to remove request");
+      }
+    } else {
+      // If chat is not requested, create a new chat request
+      try {
+        const newChatRequest = await createChatRequest(currentUser.id, currentUser.username, currentUser.img);
+        console.log("Chat request created successfully:", newChatRequest);
+        setIsChatRequested(true);
+        setChatRequestDocumentId(newChatRequest.$id); // Store the document ID
+        await AsyncStorage.setItem(`chat_${currentUser.id}`, newChatRequest.$id);
+        Alert.alert("Request Sent!");
+      } catch (error) {
+        console.error("Failed to create chat request:", error);
+        Alert.alert("Failed to send request");
+      }
+    }
+    setLoading(false); // Hide loader
   };
+
+  useEffect(() => {
+    // Fetch and set the follow and chat request status when the component mounts
+    const fetchStatuses = async () => {
+      try {
+        // Check AsyncStorage for follow status
+        const followRequestId = await AsyncStorage.getItem(`follow_${currentUser.id}`);
+        if (followRequestId) {
+          setIsFollowed(true);
+          setFollowRequestDocumentId(followRequestId);
+        }
+
+        // Check AsyncStorage for chat request status
+        const chatRequestId = await AsyncStorage.getItem(`chat_${currentUser.id}`);
+        if (chatRequestId) {
+          setIsChatRequested(true);
+          setChatRequestDocumentId(chatRequestId);
+        }
+      } catch (error) {
+        console.error('Failed to fetch follow or chat request status from AsyncStorage:', error);
+      }
+    };
+
+    fetchStatuses();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -57,7 +146,6 @@ const UserAccount = ({ navigation, route }) => {
           </View>
 
           <View style={[UserAccountStyling.headerAction, { alignItems: 'flex-end' }]}>
-            {/* Additional header actions */}
           </View>
         </View>
 
@@ -136,6 +224,12 @@ const UserAccount = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
 
+            {loading && (
+              <View style={styles.loader}>
+                <ActivityIndicator size="large" color="#0000ff" />
+              </View>
+            )}
+
             <ExperienceCard navigation={navigation} />
           </View>
         </ScrollView>
@@ -143,5 +237,14 @@ const UserAccount = ({ navigation, route }) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  loader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -50 }, { translateY: -50 }],
+  },
+});
 
 export default UserAccount;

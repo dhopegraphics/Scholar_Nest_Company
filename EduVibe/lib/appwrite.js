@@ -27,6 +27,8 @@ export const appwriteConfig = {
   statsCollectionId: ENV.STATS_COLLECTION_ID,
   userCoursesCollectionId: ENV.USER_COURSES_COLLECTION_ID,
   parentWardsCollectionId:ENV.PARENT_WARDS_COLLECTION_ID,
+  requestedChatsCollectionId:ENV.REQUESTED_CHAT_COLLECTION_ID,
+  followersCollectionId:ENV.FOLLOWERS_COLLECTION_ID, 
 };
 
 const client = new Client();
@@ -672,4 +674,102 @@ export const fetchParentWardsForUser = async (username) => {
     throw error;
   }
 };
+
+
+export async function createChatRequest(userId, username, avatar) {
+  try {
+    const documentId = ID.unique(); // Generate a unique ID for the document
+    const newChatRequest = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.requestedChatsCollectionId, // Collection ID for chat requests
+      documentId,
+      {
+        userId: userId,
+        username: username,
+        avatar: avatar,
+      }
+    );
+
+    return newChatRequest;
+  } catch (error) {
+    throw new Error(`Failed to create chat request: ${error.message}`);
+  }
+}
+
+export async function deleteChatRequest(documentId) {
+  try {
+    const deletedChatRequest = await databases.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.requestedChatsCollectionId, // Collection ID for chat requests
+      documentId,
+    );
+
+    return deletedChatRequest;
+  } catch (error) {
+    throw new Error(`Failed to delete chat request: ${error.message}`);
+  }
+}
+
+
+export async function createFollowRequest(userId, username) {
+  try {
+    const document = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followersCollectionId,
+      ID.unique(),
+      {
+        userId: userId,
+        username: username,
+        createdAt: new Date().toISOString(),
+      }
+    );
+    return document;
+  } catch (error) {
+    throw new Error(`Failed to create follow request: ${error.message}`);
+  }
+}
+
+// Function to delete a follow request document
+export async function deleteFollowRequest(documentId) {
+  try {
+    await databases.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followersCollectionId,
+      documentId
+    );
+  } catch (error) {
+    throw new Error(`Failed to delete follow request: ${error.message}`);
+  }
+}
+
+export async function fetchFollowers(userId) {
+  try {
+    const response = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.followersCollectionId,
+      [
+        Query.equal('userId', userId)
+      ]
+    );
+
+    return response.documents;
+  } catch (error) {
+    throw new Error(`Failed to fetch followers: ${error.message}`);
+  }
+}
+
+export async function fetchChatRequests(userId) {
+  try {
+    const chatRequests = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.requestedChatsCollectionId,
+      [
+        Query.equal('userId', userId)
+      ]
+    );
+    return chatRequests.documents;
+  } catch (error) {
+    throw new Error(`Failed to fetch chat requests: ${error.message}`);
+  }
+}
 
