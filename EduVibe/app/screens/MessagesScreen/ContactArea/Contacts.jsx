@@ -1,15 +1,32 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { useUsers } from '../../../../contexts/UsersContext';
 import Modal from 'react-native-modal';
+import { getCurrentUser } from '../../../../lib/appwrite'; // Import your getCurrentUser function
+
 
 const ContactsScreen = ({ searchText }) => {
   const navigation = useNavigation();
   const { users } = useUsers();  // Access the users data from the context
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedContact, setSelectedContact] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  useEffect(() => {
+    // Fetch the current user's ID and set it in the state
+    const fetchCurrentUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        setCurrentUserId(user.$id);
+      } catch (error) {
+        console.error('Failed to fetch current user', error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -25,18 +42,20 @@ const ContactsScreen = ({ searchText }) => {
     const query = searchText.toLowerCase();
 
     for (const item of users) {
-      const nameIndex = item.name.toLowerCase().search(query);
+      if (item.$id !== currentUserId) { // Exclude the current user
+        const nameIndex = item.name.toLowerCase().search(query);
 
-      if (nameIndex !== -1) {
-        rows.push({
-          ...item,
-          index: nameIndex,
-        });
+        if (nameIndex !== -1) {
+          rows.push({
+            ...item,
+            index: nameIndex,
+          });
+        }
       }
     }
 
     return rows.sort((a, b) => a.index - b.index);
-  }, [searchText, users]);  // Add users as a dependency
+  }, [searchText, users, currentUserId]);  // Add users and currentUserId as dependencies
 
   return (
     <View style={styles.container}>
@@ -89,13 +108,13 @@ const ContactsScreen = ({ searchText }) => {
       <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Move Contact To</Text>
-          <TouchableOpacity onPress={() => Alert.alert(`You Have Starred ${selectedContact.name}`)}>
+          <TouchableOpacity onPress={() => Alert.alert(`You Have Starred ${selectedContact?.name}`)}>
             <Text style={styles.modalItem}>Starred</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Alert.alert(`${selectedContact.name} has been moved to Private`)}>
+          <TouchableOpacity onPress={() => Alert.alert(`${selectedContact?.name} has been moved to Private`)}>
             <Text style={styles.modalItem}>Private</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Alert.alert(`${selectedContact.name} has been deleted`)}>
+          <TouchableOpacity onPress={() => Alert.alert(`${selectedContact?.name} has been deleted`)}>
             <Text style={styles.modalItem}>Delete Contact</Text>
           </TouchableOpacity>
         </View>
@@ -180,14 +199,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   modalItem: {
-
     fontSize: 16,
     marginVertical: 10,
-    alignSelf : "flex-start",
-    alignContent : "flex-start",
-    alignItems : "flex-start",
-    textAlign : "justify"
-
+    alignSelf: "flex-start",
+    alignContent: "flex-start",
+    alignItems: "flex-start",
+    textAlign: "justify"
   },
 });
 

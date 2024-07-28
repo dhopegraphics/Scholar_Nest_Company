@@ -23,7 +23,6 @@ import {
 } from "../../../lib/appwrite";
 import { appwriteConfig } from "../../../lib/appwrite";
 import { Client, Databases, Query } from "appwrite";
-import { color } from "react-native-elements/dist/helpers";
 
 // Initialize Appwrite Client
 const client = new Client();
@@ -39,6 +38,7 @@ const ChatScreen = ({ contact }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingMessage, setEditingMessage] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [isSending, setIsSending] = useState(false);
   const flatListRef = useRef(null);
   const actionSheetRef = useRef(null);
   const navigation = useNavigation();
@@ -53,17 +53,20 @@ const ChatScreen = ({ contact }) => {
           throw new Error("Invalid user ID");
         }
 
-        console.log(
-          "Fetching messages for user:",
-          user.$id,
-          "and contact:",
-          contact.id
+        // Load messages from AsyncStorage
+        const storedMessages = await AsyncStorage.getItem(`messages_${contact.id}`);
+        if (storedMessages) {
+          setMessages(JSON.parse(storedMessages));
+        }
+
+        // Fetch messages from the server
+        const fetchedMessages = await getMessages(user.$id, contact.id);
+        setMessages(
+          fetchedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
         );
 
-        const messages = await getMessages(user.$id, contact.id);
-        setMessages(
-          messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-        );
+        // Cache the messages in AsyncStorage
+        await AsyncStorage.setItem(`messages_${contact.id}`, JSON.stringify(fetchedMessages));
 
         // Subscribe to message creation and updates
         const unsubscribe = client.subscribe(
@@ -109,7 +112,8 @@ const ChatScreen = ({ contact }) => {
   }, [contact]);
 
   const saveMessage = async () => {
-    if (inputText.trim().length > 0) {
+    if (inputText.trim().length > 0 && !isSending) {
+      setIsSending(true); // Disable the send button
       if (isEditing) {
         // Edit existing message
         const updatedMessages = messages.map((msg) =>
@@ -118,6 +122,9 @@ const ChatScreen = ({ contact }) => {
         setMessages(updatedMessages);
         setIsEditing(false);
         setEditingMessage(null);
+
+        // Update the message storage
+        await AsyncStorage.setItem(`messages_${contact.id}`, JSON.stringify(updatedMessages));
       } else {
         // Add new message
         if (currentUserId) {
@@ -127,11 +134,13 @@ const ChatScreen = ({ contact }) => {
               contact.id,
               inputText
             );
-            setMessages((prevMessages) =>
-              [...prevMessages, newMessage].sort(
-                (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-              )
+            const updatedMessages = [...messages, newMessage].sort(
+              (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
             );
+            setMessages(updatedMessages);
+
+            // Cache the updated messages in AsyncStorage
+            await AsyncStorage.setItem(`messages_${contact.id}`, JSON.stringify(updatedMessages));
           } catch (error) {
             console.error("Error sending message:", error.message);
           }
@@ -143,6 +152,7 @@ const ChatScreen = ({ contact }) => {
 
       // Scroll to the end of the list after adding a new message
       flatListRef.current.scrollToEnd({ animated: true });
+      setIsSending(false); // Re-enable the send button
     }
   };
 
@@ -152,17 +162,21 @@ const ChatScreen = ({ contact }) => {
   };
 
   const handleActionSheet = (index) => {
-    switch (index) {
-      case 0: // Reply
+    const options = selectedMessage.senderId === currentUserId
+      ? ["Reply", "Forward", "Edit", "Delete", "Cancel"]
+      : ["Reply", "Forward", "Cancel"];
+
+    switch (options[index]) {
+      case "Reply":
         setInputText(`@${selectedMessage.$id}: `);
         break;
-      case 1: // Forward
+      case "Forward":
         Alert.alert("Forward", `Forward message: ${selectedMessage.content}`);
         break;
-      case 2: // Edit
+      case "Edit":
         handleEdit(selectedMessage);
         break;
-      case 3: // Delete
+      case "Delete":
         deleteMessage(selectedMessage.$id);
         break;
       default:
@@ -180,15 +194,8 @@ const ChatScreen = ({ contact }) => {
     const updatedMessages = messages.filter((msg) => msg.$id !== messageId);
     setMessages(updatedMessages);
 
-    // Update the message storage here if needed
-    try {
-      await AsyncStorage.setItem(
-        `messages_${contact.id}`,
-        JSON.stringify(updatedMessages)
-      );
-    } catch (error) {
-      console.error("Error deleting message:", error.message);
-    }
+    // Update the message storage here
+    await AsyncStorage.setItem(`messages_${contact.id}`, JSON.stringify(updatedMessages));
   };
 
   const renderMessageItem = ({ item }) => (
@@ -264,16 +271,18 @@ const ChatScreen = ({ contact }) => {
             placeholder="Type a message..."
             selectionColor={"#1C9C9D"}
           />
-          <TouchableOpacity onPress={saveMessage} style={styles.sendButton}>
+          <TouchableOpacity onPress={saveMessage} style={styles.sendButton} disabled={isSending}>
             <Icon name="send" size={24} color="white" />
           </TouchableOpacity>
         </View>
         <ActionSheet
           ref={actionSheetRef}
           title={"Choose an action"}
-          options={["Reply", "Forward", "Edit", "Delete", "Cancel"]}
-          cancelButtonIndex={4}
-          destructiveButtonIndex={3}
+          options={selectedMessage?.senderId === currentUserId
+            ? ["Reply", "Forward", "Edit", "Delete", "Cancel"]
+            : ["Reply", "Forward", "Cancel"]}
+          cancelButtonIndex={selectedMessage?.senderId === currentUserId ? 4 : 2}
+          destructiveButtonIndex={selectedMessage?.senderId === currentUserId ? 3 : null}
           onPress={(index) => handleActionSheet(index)}
         />
       </SafeAreaView>
