@@ -178,6 +178,7 @@ const GroupChatScreen = ({ group }) => {
         />
         <View style={styles.inputContainer}>
           <TextInput
+            selectionColor={"#1C9C9D"}
             style={styles.input}
             value={inputText}
             onChangeText={setInputText}

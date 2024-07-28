@@ -1,15 +1,15 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React from 'react';
-import NotifiedState from '../UseSates/Notifications/NotifiedState';
-import { NoteStyles } from '../../themes/NotificationStyle';
-import { useNavigation } from '@react-navigation/native';
-import FeatherIcon from 'react-native-vector-icons/Feather';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { StackParamList } from '../navigation/AppNavigator';
+import { View, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import NotifiedState from "../UseSates/Notifications/NotifiedState";
+import { NoteStyles } from "../../themes/NotificationStyle";
+import { useNavigation } from "@react-navigation/native";
+import FeatherIcon from "react-native-vector-icons/Feather";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { StackParamList } from "../navigation/AppNavigator";
 
 type NotificationsScreenNavigationProp = StackNavigationProp<
   StackParamList,
-  'ContactsMainScreen'
+  "ContactsMainScreen"
 >;
 
 const Notifications = () => {
@@ -22,13 +22,10 @@ const Notifications = () => {
         <View style={NoteStyles.headerAction}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('ContactsMainScreen');
-            }}>
-            <FeatherIcon
-              color="#266EF1"
-              name="user-plus"
-              size={21}
-            />
+              navigation.navigate("ContactsMainScreen");
+            }}
+          >
+            <FeatherIcon color="#1C9C9D" name="user-plus" size={21} />
           </TouchableOpacity>
         </View>
       </View>

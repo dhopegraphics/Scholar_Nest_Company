@@ -16,7 +16,12 @@ import { Foundation } from "@expo/vector-icons";
 const AppSettings = ({ navigation }) => {
   return (
     <SafeAreaView style={ButtonsTextStyle.safeArea}>
-      <ScrollView contentContainerStyle={ButtonsTextStyle.scrollViewContent}>
+      <ScrollView
+        contentContainerStyle={[
+          ButtonsTextStyle.scrollViewContent,
+          { marginTop: 10 },
+        ]}
+      >
         <View style={[ButtonsTextStyle.container, { marginBottom: 30 }]}>
           <View style={ButtonsTextStyle.buttonContainer}>
             <TouchableOpacity
