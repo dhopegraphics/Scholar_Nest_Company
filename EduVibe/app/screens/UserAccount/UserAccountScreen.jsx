@@ -16,35 +16,26 @@ import ExperienceCard from '../../../components/ExperienceCard';
 import { useUsers } from '../../../contexts/UsersContext';
 import { UserAccountStyling } from '../../../themes/UserAccountStyle';
 import { useTagContext } from '../../../contexts/TagContext'; // Import the context
-import { createChatRequest, deleteChatRequest, createFollowRequest, deleteFollowRequest} from '../../../lib/appwrite'; // Import the functions and configurations
+import { createChatRequest, deleteChatRequest, createFollowRequest, deleteFollowRequest, fetchChatRequests } from '../../../lib/appwrite'; // Import the functions and configurations
 
 const tags = ['ios', 'android', 'web', 'ui', 'ux'];
 
 const UserAccount = ({ navigation, route }) => {
   const { users, stats } = useUsers();
   const { userId } = route.params;
-  const { setTag } = useTagContext(); // Use the context
+  const { setTag } = useTagContext();
 
   const currentUser = users.find((user) => user.id === userId);
 
-  // State for follow status
   const [isFollowed, setIsFollowed] = useState(false);
-
-  // State for chat request status
   const [isChatRequested, setIsChatRequested] = useState(false);
-
-  // State to store the document IDs of the chat and follow requests
   const [chatRequestDocumentId, setChatRequestDocumentId] = useState(null);
   const [followRequestDocumentId, setFollowRequestDocumentId] = useState(null);
-
-  // State for loading
   const [loading, setLoading] = useState(false);
 
-  // Function to toggle follow status
   const toggleFollow = async () => {
-    setLoading(true); // Show loader
+    setLoading(true);
     if (isFollowed) {
-      // If followed, delete the follow request
       try {
         await deleteFollowRequest(followRequestDocumentId);
         console.log("Follow request deleted successfully");
@@ -57,12 +48,11 @@ const UserAccount = ({ navigation, route }) => {
         Alert.alert("Failed to remove follow");
       }
     } else {
-      // If not followed, create a new follow request
       try {
         const newFollowRequest = await createFollowRequest(currentUser.id, currentUser.username);
         console.log("Follow request created successfully:", newFollowRequest);
         setIsFollowed(true);
-        setFollowRequestDocumentId(newFollowRequest.$id); // Store the document ID
+        setFollowRequestDocumentId(newFollowRequest.$id);
         await AsyncStorage.setItem(`follow_${currentUser.id}`, newFollowRequest.$id);
         Alert.alert("Followed");
       } catch (error) {
@@ -70,14 +60,12 @@ const UserAccount = ({ navigation, route }) => {
         Alert.alert("Failed to follow");
       }
     }
-    setLoading(false); // Hide loader
+    setLoading(false);
   };
 
-  // Function to toggle chat request status
   const toggleChatRequest = async () => {
-    setLoading(true); // Show loader
+    setLoading(true);
     if (isChatRequested) {
-      // If chat is already requested, delete the chat request
       try {
         await deleteChatRequest(chatRequestDocumentId);
         console.log("Chat request deleted successfully");
@@ -90,12 +78,11 @@ const UserAccount = ({ navigation, route }) => {
         Alert.alert("Failed to remove request");
       }
     } else {
-      // If chat is not requested, create a new chat request
       try {
         const newChatRequest = await createChatRequest(currentUser.id, currentUser.username, currentUser.img);
         console.log("Chat request created successfully:", newChatRequest);
         setIsChatRequested(true);
-        setChatRequestDocumentId(newChatRequest.$id); // Store the document ID
+        setChatRequestDocumentId(newChatRequest.$id);
         await AsyncStorage.setItem(`chat_${currentUser.id}`, newChatRequest.$id);
         Alert.alert("Request Sent!");
       } catch (error) {
@@ -103,25 +90,36 @@ const UserAccount = ({ navigation, route }) => {
         Alert.alert("Failed to send request");
       }
     }
-    setLoading(false); // Hide loader
+    setLoading(false);
   };
 
   useEffect(() => {
-    // Fetch and set the follow and chat request status when the component mounts
     const fetchStatuses = async () => {
       try {
-        // Check AsyncStorage for follow status
         const followRequestId = await AsyncStorage.getItem(`follow_${currentUser.id}`);
         if (followRequestId) {
           setIsFollowed(true);
           setFollowRequestDocumentId(followRequestId);
         }
 
-        // Check AsyncStorage for chat request status
         const chatRequestId = await AsyncStorage.getItem(`chat_${currentUser.id}`);
         if (chatRequestId) {
           setIsChatRequested(true);
           setChatRequestDocumentId(chatRequestId);
+        }
+
+        // Always fetch the latest chat requests
+        const chatRequests = await fetchChatRequests(currentUser.id);
+        const chatRequest = chatRequests.find(req => req.receiverId === currentUser.id);
+
+        if (chatRequest) {
+          setIsChatRequested(true);
+          setChatRequestDocumentId(chatRequest.$id);
+          await AsyncStorage.setItem(`chat_${currentUser.id}`, chatRequest.$id);
+        } else {
+          setIsChatRequested(false);
+          setChatRequestDocumentId(null);
+          await AsyncStorage.removeItem(`chat_${currentUser.id}`);
         }
       } catch (error) {
         console.error('Failed to fetch follow or chat request status from AsyncStorage:', error);
@@ -129,7 +127,7 @@ const UserAccount = ({ navigation, route }) => {
     };
 
     fetchStatuses();
-  }, []);
+  }, [currentUser]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>

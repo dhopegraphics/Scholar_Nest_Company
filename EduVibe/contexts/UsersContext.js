@@ -82,7 +82,7 @@ export const UsersProvider = ({ children }) => {
             email: currentUser.email,
             username: currentUser.username,
             tags: tagDataMap[currentUser.userId] || [],
-            phone: '0202472680',
+            phone: ' ',
             NoteCount: 44,
             duration: 10,
             portfolio: 'UI/UX Designer',

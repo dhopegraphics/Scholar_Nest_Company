@@ -5,11 +5,12 @@ interface ContactsCardProps {
   name: string;
   img: string | number; // Updated to accept both string (remote URI) and number (local image require)
   onPress: () => void;
+  onLongPress : () => void;
 }
 
-const ContactsCard: React.FC<ContactsCardProps> = ({ name, img, onPress }) => {
+const ContactsCard: React.FC<ContactsCardProps> = ({ name, img, onPress , onLongPress }) => {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity style={styles.card} onPress={onPress} onLongPress={onLongPress}>
       {typeof img === 'number' ? (
         <Image source={img} style={styles.image} />
       ) : (

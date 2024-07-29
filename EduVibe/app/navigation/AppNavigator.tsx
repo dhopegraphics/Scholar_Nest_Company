@@ -85,8 +85,10 @@ import Header from "../Finance/components/Header";
 import { EducationPlacesProvider } from "../../contexts/EducationPlaceContext";
 import LottieEduvibeLoader from "../../constants/LottieEduvibeLoader";
 import AddedWards from "../screens/ParentWards/AddedWards";
+import ContactsScreen from "../screens/MessagesScreen/ContactArea/Contacts";
 
 export type StackParamList = {
+  ContactsScreen: undefined;
   FinanceHeader: undefined;
   TransactionsSection: undefined;
   FinanceTab: undefined;
@@ -162,6 +164,7 @@ export type StackParamList = {
   QuestionTaken: { course: any };
   LottieEduvibeLoader: undefined;
   AddedWards: undefined;
+ 
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -181,7 +184,7 @@ const MainStackScreen = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={isLogged ? "Back" : "OnBoardingScreen"} // Navigate to "Back" if logged in, else "Onboarding"
+      initialRouteName={isLogged ? "Back" : "Onboarding"} // Navigate to "Back" if logged in, else "Onboarding"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Onboarding" component={OnBoardingScreen} />
@@ -463,6 +466,8 @@ const MainStackScreen = () => {
         component={AddedWards}
         options={{ headerShown: false }}
       />
+
+ 
     </Stack.Navigator>
   );
 };

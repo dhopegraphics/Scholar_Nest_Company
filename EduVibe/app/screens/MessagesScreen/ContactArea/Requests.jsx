@@ -4,10 +4,19 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import RequestChatCard from '../../../../components/RequestChatCard';
 import { fetchChatRequests, deleteChatRequest } from '../../../../lib/appwrite';
 import { useAuth } from '../../../../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const handleAcceptPress = (requestId) => {
+const handleAcceptPress = async (requestId, setChatRequests, chatRequests) => {
   console.log('Accepted', requestId);
-  // Handle accept logic here
+  const acceptedRequest = chatRequests.find(request => request.$id === requestId);
+  if (acceptedRequest) {
+    try {
+      await AsyncStorage.setItem(`accepted_${requestId}`, JSON.stringify(acceptedRequest));
+      setChatRequests(prevRequests => prevRequests.filter(request => request.$id !== requestId));
+    } catch (error) {
+      console.error('Failed to save accepted chat request:', error);
+    }
+  }
 };
 
 const handleRejectPress = async (requestId, setChatRequests) => {
@@ -15,6 +24,8 @@ const handleRejectPress = async (requestId, setChatRequests) => {
     await deleteChatRequest(requestId);
     setChatRequests(prevRequests => prevRequests.filter(request => request.$id !== requestId));
     console.log('Rejected', requestId);
+
+    await AsyncStorage.removeItem(`chat_${requestId}`);
   } catch (error) {
     console.error('Failed to reject chat request:', error);
   }
@@ -42,6 +53,22 @@ const RequestsScreen = () => {
     loadChatRequests();
   }, [currentUser]);
 
+  useEffect(() => {
+    const loadAcceptedRequests = async () => {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        const acceptedKeys = keys.filter(key => key.startsWith('accepted_'));
+        const acceptedRequests = await AsyncStorage.multiGet(acceptedKeys);
+        const acceptedIds = acceptedRequests.map(([key]) => key.replace('accepted_', ''));
+        setChatRequests(prevRequests => prevRequests.filter(request => !acceptedIds.includes(request.$id)));
+      } catch (error) {
+        console.error('Failed to load accepted requests:', error);
+      }
+    };
+
+    loadAcceptedRequests();
+  }, []);
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -65,7 +92,7 @@ const RequestsScreen = () => {
             <RequestChatCard
               img={item.avatar}
               name={item.username}
-              acceptPress={() => handleAcceptPress(item.$id)}
+              acceptPress={() => handleAcceptPress(item.$id, setChatRequests, chatRequests)}
               rejectPress={() => handleRejectPress(item.$id, setChatRequests)}
             />
           )}

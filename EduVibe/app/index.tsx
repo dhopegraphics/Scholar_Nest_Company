@@ -12,6 +12,7 @@ import { CourseProvider } from "../contexts/CourseContext"; // Adjust the path
 import { CourseHeaderProvider } from "../contexts/CourseHeaderContext"; // Adjust the path
 import { AuthProvider } from "../contexts/AuthContext"; // Adjust the path
 import LottieEduvibeLoader from "../constants/LottieEduvibeLoader"; // Adjust the path
+import { ChatRequestProvider } from "../contexts/ChatRequestContext";
 
 Animated.addWhitelistedNativeProps({ text: true });
 SplashScreen.preventAutoHideAsync();
@@ -53,6 +54,7 @@ const App: React.FC = () => {
   }, [appIsReady]);
 
   if (!appIsReady) {
+    //@ts-ignore
     return <LottieEduvibeLoader />;
   }
 
@@ -62,13 +64,16 @@ const App: React.FC = () => {
       style={styles.container}
     >
       <StatusBar barStyle="default" backgroundColor="black" />
+
       <AuthProvider>
         <GlobalProvider>
+          <ChatRequestProvider>
           <CourseProvider>
             <CourseHeaderProvider>
               <AppNavigator />
             </CourseHeaderProvider>
           </CourseProvider>
+          </ChatRequestProvider>
         </GlobalProvider>
       </AuthProvider>
     </GestureHandlerRootView>
