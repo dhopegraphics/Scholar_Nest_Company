@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
     getCurrentUser, 
@@ -6,13 +6,17 @@ import {
     databases, 
     updateAvatar as updateAvatarAPI, 
     fetchAllTagCollectionDocuments, 
-    updateTagCollectionDocument 
+    updateTagCollectionDocument, 
+    appwriteConfig 
 } from '../lib/appwrite'; // Adjust imports as per your setup
 
-// Define the context
 const UsersContext = createContext();
 
-// Create a provider component
+const USERS_KEY = 'users';
+const CURRENT_USER_ID_KEY = 'currentUserId';
+const TAG_DATA_KEY = 'tagData';
+const STATS_KEY = 'stats';
+
 export const UsersProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [currentUserId, setCurrentUserId] = useState(null);
@@ -22,10 +26,12 @@ export const UsersProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const storedUsers = await AsyncStorage.getItem('users');
-        const storedCurrentUserId = await AsyncStorage.getItem('currentUserId');
-        const storedTagData = await AsyncStorage.getItem('tagData');
-        const storedStats = await AsyncStorage.getItem('stats');
+        const [storedUsers, storedCurrentUserId, storedTagData, storedStats] = await Promise.all([
+          AsyncStorage.getItem(USERS_KEY),
+          AsyncStorage.getItem(CURRENT_USER_ID_KEY),
+          AsyncStorage.getItem(TAG_DATA_KEY),
+          AsyncStorage.getItem(STATS_KEY)
+        ]);
 
         if (storedUsers && storedCurrentUserId && storedTagData && storedStats) {
           setUsers(JSON.parse(storedUsers));
@@ -36,8 +42,7 @@ export const UsersProvider = ({ children }) => {
           const currentUser = await getCurrentUser();
           setCurrentUserId(currentUser.userId);
 
-          const allUsers = await getAllUsers();
-          const fetchedTags = await fetchAllTagCollectionDocuments();
+          const [allUsers, fetchedTags] = await Promise.all([getAllUsers(), fetchAllTagCollectionDocuments()]);
 
           const tagDataMap = {};
           fetchedTags.forEach(tag => {
@@ -99,47 +104,41 @@ export const UsersProvider = ({ children }) => {
           setTagData(tagDataMap);
           setStats(userStats);
 
-          await AsyncStorage.setItem('users', JSON.stringify(allUserDataCombined));
-          await AsyncStorage.setItem('currentUserId', currentUser.userId);
-          await AsyncStorage.setItem('tagData', JSON.stringify(tagDataMap));
-          await AsyncStorage.setItem('stats', JSON.stringify(userStats));
+          await Promise.all([
+            AsyncStorage.setItem(USERS_KEY, JSON.stringify(allUserDataCombined)),
+            AsyncStorage.setItem(CURRENT_USER_ID_KEY, currentUser.userId),
+            AsyncStorage.setItem(TAG_DATA_KEY, JSON.stringify(tagDataMap)),
+            AsyncStorage.setItem(STATS_KEY, JSON.stringify(userStats))
+          ]);
         }
       } catch (error) {
         console.error('Failed to fetch user data:', error);
+        // Provide fallback mechanism or user notification here
       }
     };
 
     fetchUserData();
   }, []);
 
-  const updateAvatar = async (userId, avatarUrl) => {
+  const updateAvatar = useCallback(async (userId, avatarUrl) => {
     setUsers(prevUsers =>
-      prevUsers.map(user => {
-        if (user.id === userId) {
-          return { ...user, img: avatarUrl };
-        }
-        return user;
-      })
+      prevUsers.map(user => (user.id === userId ? { ...user, img: avatarUrl } : user))
     );
 
     try {
-      await databases.updateDocument(
-        appwriteConfig.databaseId,
-        appwriteConfig.userCollectionId,
-        userId,
-        { avatar: avatarUrl }
-      );
+      await updateAvatarAPI(userId, avatarUrl);
       const updatedUsers = users.map(user =>
         user.id === userId ? { ...user, img: avatarUrl } : user
       );
       setUsers(updatedUsers);
-      await AsyncStorage.setItem('users', JSON.stringify(updatedUsers));
+      await AsyncStorage.setItem(USERS_KEY, JSON.stringify(updatedUsers));
     } catch (error) {
       console.error('Failed to update user avatar:', error);
+      // Provide user feedback on error here
     }
-  };
+  }, [users]);
 
-  const updateUserTags = async (userId, updatedTags) => {
+  const updateUserTags = useCallback(async (userId, updatedTags) => {
     setTagData(prevTagData => ({
       ...prevTagData,
       [userId]: updatedTags,
@@ -149,11 +148,12 @@ export const UsersProvider = ({ children }) => {
       await updateTagCollectionDocument(userId, { tags: updatedTags });
       const updatedTagData = { ...tagData, [userId]: updatedTags };
       setTagData(updatedTagData);
-      await AsyncStorage.setItem('tagData', JSON.stringify(updatedTagData));
+      await AsyncStorage.setItem(TAG_DATA_KEY, JSON.stringify(updatedTagData));
     } catch (error) {
       console.error('Failed to update user tags:', error);
+      // Provide user feedback on error here
     }
-  };
+  }, [tagData]);
 
   return (
     <UsersContext.Provider value={{ users, currentUserId, updateUserTags, stats, tagData, updateAvatar }}>
@@ -162,7 +162,6 @@ export const UsersProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use the UsersContext
 export const useUsers = () => {
   const context = useContext(UsersContext);
   if (!context) {

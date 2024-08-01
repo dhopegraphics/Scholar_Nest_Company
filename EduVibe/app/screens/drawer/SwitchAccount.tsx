@@ -1,18 +1,25 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useUsers } from '../../../contexts/UsersContext';
 import imageExport from '../../../assets/images/imageExport';
 //@ts-ignore
 const SwitchAccount  = ({navigation}) => {
+  const { users,  currentUserId  , } = useUsers();
+  //@ts-ignore
+  const currentUser = users.find((user) => user.id === currentUserId );
+
   return (
     <><View style={styles.cardContainer}>
       <View style={styles.infoContainer}>
         <Text style={styles.title}>EduVibe - learning platform</Text>
         <Text style={styles.subtitle}>scholarnestcompany.edu.gh</Text>
       </View>
+      { currentUser &&
       <TouchableOpacity style={styles.touchableContainer} onPress={() => navigation.navigate("Back")}>
         <Image source={imageExport.logo} style={styles.logo} />
-        <Text style={styles.name}>isaac mensah</Text>
+        <Text style={styles.name}> {currentUser.name} </Text>
       </TouchableOpacity>
+}
     </View><View style={styles.cardContainer}>
         <View style={styles.infoContainer}>
           <Text style={styles.title}>You Want To Change Your User Setup ?</Text>
@@ -60,7 +67,8 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   name: {
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight  : "600"
   },
   Textname: {
     fontSize: 16,

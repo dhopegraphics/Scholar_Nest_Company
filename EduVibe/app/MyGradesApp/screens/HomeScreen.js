@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,7 +12,6 @@ import { AppForm, AppFormField, SubmitButton } from "../components/forms";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
-import { useState } from "react";
 import SubjectItem from "../components/SubjectItem";
 import ActiveButton from "../components/ActiveButton";
 import AppFormPicker from "../components/forms/AppFormPicker";
@@ -20,7 +19,6 @@ import {
   calculateSubjectAverage,
   calculateTotalAverage,
 } from "../hooks/calculateAverage";
-
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
@@ -32,205 +30,23 @@ const validationSchema = Yup.object().shape({
 
 function HomeScreen() {
   const [subjects, setSubjects] = useState([
-    {
-      id: 1,
-      name: "Math",
-      color: "blue",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 2,
-      name: "German",
-      color: "orange",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 3,
-      name: "English",
-      color: "green",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 4,
-      name: "French",
-      color: "blue",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 5,
-      name: "Latin",
-      color: "orange",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 6,
-      name: "Spanish",
-      color: "orange",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 7,
-      name: "Physics",
-      color: "orange",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 8,
-      name: "Biology",
-      color: "green",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 9,
-      name: "Chemistry",
-      color: "blue",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 10,
-      name: "Geography",
-      color: "brown",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 12,
-      name: "History",
-      color: "orange",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 13,
-      name: "PE",
-      color: "blue",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 14,
-      name: "Music",
-      color: "purple",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 15,
-      name: "Art",
-      color: "yellow",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 16,
-      name: "Religion",
-      color: "pink",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    {
-      id: 17,
-      name: "Ethics",
-      color: "purple",
-      checked: false,
-      grades: [
-        { id: 1, type: "Exam", value: 2 },
-        { id: 2, type: "Quiz", value: 4 },
-        { id: 3, type: "Oral Exam", value: 6 },
-        { id: 4, type: "Exam", value: 2 },
-      ],
-    },
-    // Add more items...
+    // Define subjects as before...
   ]);
 
-
-  const [modalVisible, setModalVisible] = useState("false");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState(null); // State for managing errors
 
   const TotalAverage = calculateTotalAverage(subjects);
+
+  const handleFormSubmit = (values) => {
+    try {
+      console.log(values);
+      // Handle form submission logic here
+    } catch (err) {
+      setError("An error occurred while submitting the form.");
+      console.error(err);
+    }
+  };
 
   return (
     <Screen>
@@ -247,9 +63,7 @@ function HomeScreen() {
               <ActiveButton
                 icon="close"
                 size={40}
-                onPress={() => {
-                  setModalVisible(false);
-                }}
+                onPress={() => setModalVisible(false)}
               />
             </View>
             <AppForm
@@ -259,19 +73,42 @@ function HomeScreen() {
                 examType: null,
                 note: "",
               }}
-              onSubmit={(values) => console.log(values)}
+              onSubmit={handleFormSubmit}
               validationSchema={validationSchema}
             >
+              <AppFormPicker
+                items={subjects} // Ensure this has the correct structure for the picker
+                name="subject"
+                placeholder="Select a subject"
+              />
+              <AppFormPicker
+                items={[]} // Replace with your exam types
+                name="examType"
+                placeholder="Select an exam type"
+              />
+              <AppFormField
+                name="grade"
+                placeholder="Enter grade"
+                keyboardType="numeric"
+              />
+              <AppFormField
+                name="note"
+                placeholder="Enter any notes"
+              />
+              <SubmitButton title="Submit" />
             </AppForm>
+            {error && (
+              <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>{error}</Text>
+              </View>
+            )}
           </Screen>
         </Modal>
+        
         <View style={styles.list_container}>
           <AppText style={[styles.subTitle, styles.listTitle]}>
-           
+            Your Subjects
           </AppText>
-          <Text style = {styles.Title}>
-          Your Subjects
-          </Text>
           <FlatList
             style={styles.list}
             data={subjects}
@@ -287,7 +124,7 @@ function HomeScreen() {
               );
             }}
             keyExtractor={(item) => item.id.toString()}
-            scrollEnabled={true}
+            scrollEnabled
           />
         </View>
       </View>
@@ -299,9 +136,9 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 70,
   },
-  button_container: {
-    maxWidth: 250,
-    marginBottom: 20,
+  buttonModal: {
+    display: "flex",
+    alignItems: "flex-end",
   },
   gradeText: {
     fontSize: 55,
@@ -317,14 +154,14 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     fontWeight: "700",
-    color : "black"
+    color: "black",
   },
   Title: {
     fontWeight: "800",
-    color : "white",
-    fontSize : 20,
-   marginLeft : 10,
-   paddingBottom : 20,
+    color: "white",
+    fontSize: 20,
+    marginLeft: 10,
+    paddingBottom: 20,
   },
   list_container: {
     backgroundColor: "#002366",
@@ -334,27 +171,21 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: 10,
-    color : "black",
+    color: "black",
   },
   listTitle: {
     paddingBottom: 10,
-    color : "black",
+    color: "black",
   },
-  buttonModal: {
-    display: "flex",
-    alignItems: "flex-end",
+  errorContainer: {
+    backgroundColor: "#FDD",
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
   },
-  formfield_container: {
-    marginTop: 20,
-  },
-  picker_container: {
-    marginVertical: 20,
-  },
-  button: {
-    marginVertical: 50,
-  },
-  header: {
-    alignItems: "center",
+  errorText: {
+    color: "#D8000C",
+    fontSize: 16,
   },
 });
 

@@ -16,8 +16,8 @@ import ExperienceCard from '../../../components/ExperienceCard';
 import { useUsers } from '../../../contexts/UsersContext';
 import { UserAccountStyling } from '../../../themes/UserAccountStyle';
 import { useTagContext } from '../../../contexts/TagContext'; // Import the context
-import { createChatRequest, deleteChatRequest, createFollowRequest, deleteFollowRequest, fetchChatRequests } from '../../../lib/appwrite'; // Import the functions and configurations
-
+import { createChatRequest, deleteChatRequest, createFollowRequest,
+   deleteFollowRequest, fetchChatRequests } from '../../../lib/appwrite'; // Import the functions and configurations
 const tags = ['ios', 'android', 'web', 'ui', 'ux'];
 
 const UserAccount = ({ navigation, route }) => {

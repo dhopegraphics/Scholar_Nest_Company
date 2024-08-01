@@ -12,7 +12,17 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function ExamWeightScreen() {
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [error, setError] = useState(null);
   const navigation = useNavigation();
+
+  const handleNavigation = () => {
+    try {
+      navigation.navigate("GradeHome");
+    } catch (err) {
+      setError("An error occurred while navigating to GradeHome.");
+      console.error(err);
+    }
+  };
 
   return (
     <Screen>
@@ -22,9 +32,14 @@ export default function ExamWeightScreen() {
         <ActiveButton
           icon="share-all"
           size={40}
-          onPress={() => navigation.navigate("GradeHome")}
+          onPress={handleNavigation}
         />
       </View>
+      {error && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      )}
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -148,5 +163,15 @@ const styles = StyleSheet.create({
   },
   description: {
     marginBottom: 10,
+  },
+  errorContainer: {
+    backgroundColor: "#FDD",
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+  },
+  errorText: {
+    color: "#D8000C",
+    fontSize: 16,
   },
 });

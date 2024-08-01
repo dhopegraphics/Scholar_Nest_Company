@@ -164,7 +164,6 @@ export type StackParamList = {
   QuestionTaken: { course: any };
   LottieEduvibeLoader: undefined;
   AddedWards: undefined;
- 
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -466,8 +465,6 @@ const MainStackScreen = () => {
         component={AddedWards}
         options={{ headerShown: false }}
       />
-
- 
     </Stack.Navigator>
   );
 };
