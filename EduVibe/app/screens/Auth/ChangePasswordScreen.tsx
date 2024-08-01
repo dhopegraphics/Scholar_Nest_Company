@@ -16,7 +16,7 @@ import imageExport from "../../../assets/images/imageExport";
 import { CommonStyle } from "../../../themes/styles_index";
 import RBSheet from "react-native-raw-bottom-sheet"; // Import RBSheet from the package
 import FeatherIcon from "react-native-vector-icons/Feather";
-import { Icon } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 type StackParamList = {
   ChangePasswordScreen: undefined;
@@ -110,6 +110,12 @@ const ChangePasswordScreen: React.FC<ChangePasswordScreenProp> = ({
           showsVerticalScrollIndicator={false}
         >
           <View style={CommonStyle.passwordContainer}>
+            <View style={styles.header}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Icon name="chevron-left" size={40} color="#000" />
+              </TouchableOpacity>
+            </View>
+
             <Image source={imageExport.logo} style={CommonStyle.logo} />
             <Text style={CommonStyle.loginText}>Change Password</Text>
 
@@ -203,6 +209,15 @@ const ChangePasswordScreen: React.FC<ChangePasswordScreenProp> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    marginTop: -100,
+    borderBottomColor: "#ddd",
+
+    alignSelf: "flex-start",
   },
   sheet: {
     borderTopLeftRadius: 14,
