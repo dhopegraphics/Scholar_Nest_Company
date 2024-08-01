@@ -13,6 +13,7 @@ import defaultStyles from "../config/styles";
 export default function GradingSystemScreen() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [error, setError] = useState(null); // State for managing errors
   const navigation = useNavigation();
 
   const [gradeSystems, setGradeSystems] = useState([
@@ -22,6 +23,24 @@ export default function GradingSystemScreen() {
   ]);
 
   const [grade, setGrades] = useState({ text: "Grades 1 to 6" });
+
+  const handleNavigation = () => {
+    try {
+      navigation.navigate("GradeSetUp");
+    } catch (err) {
+      setError("An error occurred while navigating to GradeSetUp.");
+      console.error(err);
+    }
+  };
+
+  const handleModalClose = () => {
+    try {
+      setIsModalVisible(false);
+    } catch (err) {
+      setError("An error occurred while closing the modal.");
+      console.error(err);
+    }
+  };
 
   return (
     <Screen>
@@ -44,13 +63,18 @@ export default function GradingSystemScreen() {
       </View>
       <CheckBoxModal
         visible={isModalVisible}
-        onPress={() => setIsModalVisible(false)}
+        onPress={handleModalClose}
         title="Grading System"
         data={gradeSystems}
         setData={setGradeSystems}
         onSelectItem={(grade) => setGrades(grade)}
-        closeModal={() => setIsModalVisible(false)}
+        closeModal={handleModalClose}
       />
+      {error && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      )}
       <View style={styles.container}>
         <SettingsContainer>
           <SettingsItem title="Exam Weighting" />
@@ -90,7 +114,7 @@ export default function GradingSystemScreen() {
             icon="shape-outline"
             style={styles.nextButton}
             size={20}
-            onPress={() => navigation.navigate("GradeSetUp")}
+            onPress={handleNavigation}
           />
         </View>
         <Text style={styles.setup}>SetUp Your Subject</Text>
@@ -107,7 +131,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   currentGradingSystemText: {
-    color: "gray", // Set the color to gray
+    color: "gray",
   },
   container: {
     marginVertical: 30,
@@ -121,7 +145,7 @@ const styles = StyleSheet.create({
   grade: {
     fontWeight: "700",
     fontSize: 18,
-    color: "#000", // Ensure the text color is visible
+    color: "#000",
   },
   subTitle: {
     marginVertical: 10,
@@ -137,7 +161,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 70,
   },
-  settinsContainer: {
-    backgroundColor: "#1C9C9D",
+  errorContainer: {
+    backgroundColor: "#FDD",
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+  },
+  errorText: {
+    color: "#D8000C",
+    fontSize: 16,
   },
 });

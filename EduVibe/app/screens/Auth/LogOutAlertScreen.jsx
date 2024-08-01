@@ -9,20 +9,21 @@ import {
 } from "react-native";
 import { useUsers } from "../../../contexts/UsersContext"; // Update the path accordingly
 import { signOut } from "../../../lib/appwrite";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LogOutAlertScreen = ({ navigation }) => {
   const { users, currentUserId } = useUsers();
 
-  // Assuming you want to display data for user with id '1'
   const currentUser = users.find((user) => user.id === currentUserId);
 
   const handleLogout = async () => {
     try {
       await signOut(); // Call signOut function to delete session
+      await AsyncStorage.clear(); // Clear AsyncStorage
       navigation.navigate("SignInScreen"); // Navigate to SignInScreen after logout
     } catch (error) {
       console.error("Failed to log out:", error.message);
-      // Handle error accordingly
+      // Provide user feedback on error here
     }
   };
 
@@ -77,7 +78,6 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexBasis: 0,
   },
-  /** Alert */
   alert: {
     position: "relative",
     flexDirection: "column",
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#9a9a9a",
   },
-  /** Button */
   btn: {
     flexDirection: "row",
     alignItems: "center",

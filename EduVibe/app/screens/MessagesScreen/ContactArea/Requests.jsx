@@ -24,7 +24,6 @@ const handleRejectPress = async (requestId, setChatRequests) => {
     await deleteChatRequest(requestId);
     setChatRequests(prevRequests => prevRequests.filter(request => request.$id !== requestId));
     console.log('Rejected', requestId);
-
     await AsyncStorage.removeItem(`chat_${requestId}`);
   } catch (error) {
     console.error('Failed to reject chat request:', error);
