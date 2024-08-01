@@ -16,6 +16,7 @@ import imageExport from "../../../assets/images/imageExport";
 import { CommonStyle } from "../../../themes/styles_index";
 import RBSheet from "react-native-raw-bottom-sheet"; // Import RBSheet from the package
 import FeatherIcon from "react-native-vector-icons/Feather";
+import { Icon } from "react-native-paper";
 
 type StackParamList = {
   ChangePasswordScreen: undefined;
