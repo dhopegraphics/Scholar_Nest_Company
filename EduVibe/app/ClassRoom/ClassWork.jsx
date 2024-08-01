@@ -44,7 +44,11 @@ const ClassWorkComponents = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
           <Ionicons name="menu" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{item.title}</Text>
+        <View style={styles.headerTitleContainer}>
+          <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode="tail">
+            {item.title}
+          </Text>
+        </View>
         <TouchableOpacity
           onPress={() => alert("Filter functionality not implemented yet")}
         >
@@ -109,6 +113,8 @@ const ClassWorkComponents = ({ navigation, route }) => {
   );
 };
 
+
+
 const ClassWork = ({ route }) => {
   const { item } = route.params; // Retrieve the item parameter
 
@@ -157,6 +163,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 16,
+  },
+  headerTitleContainer: {
+    flex: 1, // This will allow the title to use available space
+    marginHorizontal: 8, // Add some spacing between the icons and the title
   },
   headerTitle: {
     color: "white",
@@ -224,3 +234,4 @@ const styles = StyleSheet.create({
 });
 
 export default ClassWork;
+
