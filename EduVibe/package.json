@@ -112,7 +112,9 @@
     "react-native-webview": "13.8.6",
     "react-native-youtube": "^2.0.2",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "expo-auth-session": "~5.5.2",
+    "expo-crypto": "~13.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
