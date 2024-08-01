@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const getCacheSize = async () => {
   try {
@@ -14,7 +14,7 @@ const getCacheSize = async () => {
     const totalSizeInMB = totalSize / (1024 * 1024);
     return totalSizeInMB;
   } catch (error) {
-    console.error('Failed to get cache size:', error.message);
+    console.error("Failed to get cache size:", error.message);
     return 0;
   }
 };

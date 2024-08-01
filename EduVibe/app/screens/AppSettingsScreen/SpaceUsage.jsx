@@ -11,7 +11,7 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import imageExport from "../../../assets/images/imageExport"; 
+import imageExport from "../../../assets/images/imageExport";
 import { useUsers } from "../../../contexts/UsersContext";
 import getCacheSize from "../../../constants/CachedFiles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,10 +21,11 @@ const SpaceUsageScreen = (props) => {
   const [currentUserName, setCurrentUserName] = useState("");
   const [cacheSize, setCacheSize] = useState("Calculating...");
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     // Find the current user's data
-    const currentUser = users.find(user => user.id === currentUserId);
+    const currentUser = users.find((user) => user.id === currentUserId);
     if (currentUser) {
       setCurrentUserName(currentUser.name);
     }
@@ -35,16 +36,32 @@ const SpaceUsageScreen = (props) => {
     const fetchCacheSize = async () => {
       const size = await getCacheSize();
       setCacheSize(size.toFixed(2) + " MB");
+      updateData(size.toFixed(2) + " MB");
     };
 
     fetchCacheSize();
   }, []);
+
+  const updateData = (size) => {
+    const newData = [
+      {
+        id: "1",
+        title: "EduVibe - Learning and Teaching platform",
+        url: "scholarnestcompany.edu.gh",
+        name: currentUserName,
+        size: size,
+        image: imageExport.logo,
+      },
+    ];
+    setData(newData);
+  };
 
   const handleClearCache = async () => {
     setLoading(true); // Show loader
     try {
       await AsyncStorage.clear();
       setCacheSize("0.00 MB"); // Update the cache size to 0 after clearing
+      updateData("0.00 MB");
       Alert.alert("Success", "Cache files cleared successfully");
       console.log("Cache cleared");
     } catch (error) {
@@ -53,18 +70,6 @@ const SpaceUsageScreen = (props) => {
       setLoading(false); // Hide loader
     }
   };
-
-  // Example data array with currentUserName
-  const data = [
-    {
-      id: "1",
-      title: "EduVibe - learning and Teaching platform",
-      url: "scholarnestcompany.edu.gh",
-      name: currentUserName, // Use currentUserName here
-      size: "4.97 MB",
-      image: imageExport.logo, // Use local image directly
-    },
-  ];
 
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
@@ -77,9 +82,6 @@ const SpaceUsageScreen = (props) => {
           <Text style={styles.size}>{item.size}</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.trashIcon}>
-        <Icon name="delete" size={24} color="red" />
-      </TouchableOpacity>
     </View>
   );
 
@@ -91,11 +93,12 @@ const SpaceUsageScreen = (props) => {
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
       />
-      <View style={styles.totalContainer}>
-        <Text style={styles.totalText}>Total</Text>
-        <Text style={styles.totalSize}>9.62 MB</Text>
-      </View>
-      <TouchableOpacity style={styles.clearCacheButton} onPress={handleClearCache} disabled={loading}>
+
+      <TouchableOpacity
+        style={styles.clearCacheButton}
+        onPress={handleClearCache}
+        disabled={loading}
+      >
         {loading ? (
           <ActivityIndicator size="small" color="#00796b" />
         ) : (
@@ -165,7 +168,7 @@ const styles = StyleSheet.create({
     color: "gray",
   },
   name: {
-    fontSize: 14,
+    fontSize: 10,
     color: "#000",
   },
   size: {
