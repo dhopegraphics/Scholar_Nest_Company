@@ -109,7 +109,6 @@ const ClassWorkComponents = ({ navigation, route }) => {
   );
 };
 
-
 const ClassWork = ({ route }) => {
   const { item } = route.params; // Retrieve the item parameter
 
