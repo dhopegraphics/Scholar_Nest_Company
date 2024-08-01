@@ -9,7 +9,8 @@ import {
 } from "react-native";
 import { useUsers } from "../../../contexts/UsersContext"; // Update the path accordingly
 import { signOut } from "../../../lib/appwrite";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const LogOutAlertScreen = ({ navigation }) => {
   const { users, currentUserId } = useUsers();
@@ -29,8 +30,13 @@ const LogOutAlertScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <View style={styles.container}>
-        <View style={styles.alert}>
+      <View style={styles.alert}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="chevron-left" size={40} color="#000" />
+            </TouchableOpacity>
+          </View>
           <View style={styles.alertContent}>
             <Image
               alt=""
@@ -41,8 +47,7 @@ const LogOutAlertScreen = ({ navigation }) => {
             />
             <Text style={styles.alertTitle}>
               Log out of
-              {"\n"}
-              @{currentUser?.username} {/* Displaying username */}
+              {"\n"}@{currentUser?.username} {/* Displaying username */}
             </Text>
             <Text style={styles.alertMessage}>
               Are you sure you would like to log out of this account? You will
@@ -86,6 +91,16 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexBasis: 0,
     paddingTop: 80,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    marginTop: -100,
+    marginLeft: -20,
+    borderBottomColor: "#ddd",
+
+    alignSelf: "flex-start",
   },
   alertContent: {
     flexGrow: 1,
