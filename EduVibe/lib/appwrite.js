@@ -773,3 +773,13 @@ export async function fetchChatRequests(userId) {
   }
 }
 
+
+export async function signInWithGoogle(idToken) {
+  try {
+    // Example of how to use Appwrite OAuth2
+    const session = await account.createOAuth2Session('google', idToken);
+    return session;
+  } catch (error) {
+    throw new Error(`Google Sign-In Error: ${error.message}`);
+  }
+}
