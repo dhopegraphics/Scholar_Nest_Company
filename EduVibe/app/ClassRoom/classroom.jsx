@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import imageExport from "../../assets/images/imageExport";
 
 const data = [
   {
@@ -89,10 +90,7 @@ const ClassRoomHome = () => {
       <View style={styles.header}>
         <MenuIcon />
         <Text style={styles.headerTitle}>EduVibe ClassRoom</Text>
-        <Image
-          source={{ uri: "https://via.placeholder.com/40" }}
-          style={styles.avatar}
-        />
+        <Image source={imageExport.logo} style={styles.avatar} />
       </View>
       <ScrollView contentContainerStyle={styles.main}>
         {data.map((item) => (

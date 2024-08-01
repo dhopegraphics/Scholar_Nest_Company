@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { Card } from 'react-native-elements';
+import React from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import { Card } from "react-native-elements";
 
-export default function ClassCard( {CourseTitle , Description , Lecturer}) {
+export default function ClassCard({ CourseTitle, Description, Lecturer }) {
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.cardContent}>
@@ -11,7 +11,6 @@ export default function ClassCard( {CourseTitle , Description , Lecturer}) {
           <Text style={styles.subtitle}>{Description}</Text>
           <Text style={styles.name}>{Lecturer}</Text>
         </View>
-        <Image source={{ uri: 'https://via.placeholder.com/80' }} style={styles.image} />
       </View>
     </Card>
   );
@@ -22,27 +21,27 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   cardContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   textContainer: {
     flex: 1,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "black",
   },
   subtitle: {
     fontSize: 14,
-    color: '#6B7280',
-    fontWeight : "500",
+    color: "#6B7280",
+    fontWeight: "500",
   },
   name: {
     fontSize: 14,
-    color: 'black',
-    fontWeight : "700",
+    color: "black",
+    fontWeight: "700",
   },
   image: {
     width: 80,
