@@ -86,6 +86,7 @@ import { EducationPlacesProvider } from "../../contexts/EducationPlaceContext";
 import LottieEduvibeLoader from "../../constants/LottieEduvibeLoader";
 import AddedWards from "../screens/ParentWards/AddedWards";
 import ContactsScreen from "../screens/MessagesScreen/ContactArea/Contacts";
+import TodoList from "../TodoList/TodoListSection";
 
 export type StackParamList = {
   ContactsScreen: undefined;
@@ -164,6 +165,7 @@ export type StackParamList = {
   QuestionTaken: { course: any };
   LottieEduvibeLoader: undefined;
   AddedWards: undefined;
+  TodoList : undefined ;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -463,6 +465,11 @@ const MainStackScreen = () => {
       <Stack.Screen
         name="AddedWards"
         component={AddedWards}
+        options={{ headerShown: false }}
+      />
+          <Stack.Screen
+        name="TodoList"
+        component={TodoList}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

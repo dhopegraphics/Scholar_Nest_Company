@@ -1,5 +1,12 @@
-import { Redirect } from "expo-router";
+import React, { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Index() {
-    return <Redirect href="/home" />;
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.replace('Home'); // Replace current screen with Home screen
+  }, [navigation]);
+
+  return null; // No UI is needed
 }

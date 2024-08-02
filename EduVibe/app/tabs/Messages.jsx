@@ -9,8 +9,12 @@ import { useUsers } from "../../contexts/UsersContext";
 import { useGroup } from "../../contexts/GroupContexts";
 import { getCurrentUser } from "../../lib/appwrite";
 import ReactNativeBiometrics from 'react-native-biometrics';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+
 
 const rnBiometrics = new ReactNativeBiometrics();
+const Tab = createMaterialTopTabNavigator();
+
 
 const MessagesScreen = ({ navigation }) => {
   const { users } = useUsers(); // Access users data from UsersContext
@@ -219,5 +223,7 @@ const MessagesScreen = ({ navigation }) => {
     </View>
   );
 };
+
+
 
 export default MessagesScreen;

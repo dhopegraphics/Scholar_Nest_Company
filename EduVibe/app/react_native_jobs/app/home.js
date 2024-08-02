@@ -1,17 +1,14 @@
 import { useState, useCallback } from "react";
 import { SafeAreaView, ScrollView, View, RefreshControl } from "react-native";
-import { Stack, useRouter } from "expo-router";
-
+import { useNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+import JobSearch from "./search/[id]";
 import { COLORS, icons, images, SIZES } from "../constants";
-import {
-  Nearbyjobs,
-  Popularjobs,
-  ScreenHeaderBtn,
-  Welcome,
-} from "../components";
+import { Nearbyjobs, Popularjobs,  Welcome } from "../components";
 
 const Home = () => {
-  const router = useRouter();
+  const navigation = useNavigation();
   const [searchTerm, setSearchTerm] = useState("");
   const [refreshing, setRefreshing] = useState(false);
 
@@ -26,20 +23,6 @@ const Home = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
-      <Stack.Screen
-        options={{
-          headerStyle: { backgroundColor: COLORS.lightWhite },
-          headerShadowVisible: false,
-          headerLeft: () => (
-            <ScreenHeaderBtn iconUrl={icons.menu} dimension="60%" />
-          ),
-          headerRight: () => (
-            <ScreenHeaderBtn iconUrl={images.profile} dimension="100%" />
-          ),
-          headerTitle: "",
-        }}
-      />
-
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -57,7 +40,7 @@ const Home = () => {
             setSearchTerm={setSearchTerm}
             handleClick={() => {
               if (searchTerm) {
-                router.push(`/search/${searchTerm}`);
+                navigation.navigate('JobSearch', { id : searchTerm });
               }
             }}
           />
@@ -70,4 +53,24 @@ const Home = () => {
   );
 };
 
-export default Home;
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+  return (
+
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerStyle: { backgroundColor: COLORS.lightWhite },
+            headerShadowVisible: false,
+            headerTitle: "",
+          }}
+        />
+        <Stack.Screen name="JobSearch" component={JobSearch} />
+      </Stack.Navigator>
+  );
+};
+
+export default App;

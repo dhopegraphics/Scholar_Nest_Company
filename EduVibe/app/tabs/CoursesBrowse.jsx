@@ -14,8 +14,14 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { coursesBrowseStyles as styles } from "../../themes/CoursesBrowseStyles";
 import { getCurrentUser } from "../../lib/appwrite";
 import { useUsers } from "../../contexts/UsersContext";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import TimeTableSection from "./TimeTable";
 
-const CoursesBrowse = ({ navigation }) => {
+
+
+const Tab = createMaterialTopTabNavigator();
+
+const CoursesBrowseSection = ({ navigation }) => {
   const { users } = useUsers(); // Access users data from UsersContext
   const [currentUser, setCurrentUser] = useState(null); // State to store the current user
 
@@ -162,5 +168,27 @@ const CoursesBrowse = ({ navigation }) => {
     </View>
   );
 };
+
+
+
+const CoursesBrowse = () => {
+  return (
+    <>
+      <Tab.Navigator
+      initialRouteName="Courses Browse"
+
+        screenOptions={{
+          tabBarIndicatorStyle: {
+            backgroundColor: "#1C9C9D",
+          },
+        }}
+      >
+        <Tab.Screen name="Courses Browse" component={CoursesBrowseSection} />
+        <Tab.Screen name="TimeTableSection" component={TimeTableSection} />
+      </Tab.Navigator>
+    </>
+  );
+};
+ 
 
 export default CoursesBrowse;

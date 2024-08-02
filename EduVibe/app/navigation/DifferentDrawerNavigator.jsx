@@ -30,8 +30,8 @@ const CustomDrawerContent = ({ navigation }) => {
   return (
     <DrawerContentScrollView>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('calendar')}>
-          <Text style={styles.buttonText}>Calendar</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TodoList')}>
+          <Text style={ styles.buttonText  }>Todo List</Text>
           <Ionicons name="chevron-forward-outline" size={20} color="black" />
         </TouchableOpacity>
       </View>

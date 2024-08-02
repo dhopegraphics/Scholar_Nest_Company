@@ -1,18 +1,15 @@
-import { Stack } from "expo-router";
+import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from './home';
 
-export const unstable_settings = {
-  // Ensure any route can link back to `/`
-  initialRouteName: "home",
-};
+const Stack = createNativeStackNavigator();
 
 const Layout = () => {
-
-
   return (
-    <Stack initialRouteName="home">
-      <Stack.Screen name="home" />
-    </Stack>
-  )
+      <Stack.Navigator initialRouteName="home">
+        <Stack.Screen name="home" component={Home} />
+      </Stack.Navigator>
+  );
 };
 
 export default Layout;

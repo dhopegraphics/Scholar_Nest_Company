@@ -1,17 +1,17 @@
-import React from "react";
-import { useRouter } from "expo-router";
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import React from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import styles from "./nearbyjobs.style";
-import { COLORS } from "../../../constants";
-import NearbyJobCard from "../../common/cards/nearby/NearbyJobCard";
-import useFetch from "../../../hook/useFetch";
+import styles from './nearbyjobs.style';
+import { COLORS } from '../../../constants';
+import NearbyJobCard from '../../common/cards/nearby/NearbyJobCard';
+import useFetch from '../../../hook/useFetch';
 
 const Nearbyjobs = () => {
-  const router = useRouter();
-  const { data, isLoading, error } = useFetch("search", {
-    query: "React Native developer",
-    num_pages: "1",
+  const navigation = useNavigation();
+  const { data, isLoading, error } = useFetch('search', {
+    query: 'React Native developer',
+    num_pages: '1',
   });
 
   return (
@@ -33,7 +33,7 @@ const Nearbyjobs = () => {
             <NearbyJobCard
               job={job}
               key={`nearby-job-${job.job_id}`}
-              handleNavigate={() => router.push(`/job-details/${job.job_id}`)}
+              handleNavigate={() => navigation.navigate('JobDetails', { id: job.job_id })}
             />
           ))
         )}
