@@ -1,13 +1,28 @@
 // App.js
-import React from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import React from "react";
+import { StyleSheet, View, Text, FlatList } from "react-native";
 
 const transactions = [
-  { id: '1', date: '26 Dec 2022', description: 'Tuition Fees', amount: -4658.00 },
-  { id: '2', date: '26 Dec 2022', description: 'Field Trip', amount: -120.75 },
-  { id: '3', date: '13 Jan 2023', description: 'Others', amount: -1302.75 },
-  { id: '4', date: '13 Jan 2023', description: 'Practical Examination Fees', amount: -600.00 },
-  { id: '5', date: '04 Jan 2023', description: 'ONLINE: Fees paid by Isaac Nana Sam MENSAH', amount: 6681.50 },
+  {
+    id: "1",
+    date: "26 Dec 2022",
+    description: "Tuition Fees",
+    amount: -4658.0,
+  },
+  { id: "2", date: "26 Dec 2022", description: "Field Trip", amount: -120.75 },
+  { id: "3", date: "13 Jan 2023", description: "Others", amount: -1302.75 },
+  {
+    id: "4",
+    date: "13 Jan 2023",
+    description: "Practical Examination Fees",
+    amount: -600.0,
+  },
+  {
+    id: "5",
+    date: "04 Jan 2023",
+    description: "ONLINE: Fees paid by Isaac Nana Sam MENSAH ",
+    amount: 6681.5,
+  },
 ];
 
 const Transaction = ({ date, description, amount }) => (
@@ -18,8 +33,13 @@ const Transaction = ({ date, description, amount }) => (
     </View>
     <View style={styles.transactionBody}>
       <Text style={styles.transactionDescription}>{description}</Text>
-      <Text style={[styles.transactionAmount, amount < 0 ? styles.negative : styles.positive]}>
-        {amount < 0 ? '-' : ''}${Math.abs(amount).toFixed(2)}
+      <Text
+        style={[
+          styles.transactionAmount,
+          amount < 0 ? styles.negative : styles.positive,
+        ]}
+      >
+        {amount < 0 ? "-" : ""}₵{Math.abs(amount).toFixed(2)}
       </Text>
     </View>
   </View>
@@ -33,8 +53,13 @@ const Payment = ({ date, description, amount }) => (
     </View>
     <View style={styles.transactionBody}>
       <Text style={styles.transactionDescription}>{description}</Text>
-      <Text style={[styles.transactionAmount, amount < 0 ? styles.negative : styles.positive]}>
-        {amount < 0 ? '-' : ''}${Math.abs(amount).toFixed(2)}
+      <Text
+        style={[
+          styles.transactionAmount,
+          amount < 0 ? styles.negative : styles.positive,
+        ]}
+      >
+        {amount < 0 ? "-" : ""}₵{Math.abs(amount).toFixed(2)}
       </Text>
     </View>
   </View>
@@ -50,13 +75,22 @@ const TransactionsSection = () => (
       data={transactions}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) =>
-        item.description.includes('ONLINE')
-          ? <Payment date={item.date} description={item.description} amount={item.amount} />
-          : <Transaction date={item.date} description={item.description} amount={item.amount} />
+        item.description.includes("ONLINE") ? (
+          <Payment
+            date={item.date}
+            description={item.description}
+            amount={item.amount}
+          />
+        ) : (
+          <Transaction
+            date={item.date}
+            description={item.description}
+            amount={item.amount}
+          />
+        )
       }
       ItemSeparatorComponent={() => <View style={styles.separator} />}
     />
-    
   </View>
 );
 
@@ -66,58 +100,58 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   headerContainer: {
     marginBottom: 20,
-    backgroundColor: '#f8d7da',
+    backgroundColor: "#f8d7da",
     padding: 10,
     borderRadius: 5,
   },
   header: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#721c24',
+    fontWeight: "bold",
+    color: "#721c24",
   },
   subHeader: {
     fontSize: 16,
-    color: '#721c24',
+    color: "#721c24",
   },
   transaction: {
     padding: 15,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     borderRadius: 5,
   },
   transactionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 5,
   },
   transactionTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   transactionDate: {
     fontSize: 14,
-    color: '#6c757d',
+    color: "#6c757d",
   },
   transactionBody: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   transactionDescription: {
     fontSize: 14,
-    color: '#343a40',
+    color: "#343a40",
   },
   transactionAmount: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   negative: {
-    color: 'red',
+    color: "red",
   },
   positive: {
-    color: 'green',
+    color: "green",
   },
   separator: {
     height: 10,

@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Card, Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import FileDownloadComponent from './FileDownloadComponent';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { Card, Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import FileDownloadComponent from "./FileDownloadComponent";
 
-export default function NewMaterialCard({ title, date }) {
+export default function NewMaterialCard({ title, date, onAddComment }) {
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.cardContent}>
@@ -14,13 +14,12 @@ export default function NewMaterialCard({ title, date }) {
           <Text style={styles.date}>Posted {date}</Text>
 
           <FileDownloadComponent
-        fileUrl="https://morth.nic.in/sites/default/files/dd12-13_0.pdf"
-        fileName="file.pdf"
-      />
-
+            fileUrl="https://morth.nic.in/sites/default/files/dd12-13_0.pdf"
+            fileName="file.pdf"
+          />
         </View>
       </View>
-      <Button type="clear" title="Add class comment" />
+      <Button type="clear" title="Add class comment" onPress={onAddComment} />
     </Card>
   );
 }
@@ -30,19 +29,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   cardContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   textContainer: {
     marginLeft: 16,
   },
   title: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   date: {
     fontSize: 14,
-    color: '#6B7280',
-    margin : 5,
+    color: "#6B7280",
+    margin: 5,
   },
 });

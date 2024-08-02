@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
 import { Feather } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 
 const SpendingBlock = ({ spendingList }) => {
   return (
@@ -11,7 +12,8 @@ const SpendingBlock = ({ spendingList }) => {
       </Text>
 
       {spendingList.map((item) => {
-        let iconName = "dollar-sign"; // Default icon
+        let iconName = "cedi-sign"; // Default icon
+        let IconComponent = FontAwesome6;
 
         // Determine the icon based on the item name
         switch (item.name) {
@@ -47,7 +49,7 @@ const SpendingBlock = ({ spendingList }) => {
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text style={{ color: Colors.white }}>{item.date}</Text>
               </View>
-              <Text style={styles.itemName}>${item.amount}</Text>
+              <Text style={styles.itemName}>₵{item.amount}</Text>
             </View>
           </View>
         );
