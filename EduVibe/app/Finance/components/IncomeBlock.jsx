@@ -2,15 +2,19 @@ import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
 import { Feather } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 
 const IncomeBlock = ({ incomeList }) => {
   const renderItem = ({ item }) => {
-    let iconName = "dollar-sign"; // Default icon
+    let iconName = "cedi-sign"; // Default icon
+    let IconComponent = FontAwesome6;
 
-    if (item.name === 'Freelancing') {
+    if (item.name === "Freelancing") {
       iconName = "credit-card";
-    } else if (item.name === 'Interest') {
+      IconComponent = Feather;
+    } else if (item.name === "Interest") {
       iconName = "plus-circle";
+      IconComponent = Feather;
     }
 
     return (
@@ -40,7 +44,7 @@ const IncomeBlock = ({ incomeList }) => {
               alignSelf: "flex-start",
             }}
           >
-            <Feather name={iconName} size={22} color={"white"} />
+            <IconComponent name={iconName} size={22} color={"white"} />
           </View>
           <TouchableOpacity onPress={() => {}}>
             <Feather name="more-horizontal" size={20} color={"white"} />
@@ -48,7 +52,7 @@ const IncomeBlock = ({ incomeList }) => {
         </View>
         <Text style={{ color: "white" }}>{item.name}</Text>
         <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
-          ${item.amount.split(".")[0]}.
+          ₵{item.amount.split(".")[0]}.
           <Text style={{ fontSize: 12, fontWeight: "400" }}>
             {item.amount.split(".")[1]}
           </Text>
